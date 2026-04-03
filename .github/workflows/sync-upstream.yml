@@ -1,0 +1,20 @@
+name: Sync Fork with Upstream
+on:
+  schedule:
+    - cron: '0 6 * * *'  # Daily at 6 AM UTC
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Sync fork
+        run: gh repo sync ${{ github.repository }} --source paperclipai/paperclip --branch master
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
