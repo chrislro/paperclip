@@ -1,0 +1,80 @@
+{
+  "services": [
+    {
+      "name": "audio-to-note-api",
+      "host": "127.0.0.1",
+      "port": 8002,
+      "label": "com.service.audio-to-note",
+      "notes": "Launchd-managed audio-to-note FastAPI service."
+    },
+    {
+      "name": "openclaw-dashboard",
+      "host": "127.0.0.1",
+      "port": 8080,
+      "label": "com.openclaw.dashboard",
+      "notes": "OpenClaw dashboard server."
+    },
+    {
+      "name": "openclaw-gateway",
+      "host": "127.0.0.1",
+      "port": 3334,
+      "notes": "OpenClaw gateway process discovered from live listener inventory."
+    },
+    {
+      "name": "jarviscall-server",
+      "host": "127.0.0.1",
+      "port": 3001,
+      "label": "ai.jarviscall.server",
+      "notes": "JarvisCall backend server."
+    },
+    {
+      "name": "paperclip-local-api",
+      "host": "127.0.0.1",
+      "port": 3100,
+      "notes": "Paperclip local control plane API."
+    },
+    {
+      "name": "pedbot-cloud-api",
+      "host": "127.0.0.1",
+      "port": 5050,
+      "label": "com.pedbot.cloud-api",
+      "notes": "Pedbot cloud API service."
+    },
+    {
+      "name": "audio-to-note-cloudflared",
+      "host": "127.0.0.1",
+      "port": 20241,
+      "notes": "cloudflared tunnel bound to localhost:8002."
+    },
+    {
+      "name": "pedbot-cloud-api-cloudflared",
+      "host": "127.0.0.1",
+      "port": 20242,
+      "notes": "cloudflared tunnel bound to localhost:5050."
+    },
+    {
+      "name": "luxe-staging-api",
+      "host": "127.0.0.1",
+      "port": 8003,
+      "notes": "Luxe staging API listener."
+    },
+    {
+      "name": "luxe-staging-frontend",
+      "host": "::1",
+      "port": 3001,
+      "notes": "Next.js frontend listener bound on IPv6 localhost."
+    },
+    {
+      "name": "open-webui",
+      "host": "127.0.0.1",
+      "port": 8088,
+      "notes": "Open WebUI local service."
+    },
+    {
+      "name": "parser-dashboard",
+      "host": "127.0.0.1",
+      "port": 8501,
+      "notes": "Parser Streamlit dashboard."
+    }
+  ]
+}
