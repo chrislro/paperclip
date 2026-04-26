@@ -1,0 +1,17 @@
+Re-extracting code files in /Users/christianoliveira/Dev/paperclip (no LLM needed)...
+  AST extraction: 100/1388 files (7%)
+  AST extraction: 200/1388 files (14%)
+  AST extraction: 300/1388 files (21%)
+  AST extraction: 400/1388 files (28%)
+  AST extraction: 500/1388 files (36%)
+  AST extraction: 600/1388 files (43%)
+  AST extraction: 700/1388 files (50%)
+  AST extraction: 800/1388 files (57%)
+  AST extraction: 900/1388 files (64%)
+  AST extraction: 1000/1388 files (72%)
+  AST extraction: 1100/1388 files (79%)
+  AST extraction: 1200/1388 files (86%)
+  AST extraction: 1300/1388 files (93%)
+  AST extraction: 1388/1388 files (100%)
+Nothing to update or rebuild failed — check output above.
+[graphify watch] Rebuild failed: Graph has 6400 nodes - too large for HTML viz. Use --no-viz or reduce input size.
