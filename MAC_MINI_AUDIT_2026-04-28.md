@@ -109,6 +109,20 @@ macOS 12.7.6 build 21H1320 is end-of-life. Upgrade window must coordinate with: 
 
 `/api/companies/<id>/issues?limit=500` takes ~44.9s for 875 KB. The watcher timeout bump is a workaround. The upstream-quality fix is pagination or a lean digest endpoint. Worth filing as a `PAP-*` issue.
 
+## Why These Docs Live on a Long-Lived Branch (Not Merged)
+
+These three files are **operator-specific notes about this Mac Mini install**, not upstream-suitable changes. They live on the long-lived `chris/local-config` branch on `fork/`, never merged into `fork/master`.
+
+Reason: `chrislro/paperclip` runs a daily `gh repo sync … --branch master` (see `.github/workflows/sync-upstream.yml`, 06:00 UTC) without `--force`. Any commit on `fork/master` not in `paperclipai/master` causes the fork to diverge, which makes `gh repo sync` fail silently — and the 04:15 local `update-paperclip.sh` then has nothing new to pull. Merging operator notes into `fork/master` would re-break the auto-update path we just fixed, only via a different failure mode.
+
+The operator-notes branch is the safe pattern:
+- `fork/master` stays a strict mirror of `paperclipai/master` → daily sync fast-forwards cleanly
+- `fork/chris/local-config` accumulates operator notes → never auto-merged anywhere
+- `update-paperclip.sh` only ever reads `fork/master`, so it never sees these docs
+- Docs remain discoverable on GitHub at `chrislro/paperclip/tree/chris/local-config`
+
+If a future operator-notes change ever needs to influence the running install, the right plumbing is a separate `update-paperclip.sh` step that reads from `chris/local-config` *additively*, never a merge into `fork/master`.
+
 ## Verification Commands (re-run after this audit)
 
 After this audit, the following should hold:
