@@ -57,3 +57,4 @@ tests/release-smoke/playwright-report/
 .superset/
 .claude/worktrees/
 graphify-out/
+graphify-out/
