@@ -1138,6 +1138,27 @@ export function defaultPathForPlatform() {
   return "/usr/local/bin:/opt/homebrew/bin:/usr/local/sbin:/usr/bin:/bin:/usr/sbin:/sbin";
 }
 
+// User-local tool install dirs that should always be on the spawned agent's
+// PATH. launchd-started Paperclip servers receive a minimal PATH that drops
+// these, so agents (which inherit the server PATH) couldn't reach `opencode`
+// or `bun` without absolute paths until we prepend them here.
+function userAgentBinDirs(): string[] {
+  if (process.platform === "win32") return [];
+  const home = os.homedir();
+  if (!home) return [];
+  return [path.join(home, ".opencode", "bin"), path.join(home, ".bun", "bin")];
+}
+
+function prependDirsToPath(currentPath: string, dirs: string[]): string {
+  if (dirs.length === 0) return currentPath;
+  const delimiter = process.platform === "win32" ? ";" : ":";
+  const existing = currentPath.split(delimiter).filter(Boolean);
+  const existingSet = new Set(existing);
+  const additions = dirs.filter((dir) => !existingSet.has(dir));
+  if (additions.length === 0) return currentPath;
+  return [...additions, ...existing].join(delimiter);
+}
+
 function windowsPathExts(env: NodeJS.ProcessEnv): string[] {
   return (env.PATHEXT ?? ".EXE;.CMD;.BAT;.COM").split(";").filter(Boolean);
 }
@@ -1266,9 +1287,16 @@ async function resolveSpawnTarget(
 }
 
 export function ensurePathInEnv(env: NodeJS.ProcessEnv): NodeJS.ProcessEnv {
-  if (typeof env.PATH === "string" && env.PATH.length > 0) return env;
-  if (typeof env.Path === "string" && env.Path.length > 0) return env;
-  return { ...env, PATH: defaultPathForPlatform() };
+  const userBinDirs = userAgentBinDirs();
+  if (typeof env.PATH === "string" && env.PATH.length > 0) {
+    const augmented = prependDirsToPath(env.PATH, userBinDirs);
+    return augmented === env.PATH ? env : { ...env, PATH: augmented };
+  }
+  if (typeof env.Path === "string" && env.Path.length > 0) {
+    const augmented = prependDirsToPath(env.Path, userBinDirs);
+    return augmented === env.Path ? env : { ...env, Path: augmented };
+  }
+  return { ...env, PATH: prependDirsToPath(defaultPathForPlatform(), userBinDirs) };
 }
 
 export async function ensureAbsoluteDirectory(
