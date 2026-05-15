@@ -8261,7 +8261,39 @@ export function heartbeatService(db: Db, options: HeartbeatServiceOptions = {}) 
           );
         let reopenedActivity: LogActivityInput | null = null;
 
-        if (shouldReopenDeferredCommentWake) {
+        // Reopening a done stale_active_run_evaluation issue while another
+        // non-done sibling exists for the same orphan run would violate the
+        // issues_active_stale_run_evaluation_uq partial index — the resulting
+        // 23505 poisons the entire releaseIssueExecutionAndPromote transaction
+        // and the watchdog re-spawns the cascade every ~2-3 min.
+        // See: project_paperclip_stale_run_cascade_20260515.
+        let staleEvaluationReopenBlocked = false;
+        if (
+          shouldReopenDeferredCommentWake &&
+          issue.originKind === RECOVERY_ORIGIN_KINDS.staleActiveRunEvaluation &&
+          issue.originId
+        ) {
+          const conflictingSibling = await tx
+            .select({ id: issues.id })
+            .from(issues)
+            .where(
+              and(
+                eq(issues.companyId, issue.companyId),
+                eq(issues.originKind, issue.originKind),
+                eq(issues.originId, issue.originId),
+                sql`${issues.id} <> ${issue.id}`,
+                notInArray(issues.status, ["done", "cancelled"]),
+                isNull(issues.hiddenAt),
+              ),
+            )
+            .limit(1)
+            .then((rows) => rows[0] ?? null);
+          if (conflictingSibling) {
+            staleEvaluationReopenBlocked = true;
+          }
+        }
+
+        if (shouldReopenDeferredCommentWake && !staleEvaluationReopenBlocked) {
           const reopenedFromStatus = issue.status;
           const reopenedIssue = await issuesSvc.update(
             issue.id,
