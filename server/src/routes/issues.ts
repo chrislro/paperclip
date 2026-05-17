@@ -1386,8 +1386,40 @@ export function issueRoutes(
     }
   });
 
+  router.get("/issues/by-identifier/:identifier", async (req, res) => {
+    const identifier = normalizeIssueReferenceIdentifier(req.params.identifier as string);
+    if (!identifier) {
+      res.status(400).json({ error: "Invalid issue identifier" });
+      return;
+    }
+    const issue = await svc.getByIdentifier(identifier);
+    if (!issue) {
+      res.status(404).json({ error: "Issue not found" });
+      return;
+    }
+    assertCompanyAccess(req, issue.companyId);
+    res.json(issue);
+  });
+
   // Common malformed path when companyId is empty in "/api/companies/{companyId}/issues".
-  router.get("/issues", (_req, res) => {
+  router.get("/issues", async (req, res) => {
+    const identifierQuery =
+      typeof req.query.identifier === "string"
+        ? req.query.identifier
+        : typeof req.query.q === "string"
+          ? req.query.q
+          : null;
+    const identifier = identifierQuery ? normalizeIssueReferenceIdentifier(identifierQuery) : null;
+    if (identifier) {
+      const issue = await svc.getByIdentifier(identifier);
+      if (!issue) {
+        res.json([]);
+        return;
+      }
+      assertCompanyAccess(req, issue.companyId);
+      res.json([issue]);
+      return;
+    }
     res.status(400).json({
       error: "Missing companyId in path. Use /api/companies/{companyId}/issues.",
     });
