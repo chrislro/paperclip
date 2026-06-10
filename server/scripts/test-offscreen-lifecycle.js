@@ -53,13 +53,16 @@ test('startRealtime() tears down any live session before starting (re-entrancy g
 
 test('cleanup() detaches WS handlers before close() (no re-entrant onclose)', () => {
   const body = fnBody('cleanup');
-  const detachIdx = body.search(/_ws\.onclose\s*=/);
-  const closeIdx = body.indexOf('_ws.close()');
-  assert.notEqual(detachIdx, -1, 'cleanup() must null out _ws.onclose before closing the socket');
+  // v3.4.2: _ws is nulled before close() to prevent races; handlers are detached
+  // on a local `ws` reference. Accept either pattern.
+  const detachIdx = body.search(/\.onclose\s*=\s*null/);
+  // Be specific: the WS close call itself (ws.close()), not _audioCtx.close().
+  const closeIdx = body.search(/ws\.close\(\)/);
+  assert.notEqual(detachIdx, -1, 'cleanup() must null out onclose before closing the socket');
   assert.notEqual(closeIdx, -1, 'cleanup() must close the socket');
   assert.ok(
     detachIdx < closeIdx,
-    'handler detach must precede _ws.close() so the async onclose cannot re-enter cleanup()'
+    'handler detach must precede close() so the async onclose cannot re-enter cleanup()'
   );
 });
 

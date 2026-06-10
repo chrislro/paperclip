@@ -335,6 +335,9 @@ let timerInterval = null;
 let timerSeconds = 0;
 let mediaRecorder = null;
 let audioChunks = [];
+// v3.4.2 — session ID guard: stale callbacks/messages from a previous recording
+// session cannot reset the UI of a new session. Incremented on every start.
+let _recordingSessionId = 0;
 
 const recordBtn = document.getElementById('recordBtn');
 const soapOutput = document.getElementById('soapOutput');
@@ -378,6 +381,8 @@ function _setRecState(s) {
 }
 
 async function startRecording() {
+  _recordingSessionId++;
+  const mySession = _recordingSessionId;
   recording = true;
   _setRecState('recording');
   soapOutput.value = '';
@@ -389,6 +394,7 @@ async function startRecording() {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       stream.getTracks().forEach(t => t.stop());
     } catch (err) {
+      if (_recordingSessionId !== mySession) return; // stale
       showScribeStatus('Permissão de microfone negada — clique no cadeado e permita o microfone', 'err');
       recording = false;
       _setRecState('idle');
@@ -402,6 +408,7 @@ async function startRecording() {
       type: 'START_REALTIME',
       config: { proxyUrl }
     }, (resp) => {
+      if (_recordingSessionId !== mySession) return; // stale callback
       if (chrome.runtime.lastError) {
         showScribeStatus('Erro ao iniciar realtime: ' + _normalizeApiError(chrome.runtime.lastError), 'err');
         recording = false;
@@ -442,15 +449,20 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
     if (msg.status === 'recording') showScribeStatus(msg.text || 'Ouvindo...', '');
     // 'done' and 'error' are TERMINAL — the session is over, so clear the
     // recording flag to keep it consistent with the idle UI _setRecState paints.
-    // Without this, an async realtime error (WS drop / proxy down) that arrives
-    // WITHOUT the user clicking stop left recording=true, so the next
-    // record-button click was swallowed as a "stop" (toggle at line ~325)
-    // instead of starting a new recording.
-    if (msg.status === 'done')      { recording = false; showScribeStatus('Concluído', 'ok'); _flashDoneThenIdle(); }
-    if (msg.status === 'error')     { recording = false; showScribeStatus(msg.text || 'Erro', 'err'); _setRecState('idle'); }
+    // v3.4.2: guard with _recordingSessionId so a stale message from a previous
+    // session cannot clobber a newly-started recording.
+    if (msg.status === 'done')      {
+      if (!recording) return false; // already stopped or new session started
+      recording = false; showScribeStatus('Concluído', 'ok'); _flashDoneThenIdle();
+    }
+    if (msg.status === 'error')     {
+      if (!recording) return false; // already stopped or new session started
+      recording = false; showScribeStatus(msg.text || 'Erro', 'err'); _setRecState('idle');
+    }
     return false;
   }
   if (msg.type === 'BATCH_RESULT') {
+    if (!recording) return false; // stale — new session may have started
     recording = false; // terminal — keep the flag consistent with the idle UI
     if (soapOutput) soapOutput.value = msg.soap || msg.transcript || JSON.stringify(msg);
     showScribeStatus('Concluído', 'ok');
@@ -466,6 +478,7 @@ function _flashDoneThenIdle() {
 
 // --- Batch recording (in popup) ---
 async function startBatchRecording() {
+  const mySession = _recordingSessionId;
   let stream;
   try {
     stream = await navigator.mediaDevices.getUserMedia({ audio: true });
@@ -473,6 +486,7 @@ async function startBatchRecording() {
     // PermissionDeniedError, NotFoundError, etc. Reset the UI state that
     // startRecording() already set (recording=true, timer running, pulse animation)
     // — the caller doesn't have its own try-catch for this branch.
+    if (_recordingSessionId !== mySession) return;
     recording = false;
     _setRecState('idle');
     stopTimer();
@@ -492,6 +506,7 @@ async function startBatchRecording() {
     try { stream.getTracks().forEach((t) => t.stop()); } catch (_) {}
     const blob = new Blob(audioChunks, { type: mediaRecorder.mimeType || 'audio/webm' });
     if (blob.size < 500) {
+      if (_recordingSessionId !== mySession) return;
       showScribeStatus('Gravação muito curta — fale por pelo menos 2 segundos', 'err');
       _setRecState('idle');
       return;
@@ -505,6 +520,7 @@ async function startBatchRecording() {
         chiefComplaint: '',
         customInstructions: document.getElementById('customInstructions')?.value?.trim() || ''
       }, (response) => {
+        if (_recordingSessionId !== mySession) return; // stale callback
         if (chrome.runtime.lastError) {
           showScribeStatus(_normalizeApiError(chrome.runtime.lastError), 'err');
           _setRecState('idle');
@@ -520,6 +536,7 @@ async function startBatchRecording() {
         }
       });
     } catch (err) {
+      if (_recordingSessionId !== mySession) return;
       // FileReader failure or other unexpected error — unblock the UI so the
       // doctor can retry rather than seeing a permanent "processing" spinner.
       showScribeStatus('Erro ao processar áudio — tente novamente', 'err');

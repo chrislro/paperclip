@@ -263,9 +263,10 @@ function cleanup() {
     // Detach handlers BEFORE close(): the async onclose fires later and would
     // otherwise re-enter cleanup() — and, after a re-entrant startRealtime(),
     // tear down the freshly-started session via the now-reassigned module globals.
-    try { _ws.onopen = _ws.onmessage = _ws.onerror = _ws.onclose = null; } catch(_) {}
-    try { _ws.close(); } catch(_) {}
+    const ws = _ws;
     _ws = null;
+    try { ws.onopen = ws.onmessage = ws.onerror = ws.onclose = null; } catch(_) {}
+    try { ws.close(); } catch(_) {}
   }
 }
 

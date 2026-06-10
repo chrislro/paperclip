@@ -2273,19 +2273,25 @@ window.TOCAFICHADR_dom = (function () {
         }
       }
 
-      // Step 6 — Gravar. The save creates the atestado record server-side;
-      // ~1500ms covers the server response + show_atestado_alta render.
+      // Step 6 — Gravar. The save creates the atestado record server-side.
+      // Instead of a fixed 1500ms sleep (which races the server response time),
+      // click Gravar then poll for the print-link appearance with a deadline.
       let saveBtn = document.querySelector(sel('presatestado_save')
         || "#new_presatestado input[type='submit'][value='Gravar']");
       if (!saveBtn) saveBtn = _findInsiderAtestadoButton('Gravar');
       if (!saveBtn) return _err('atestado_save_not_found');
       saveBtn.click();
-      await sleep(1500);
 
-      // Step 7 — IMPRIMIR SEM CID. waitFor first so we don't race the render.
-      let printLink = await waitFor(sel('presatestado_print_sem_cid')
-        || '#show_atestado_alta a.botao.btn-2nd.mini-btn', 5000)
-        .catch(function () { return null; });
+      // Step 7 — IMPRIMIR SEM CID. Poll for print-link appearance instead of
+      // a fixed sleep, so fast servers proceed immediately and slow servers
+      // get up to the full deadline. Hard deadline: 5000ms.
+      let printLink = null;
+      const printDeadline = Date.now() + 5000;
+      while (Date.now() < printDeadline) {
+        printLink = _findPrintSemCidLink();
+        if (printLink) break;
+        await sleep(250);
+      }
       if (!printLink) printLink = _findPrintSemCidLink();
       if (!printLink) {
         // Ship a DOM snapshot to the Mac Mini before failing. Without
@@ -2874,9 +2880,14 @@ window.TOCAFICHADR_dom = (function () {
       _lockDialog('Salvando receita…');
       saveBtn.click();
 
-      const printLink = await _waitForSimplesPrint(30000);
+      // Poll for print link with an early-exit on save failure: if the dialog
+      // is removed by G-Hosp without ever showing a print link, the lock's
+      // MutationObserver auto-unlocks us. If the dialog stays but no print
+      // link appears within 8s, treat as a probable save error and bail early
+      // rather than blocking the doctor for the full 30s.
+      const printLink = await _waitForSimplesPrint(8000);
       if (!printLink) {
-        console.warn('[Toca Ficha Dr.] simples: print link did not appear after save');
+        console.warn('[Toca Ficha Dr.] simples: print link did not appear after 8s — save likely failed');
         _unlockDialog();
         return false;
       }

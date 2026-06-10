@@ -37,17 +37,17 @@ function block(typeLiteral) {
 
 test('REALTIME_STATUS terminal branches clear the recording flag', () => {
   const b = block('REALTIME_STATUS');
-  // 'done' branch must set recording = false.
+  // 'done' branch must set recording = false (guarded by session check in v3.4.2).
   assert.match(
     b,
-    /status === 'done'\)\s*\{\s*recording = false/,
+    /status === 'done'\)[^}]*recording = false/,
     "REALTIME_STATUS 'done' must clear recording (terminal state)"
   );
   // 'error' branch must set recording = false — the actual bug: an async realtime
   // error left recording=true and swallowed the next record click.
   assert.match(
     b,
-    /status === 'error'\)\s*\{\s*recording = false/,
+    /status === 'error'\)[^}]*recording = false/,
     "REALTIME_STATUS 'error' must clear recording (terminal state)"
   );
   // The in-progress 'recording' substatus must NOT clear it.

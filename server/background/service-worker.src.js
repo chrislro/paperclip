@@ -334,12 +334,12 @@ if (chrome.alarms && chrome.alarms.create) {
   });
   chrome.alarms.onAlarm.addListener((alarm) => {
     if (alarm.name === TOKEN_REFRESH_ALARM) {
-      _swRefreshStoredAuthToken();
+      _swRefreshStoredAuthToken().catch(() => {});
     }
   });
   // Also fire once at SW startup so a freshly-resumed SW gets a token
   // immediately rather than waiting up to 30s for the first alarm tick.
-  _swRefreshStoredAuthToken();
+  _swRefreshStoredAuthToken().catch(() => {});
 }
 
 // ---------------------------------------------------------------------------
