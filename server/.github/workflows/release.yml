@@ -1,0 +1,202 @@
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Version to release (semver, e.g. 3.9.0)"
+        required: true
+        type: string
+      skip_tests:
+        description: "Skip test suite (not recommended)"
+        required: false
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+env:
+  CWS_FREEZE_GUARD: "1"
+  # Hard block: this workflow NEVER submits to Chrome Web Store.
+  # CWS submission is a manual step requiring CEO/CTO approval.
+
+jobs:
+  # ─── PHASE 1: VALIDATE ──────────────────────────────────────
+  validate:
+    runs-on: [self-hosted, macOS, ARM64]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate version format
+        run: |
+          VERSION="${{ inputs.version }}"
+          if ! [[ "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "FAIL: '$VERSION' is not valid semver (X.Y.Z)"
+            exit 1
+          fi
+          echo "Version format OK: $VERSION"
+
+      - name: Check version file consistency
+        run: ./scripts/bump-version.sh --verify
+
+      - name: Block if version already exists
+        run: |
+          VERSION="${{ inputs.version }}"
+          CURRENT=$(node -p "require('./manifest.json').version")
+          if [[ "$CURRENT" == "$VERSION" ]]; then
+            echo "FAIL: Already at version $VERSION"
+            exit 1
+          fi
+          echo "Version bump is valid: $CURRENT → $VERSION"
+
+      - name: Verify no uncommitted changes
+        run: |
+          if [[ -n $(git status --porcelain) ]]; then
+            echo "FAIL: Uncommitted changes detected"
+            git status --short
+            exit 1
+          fi
+
+      - name: Audit for secrets in manifest
+        run: |
+          # Block if manifest contains localhost/127.0.0.1/trycloudflare in host_permissions
+          if grep -E '"https?://(localhost|127\.0\.0\.1|.*\.trycloudflare\.com)' manifest.json manifest.prod.json; then
+            echo "FAIL: Dev origins found in manifest host_permissions"
+            exit 1
+          fi
+          echo "Manifest audit passed: no dev origins"
+
+      - name: Verify manifest files match
+        run: |
+          # manifest.json and manifest.prod.json should be identical except comments
+          MANIFEST_V=$(node -p "require('./manifest.json').version")
+          PROD_V=$(node -p "require('./manifest.prod.json').version")
+          if [[ "$MANIFEST_V" != "$PROD_V" ]]; then
+            echo "FAIL: manifest.json ($MANIFEST_V) != manifest.prod.json ($PROD_V)"
+            exit 1
+          fi
+          echo "Manifest versions match: $MANIFEST_V"
+
+  # ─── PHASE 2: TEST ──────────────────────────────────────────
+  test:
+    runs-on: [self-hosted, macOS, ARM64]
+    needs: validate
+    if: ${{ !inputs.skip_tests }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+      - run: npm ci
+      - run: npm test
+
+  # ─── PHASE 3: BUILD + PACKAGE ───────────────────────────────
+  build:
+    runs-on: [self-hosted, macOS, ARM64]
+    needs: [validate, test]
+    if: always() && needs.validate.result == 'success' && (needs.test.result == 'success' || needs.test.result == 'skipped')
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+
+      - name: Build production package
+        run: ./scripts/build-package.sh --prod
+
+      - name: Verify package integrity
+        run: |
+          VERSION="${{ inputs.version }}"
+          node scripts/verify-package.js --dist dist
+
+      - name: Verify no dev origins in built package
+        run: |
+          # Scan dist/ for any remaining dev URLs
+          if grep -r -E 'localhost|127\.0\.0\.1|trycloudflare\.com' dist/ --include="*.js" --include="*.json" --include="*.html"; then
+            echo "FAIL: Dev origins found in built package"
+            exit 1
+          fi
+          echo "Package clean: no dev origins"
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: tocafichadr-extension-v${{ inputs.version }}
+          path: tocafichadr-v${{ inputs.version }}.zip
+          retention-days: 30
+
+  # ─── PHASE 4: VERSION BUMP + TAG ────────────────────────────
+  bump:
+    runs-on: [self-hosted, macOS, ARM64]
+    needs: [validate, build]
+    if: always() && needs.validate.result == 'success' && needs.build.result == 'success'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Bump version
+        run: ./scripts/bump-version.sh "${{ inputs.version }}"
+
+      - name: Create git tag
+        run: |
+          VERSION="${{ inputs.version }}"
+          git tag -a "v$VERSION" -m "Release v$VERSION"
+
+      - name: Push commit and tag
+        run: |
+          git push origin HEAD
+          git push origin "v${{ inputs.version }}"
+
+  # ─── PHASE 5: RELEASE NOTES (DRAFT) ─────────────────────────
+  release:
+    runs-on: [self-hosted, macOS, ARM64]
+    needs: bump
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: tocafichadr-extension-v${{ inputs.version }}
+
+      - name: Create draft release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: v${{ inputs.version }}
+          name: Toca Ficha Dr. v${{ inputs.version }}
+          draft: true
+          files: |
+            tocafichadr-v${{ inputs.version }}.zip
+          body: |
+            ## Toca Ficha Dr. Chrome Extension v${{ inputs.version }}
+
+            ### Manual Steps Required
+            **CWS submission is BLOCKED by guardrail.** This release is built and tagged,
+            but NOT submitted to the Chrome Web Store.
+
+            1. Download `tocafichadr-v${{ inputs.version }}.zip` from this release
+            2. Verify package: `node scripts/verify-package.js --dist dist/`
+            3. Submit to CWS: https://chrome.google.com/webstore/devconsole
+            4. After CWS approval, publish this release (remove draft status)
+
+            ### Verification Checklist
+            - [ ] `npm test` passed in CI
+            - [ ] `npm run build` passed in CI
+            - [ ] `verify-package.js --dist` passed in CI
+            - [ ] No dev origins in built package
+            - [ ] manifest.json == manifest.prod.json
+            - [ ] Version bumped across all files
+
+            ---
+            Built by: ${{ github.workflow }} · Run: ${{ github.run_id }}

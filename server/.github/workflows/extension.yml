@@ -1,0 +1,80 @@
+name: Extension
+
+on:
+  push:
+    paths:
+      - ".github/workflows/extension.yml"
+      - "auth-success.*"
+      - "background/**"
+      - "content/**"
+      - "icons/**"
+      - "manifest.json"
+      - "offscreen/**"
+      - "package-lock.json"
+      - "package.json"
+      - "popup/**"
+      - "scripts/**"
+      - "sidepanel/**"
+      - "styles/**"
+      - "tests/**"
+      - "requirements-test.txt"
+      - "Makefile"
+  pull_request:
+    paths:
+      - ".github/workflows/extension.yml"
+      - "auth-success.*"
+      - "background/**"
+      - "content/**"
+      - "icons/**"
+      - "manifest.json"
+      - "offscreen/**"
+      - "package-lock.json"
+      - "package.json"
+      - "popup/**"
+      - "scripts/**"
+      - "sidepanel/**"
+      - "styles/**"
+      - "tests/**"
+      - "requirements-test.txt"
+      - "Makefile"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  extension:
+    runs-on: [self-hosted, macOS, ARM64]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+      - run: npm ci
+      - run: npm test
+      - run: npm run build
+      - run: ./scripts/build-package.sh
+      - name: Verify package contents
+        run: |
+          VERSION="$(node -p "require('./manifest.json').version")"
+          unzip -l "tocafichadr-v${VERSION}.zip" | grep -E "manifest.json|sidepanel/sidepanel.html|sidepanel/sidepanel-prontuario.js|offscreen/offscreen.html|background/service-worker.bundle.js|popup/popup.bundle.js"
+
+  invariant:
+    runs-on: [self-hosted, macOS, ARM64]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python 3.12 via uv (self-hosted; avoids setup-python /Users/runner)
+        run: |
+          export PATH="$HOME/.local/bin:$PATH"
+          uv python install 3.12
+          uv venv --seed --python 3.12 "$RUNNER_TEMP/pyvenv"
+          echo "$RUNNER_TEMP/pyvenv/bin" >> "$GITHUB_PATH"
+      - name: Install test dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements-test.txt
+      - name: Install Playwright browsers
+        run: python -m playwright install chromium
+      - name: Run invariant tests
+        run: make test-extension MARK="invariant"

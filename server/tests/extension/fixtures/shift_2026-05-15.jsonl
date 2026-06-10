@@ -1,0 +1,6 @@
+{"type": "wait_for_selector", "tag": "div", "id": "tocafichadr-hud", "css": "#tocafichadr-hud", "timeout": 10000, "timestamp": 1715731201000}
+{"type": "click", "tag": "button", "id": "pb-record-btn", "css": "#pb-record-btn", "timestamp": 1715731202000}
+{"type": "wait", "timeout": 2000, "timestamp": 1715731203000}
+{"type": "click", "tag": "button", "id": "pb-record-btn", "css": "#pb-record-btn", "timestamp": 1715731204000}
+{"type": "wait", "timeout": 500, "timestamp": 1715731204500}
+{"type": "wait_for_selector", "tag": "div", "id": "pb-cid-suggestion", "css": "#pb-cid-suggestion.visible", "timeout": 10000, "timestamp": 1715731205000}

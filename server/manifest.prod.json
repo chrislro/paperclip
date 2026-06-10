@@ -1,0 +1,78 @@
+{
+  "_comments": {
+    "_purpose": "PROD manifest. Shipped to Chrome Web Store. No localhost / no *.trycloudflare host permissions — those are DEV-only and live in manifest.json.",
+    "host_permissions_clean": "CSO-007 (verified): no localhost/127.0.0.1/100.97.14.32 entries. Only prod hosts.",
+    "content_security_policy_unsafe_inline": "CSO-006: style-src 'unsafe-inline' required for React inline styles in popup/sidepanel. Tracking note in NEXT_STEPS.md — remove when components are refactored to class-based styles.",
+    "cookies_permission": "CSO-005: The 'cookies' permission is required by @clerk/chrome-extension@3.x (installed: 3.1.21). When createClerkClient() is called with syncHost set (background/service-worker.src.js:127, syncHost=DEFAULT_API_BASE_URL), Clerk's validateManifest() calls validateManifestPermission(manifest,'cookies') and throws if absent. Clerk uses browser.cookies.get() and browser.cookies.onChanged to sync the __client JWT from the syncHost web-app cookie into extension storage. Removing 'cookies' will break background auth. See: chunk-IAAUBX2J.js line 398 (validateManifest), line 309 (getClientCookie)."
+  },
+  "manifest_version": 3,
+  "name": "Toca Ficha Dr. — EMR Automation",
+  "version": "3.9.0",
+  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAqlwP/c6bL0/KmCZFVzE5zQHZ2N2xPJZRS0S/nxHJQtJwPZFGVNQ3m7doR1PL9HvJa/PQFrYhdxBnxgFVXizWseYzhlnSbG25cabFFcjTarC31LgqoQFMk6tvrCI8rMvJKIBSkncmLVXlsB99zN6QjHIHpxTKm6w8F29+QY8EmxrEykZR4aBGJFXrFCFZqVkT7PowA9/YW1xVxZcT+mXeY4DG3AClImlScjVFTQywcjGI2gwoqodDTPnMIWOLNegdkibFBrH0mkWFFF6Pvu+4cA2Wb+gPuXH0vE0ILl17Bve627HzH3dgKX79kC5KoDwXjQqFwQdxOrtPJjZQ9fPsh/xosCAwEAAQ==",
+  "description": "Automatize consultas no G-Hosp: transcrição de voz, SOAP com IA, CID-10 e alta em poucos cliques.",
+  "permissions": [
+    "activeTab",
+    "storage",
+    "cookies",
+    "scripting",
+    "clipboardWrite",
+    "sidePanel",
+    "offscreen",
+    "alarms"
+  ],
+  "side_panel": {
+    "default_path": "sidepanel/sidepanel.html"
+  },
+  "host_permissions": [
+    "https://prbentogoncalves.g-hosp.com.br/*",
+    "https://api.tocafichadr.com.br/*",
+    "https://clerk.tocafichadr.com.br/*",
+    "https://accounts.tocafichadr.com.br/*",
+    "https://*.clerk.com/*"
+  ],
+  "content_security_policy": {
+    "extension_pages": "script-src 'self' 'wasm-unsafe-eval'; object-src 'self'; base-uri 'none'; connect-src 'self' https://clerk.tocafichadr.com.br https://accounts.tocafichadr.com.br wss://clerk.tocafichadr.com.br https://*.clerk.com https://challenges.cloudflare.com https://api.tocafichadr.com.br; frame-src 'self' https://challenges.cloudflare.com https://clerk.tocafichadr.com.br https://accounts.tocafichadr.com.br; img-src 'self' https://img.clerk.com data: blob:; style-src 'self' 'unsafe-inline'"
+  },
+  "background": {
+    "service_worker": "background/service-worker.bundle.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://prbentogoncalves.g-hosp.com.br/*"],
+      "js": [
+        "shared/console-shipper.js",
+        "shared/error-helpers.js",
+        "content/cid.js",
+        "content/api-client.js",
+        "content/vad-helpers.js",
+        "content/audio-capture.js",
+        "content/dom-engine.js",
+        "content/bridge.js"
+      ],
+      "run_at": "document_idle"
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["auth-success.html", "auth-success.js"],
+      "matches": ["https://*.clerk.accounts.dev/*"]
+    }
+  ],
+  "externally_connectable": {
+    "matches": ["https://api.tocafichadr.com.br/*"]
+  },
+  "action": {
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "32": "icons/icon32.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "icons": {
+    "16": "icons/icon16.png",
+    "32": "icons/icon32.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  }
+}

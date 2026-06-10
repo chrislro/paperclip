@@ -1,0 +1,15 @@
+[project]
+name = "tocafichadr-backend"
+version = "0.1.0"
+description = "Repo-owned Flask backend for Toca Ficha Dr."
+requires-python = ">=3.11"
+
+[tool.setuptools]
+py-modules = ["keychain_helper"]
+
+[tool.setuptools.packages.find]
+include = ["emr_automation*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]

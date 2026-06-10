@@ -1,0 +1,2078 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <title>Toca Ficha Dr. — Instrumento clínico para o plantão</title>
+  <meta name="description" content="Extensão Chrome que converte sua voz em SOAP, sugere CID-10 e finaliza o paciente no G-Hosp em 4 ações. Para clínica geral, pediatria, UPA. 35 cliques viram 4." />
+  <meta name="theme-color" content="#10b981" />
+  <meta property="og:title" content="Toca Ficha Dr. — Instrumento clínico para o plantão" />
+  <meta property="og:description" content="35 cliques viram 4. 40 minutos de volta por plantão. Voz, SOAP, CID-10 e alta em 4 ações." />
+  <meta property="og:type" content="website" />
+  <meta property="og:locale" content="pt_BR" />
+  <meta property="og:url" content="https://tocafichadr.com.br" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Toca Ficha Dr. — Instrumento clínico para o plantão" />
+  <meta name="twitter:description" content="35 cliques viram 4. 40 minutos de volta por plantão." />
+  <link rel="canonical" href="https://tocafichadr.com.br" />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Toca Ficha Dr.",
+    "applicationCategory": "HealthApplication",
+    "operatingSystem": "Chrome",
+    "description": "Extensão Chrome que transcreve consultas, gera notas SOAP, sugere CID-10 e automatiza o prontuário no G-Hosp. Para médicos generalistas, pediatras e plantonistas.",
+    "url": "https://tocafichadr.com.br",
+    "inLanguage": "pt-BR",
+    "offers": [
+      {"@type": "Offer", "price": "0", "priceCurrency": "BRL", "name": "Free"},
+      {"@type": "Offer", "price": "49", "priceCurrency": "BRL", "name": "Pro"}
+    ]
+  }
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Public+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Fraunces:ital,opsz,wght@1,144,500&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ─── Reset & base ───────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+    body { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; text-rendering: optimizeLegibility; }
+    button { font: inherit; cursor: pointer; border: 0; background: none; color: inherit; padding: 0; }
+    a { color: inherit; text-decoration: none; }
+    img, svg { display: block; max-width: 100%; }
+    ul { list-style: none; }
+    ::selection { background: var(--ink); color: var(--bg); }
+
+    /* ─── Tokens ────────────────────────────────────────────────── */
+    :root {
+      /* Light theme — warm clinical */
+      --bg: #f6f5f0;
+      --bg-elev: #fbfaf6;
+      --paper: #fdfcf8;
+      --ink: #0e1116;
+      --ink-2: #2a2f37;
+      --ink-3: #5b6068;
+      --muted: #8b8f95;
+      --line: #d9d6cb;
+      --line-soft: #e6e3d7;
+      --accent: #e63946;          /* vermilion — the only accent */
+      --accent-deep: #b3202d;
+      --accent-soft: #fbe4e6;
+      --warn: #c66a1c;
+      --ok: #2f6b3a;
+      --ok-soft: #e2eede;
+      --shadow-soft: 0 1px 0 rgba(14,17,22,0.04), 0 12px 36px -16px rgba(14,17,22,0.16);
+      --shadow-hard: 0 1px 0 rgba(14,17,22,0.06), 0 30px 60px -28px rgba(14,17,22,0.28);
+
+      --font-display: 'Manrope', ui-sans-serif, system-ui, sans-serif;
+      --font-body: 'Public Sans', ui-sans-serif, system-ui, sans-serif;
+      --font-serif: 'Fraunces', ui-serif, Georgia, serif;
+      --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+
+      --rule: 1px solid var(--line);
+      --rule-soft: 1px solid var(--line-soft);
+
+      --tx: cubic-bezier(.2,.7,.1,1);
+    }
+
+    [data-theme="dark"] {
+      --bg: #0e1116;
+      --bg-elev: #131720;
+      --paper: #161a23;
+      --ink: #f1ede1;
+      --ink-2: #d6d2c5;
+      --ink-3: #9a9588;
+      --muted: #6b6b6b;
+      --line: #262a35;
+      --line-soft: #1d212c;
+      --accent: #ff5560;
+      --accent-deep: #e63946;
+      --accent-soft: #2a1518;
+      --warn: #e08a3a;
+      --ok: #5fb46d;
+      --ok-soft: #16241a;
+      --shadow-soft: 0 1px 0 rgba(0,0,0,0.4), 0 18px 48px -20px rgba(0,0,0,0.7);
+      --shadow-hard: 0 1px 0 rgba(0,0,0,0.5), 0 36px 72px -32px rgba(0,0,0,0.85);
+    }
+
+    body {
+      font-family: var(--font-body);
+      background: var(--bg);
+      color: var(--ink);
+      font-size: 16px;
+      line-height: 1.5;
+      transition: background-color .25s var(--tx), color .25s var(--tx);
+    }
+
+    .container { max-width: 1180px; margin: 0 auto; padding: 0 32px; }
+    .narrow    { max-width: 880px; margin: 0 auto; padding: 0 32px; }
+
+    /* ─── Type system ───────────────────────────────────────────── */
+    .display {
+      font-family: var(--font-display);
+      font-weight: 700;
+      letter-spacing: -0.035em;
+      line-height: 0.98;
+    }
+    .eyebrow {
+      font-family: var(--font-mono);
+      font-size: 11.5px;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--ink-3);
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .eyebrow::before {
+      content: '';
+      width: 18px;
+      height: 1px;
+      background: var(--accent);
+      display: inline-block;
+    }
+    .mono { font-family: var(--font-mono); font-feature-settings: 'tnum' 1, 'cv01' 1; }
+
+    /* ─── Top bar — like a clinical chart header ────────────────── */
+    .topframe {
+      position: sticky;
+      top: 0;
+      z-index: 60;
+      background: color-mix(in srgb, var(--bg) 82%, transparent);
+      backdrop-filter: blur(12px) saturate(140%);
+      -webkit-backdrop-filter: blur(12px) saturate(140%);
+      border-bottom: var(--rule);
+    }
+    .topframe-inner {
+      max-width: 1180px; margin: 0 auto;
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      align-items: center;
+      gap: 24px;
+      padding: 14px 32px;
+    }
+    .brand { display: flex; align-items: center; gap: 12px; }
+    .brand-mark {
+      width: 30px; height: 30px;
+      border: 1.5px solid var(--ink);
+      display: grid; place-items: center;
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 12.5px;
+      letter-spacing: 0;
+      position: relative;
+      overflow: hidden;
+    }
+    .brand-mark::after {
+      content: '';
+      position: absolute; left: 0; right: 0; bottom: 6px;
+      height: 1px; background: var(--accent);
+      animation: scan 3.6s var(--tx) infinite;
+    }
+    @keyframes scan {
+      0%, 12% { transform: translateY(0); opacity: 0; }
+      18%     { opacity: 1; }
+      62%     { transform: translateY(-14px); opacity: 1; }
+      72%, 100% { transform: translateY(-14px); opacity: 0; }
+    }
+    .brand-name {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 15.5px;
+      letter-spacing: -0.018em;
+    }
+    .brand-name .dr { color: var(--accent); }
+
+    .status-strip {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      justify-self: start;
+      padding-left: 24px;
+      border-left: var(--rule);
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.06em;
+      color: var(--ink-3);
+      text-transform: uppercase;
+    }
+    .status-led {
+      width: 7px; height: 7px; border-radius: 999px;
+      background: var(--warn);
+      box-shadow: 0 0 0 3px color-mix(in srgb, var(--warn) 25%, transparent);
+      animation: pulse 2.4s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.55; transform: scale(0.9); }
+    }
+    .status-strip b { color: var(--ink); font-weight: 600; }
+
+    .topframe-right {
+      display: flex; align-items: center; gap: 8px;
+    }
+    .nav-link {
+      font-family: var(--font-body);
+      font-size: 13.5px;
+      color: var(--ink-2);
+      padding: 8px 12px;
+      letter-spacing: 0.005em;
+    }
+    .nav-link:hover { color: var(--accent); }
+
+    /* Theme toggle — looks like a hardware switch */
+    .theme-switch {
+      width: 50px; height: 26px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      position: relative;
+      background: var(--bg-elev);
+      transition: border-color .2s var(--tx), background-color .2s var(--tx);
+      flex-shrink: 0;
+    }
+    .theme-switch:hover { border-color: var(--ink-3); }
+    .theme-switch::before {
+      content: '';
+      position: absolute;
+      top: 2px; left: 2px;
+      width: 20px; height: 20px;
+      border-radius: 999px;
+      background: var(--ink);
+      transition: transform .25s var(--tx);
+    }
+    [data-theme="dark"] .theme-switch::before { transform: translateX(24px); background: var(--accent); }
+    .theme-switch::after {
+      content: '☀';
+      position: absolute; top: 50%; right: 7px;
+      transform: translateY(-50%);
+      font-size: 10px;
+      color: var(--ink-3);
+      pointer-events: none;
+    }
+    [data-theme="dark"] .theme-switch::after {
+      content: '☾';
+      right: auto; left: 7px;
+    }
+
+    /* ─── Buttons ──────────────────────────────────────────────── */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      padding: 12px 18px;
+      font-family: var(--font-body);
+      font-weight: 600;
+      font-size: 13.5px;
+      letter-spacing: 0;
+      border-radius: 0;
+      transition: transform .15s var(--tx), background-color .2s var(--tx), color .2s var(--tx), border-color .2s var(--tx);
+      position: relative;
+      white-space: nowrap;
+    }
+    .btn-primary {
+      background: var(--ink);
+      color: var(--bg);
+      border: 1px solid var(--ink);
+    }
+    .btn-primary:hover { background: var(--accent); border-color: var(--accent); color: #fff; }
+    .btn-primary .arrow { transition: transform .2s var(--tx); }
+    .btn-primary:hover .arrow { transform: translateX(3px); }
+
+    .btn-line {
+      background: transparent;
+      color: var(--ink);
+      border: 1px solid var(--ink);
+    }
+    .btn-line:hover { background: var(--ink); color: var(--bg); }
+
+    .btn-ghost {
+      color: var(--ink-2);
+      padding: 12px 14px;
+      border: 1px solid transparent;
+    }
+    .btn-ghost:hover { color: var(--accent); border-color: var(--line); }
+
+    /* ─── Hero ─────────────────────────────────────────────────── */
+    .hero { padding: 96px 0 24px; position: relative; }
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.05fr 1fr;
+      gap: 64px;
+      align-items: end;
+    }
+    .hero-num {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      color: var(--muted);
+      margin-bottom: 28px;
+    }
+    .hero h1 {
+      font-family: var(--font-display);
+      font-weight: 700;
+      letter-spacing: -0.04em;
+      line-height: 0.96;
+      font-size: clamp(48px, 6.5vw, 92px);
+      color: var(--ink);
+    }
+    .hero h1 .strike {
+      position: relative; display: inline-block;
+      color: var(--ink-3);
+    }
+    .hero h1 .strike::after {
+      content: '';
+      position: absolute;
+      left: -2%; right: -2%;
+      top: 54%;
+      height: 5px;
+      background: var(--accent);
+      transform: scaleX(0);
+      transform-origin: left center;
+      animation: strikethrough 1.2s .6s var(--tx) forwards;
+    }
+    @keyframes strikethrough { to { transform: scaleX(1); } }
+    .hero h1 em {
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-weight: 500;
+      color: var(--accent);
+      letter-spacing: -0.02em;
+    }
+    .hero-sub {
+      font-size: 18px;
+      line-height: 1.5;
+      color: var(--ink-2);
+      max-width: 46ch;
+      margin: 32px 0 36px;
+    }
+    .hero-ctas { display: flex; gap: 12px; flex-wrap: wrap; }
+
+    .hero-meta {
+      align-self: end;
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+      padding-bottom: 8px;
+    }
+    .meta-row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: end;
+      gap: 16px;
+      padding-bottom: 16px;
+      border-bottom: var(--rule);
+    }
+    .meta-row .lbl {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--ink-3);
+    }
+    .meta-row .val {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 30px;
+      letter-spacing: -0.025em;
+      color: var(--ink);
+      line-height: 1;
+    }
+    .meta-row .val em {
+      font-style: normal;
+      color: var(--accent);
+    }
+    .meta-row .val .unit {
+      font-size: 0.5em;
+      color: var(--ink-3);
+      font-weight: 600;
+    }
+    .meta-row .delta {
+      font-family: var(--font-mono);
+      font-size: 11.5px;
+      color: var(--ok);
+      letter-spacing: 0.04em;
+      margin-top: 4px;
+    }
+
+    /* ─── Centerpiece: clinical instrument panel ───────────────── */
+    .instrument {
+      margin-top: 80px;
+      background: var(--paper);
+      border: var(--rule);
+      box-shadow: var(--shadow-hard);
+      position: relative;
+      overflow: hidden;
+    }
+    .instrument-head {
+      display: grid;
+      grid-template-columns: auto 1fr auto auto;
+      align-items: center;
+      gap: 16px;
+      padding: 14px 20px;
+      border-bottom: var(--rule);
+      background: var(--bg-elev);
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--ink-3);
+    }
+    .instrument-head .dot-row { display: flex; gap: 6px; }
+    .instrument-head .dot-row i {
+      width: 9px; height: 9px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: var(--bg);
+      display: block;
+    }
+    .instrument-head .dot-row i.live { background: var(--accent); border-color: var(--accent); animation: liveDot 1.4s ease-in-out infinite; }
+    @keyframes liveDot {
+      0%, 100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 50%, transparent); }
+      50%      { box-shadow: 0 0 0 5px color-mix(in srgb, var(--accent) 0%, transparent); }
+    }
+    .instrument-head .label { color: var(--ink); font-weight: 600; }
+    .instrument-head .pid { color: var(--ink-2); }
+
+    /* The EKG / waveform stage — the unforgettable element */
+    .stage {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      min-height: 360px;
+    }
+    .trace-col {
+      position: relative;
+      background:
+        repeating-linear-gradient(0deg, transparent 0 27px, color-mix(in srgb, var(--line-soft) 70%, transparent) 27px 28px),
+        repeating-linear-gradient(90deg, transparent 0 27px, color-mix(in srgb, var(--line-soft) 70%, transparent) 27px 28px);
+      border-right: var(--rule);
+      padding: 28px 28px 32px;
+      overflow: hidden;
+    }
+    .trace-col-head {
+      display: flex; justify-content: space-between; align-items: baseline;
+      margin-bottom: 20px;
+    }
+    .trace-col-head .ttl {
+      font-family: var(--font-mono);
+      font-size: 11px; letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--ink-3);
+    }
+    .trace-clock {
+      font-family: var(--font-mono);
+      font-size: 13px; font-weight: 600;
+      color: var(--ink);
+      letter-spacing: 0.04em;
+    }
+    .trace-clock .unit { color: var(--ink-3); font-weight: 400; margin-left: 4px; }
+
+    .trace-svg-wrap {
+      position: relative;
+      height: 200px;
+    }
+    .trace-svg { width: 100%; height: 100%; overflow: visible; }
+    .trace-svg path {
+      fill: none;
+      stroke: var(--accent);
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      filter: drop-shadow(0 0 6px color-mix(in srgb, var(--accent) 40%, transparent));
+    }
+    .trace-svg .grid-baseline {
+      stroke: var(--line);
+      stroke-width: 1;
+      stroke-dasharray: 2 4;
+      filter: none;
+    }
+
+    .trace-stamps {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      margin-top: 22px;
+      border-top: var(--rule);
+      padding-top: 14px;
+    }
+    .trace-stamp { padding-right: 10px; }
+    .trace-stamp .num {
+      font-family: var(--font-mono);
+      font-size: 10.5px; letter-spacing: 0.14em;
+      color: var(--ink-3);
+    }
+    .trace-stamp .nm {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 15px;
+      color: var(--ink);
+      margin-top: 4px;
+      letter-spacing: -0.01em;
+      transition: color .25s var(--tx);
+    }
+    .trace-stamp .t {
+      font-family: var(--font-mono);
+      font-size: 10.5px;
+      color: var(--ink-3);
+      margin-top: 2px;
+    }
+    .trace-stamp.is-active .nm { color: var(--accent); }
+    .trace-stamp.is-done  .nm { color: var(--ok); }
+    .trace-stamp.is-done  .num::before { content: '✓ '; color: var(--ok); }
+
+    /* The output column — typed SOAP, CID, finalize */
+    .output-col {
+      padding: 28px 28px 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+      background: var(--paper);
+    }
+    .out-block { }
+    .out-block .lbl {
+      font-family: var(--font-mono);
+      font-size: 10.5px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--ink-3);
+      margin-bottom: 10px;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .out-block .lbl .badge {
+      padding: 2px 7px;
+      border: 1px solid var(--line);
+      font-size: 9.5px;
+      letter-spacing: 0.1em;
+    }
+    .out-soap {
+      font-family: var(--font-body);
+      font-size: 14.5px;
+      line-height: 1.55;
+      color: var(--ink);
+      min-height: 96px;
+    }
+    .out-soap b { color: var(--accent); font-weight: 600; }
+    .caret {
+      display: inline-block;
+      width: 7px; height: 16px;
+      background: var(--accent);
+      vertical-align: text-bottom;
+      margin-left: 1px;
+      animation: caret 0.85s step-end infinite;
+    }
+    @keyframes caret { 50% { opacity: 0; } }
+    .caret.hidden { display: none; }
+
+    .out-cid {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: 12px;
+      align-items: center;
+      padding: 12px 14px;
+      border: var(--rule);
+      background: var(--bg-elev);
+      transform: translateY(8px);
+      opacity: 0;
+      transition: transform .35s var(--tx), opacity .35s var(--tx);
+    }
+    .out-cid.show { transform: translateY(0); opacity: 1; }
+    .out-cid .code {
+      font-family: var(--font-mono);
+      font-weight: 600;
+      font-size: 14px;
+      color: #fff;
+      background: var(--accent);
+      padding: 5px 9px;
+      letter-spacing: 0.04em;
+    }
+    .out-cid .nm {
+      font-size: 13.5px;
+      color: var(--ink);
+    }
+    .out-cid .conf {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--ok);
+      letter-spacing: 0.06em;
+    }
+    .out-finish {
+      margin-top: auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 14px 18px;
+      background: var(--ink);
+      color: var(--bg);
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 14.5px;
+      letter-spacing: -0.005em;
+      text-transform: uppercase;
+      border: 1px solid var(--ink);
+      transition: background-color .2s var(--tx);
+      opacity: 0.4;
+    }
+    .out-finish.armed { opacity: 1; background: var(--accent); border-color: var(--accent); color: #fff; animation: armedPulse 1.6s ease-in-out infinite; }
+    @keyframes armedPulse {
+      0%, 100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 60%, transparent); }
+      50%      { box-shadow: 0 0 0 14px color-mix(in srgb, var(--accent) 0%, transparent); }
+    }
+
+    .instrument-foot {
+      display: grid;
+      grid-template-columns: auto 1fr auto auto auto;
+      gap: 24px;
+      align-items: center;
+      padding: 12px 20px;
+      border-top: var(--rule);
+      background: var(--bg-elev);
+      font-family: var(--font-mono);
+      font-size: 10.5px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ink-3);
+    }
+    .instrument-foot b { color: var(--ink); font-weight: 600; }
+
+    /* ─── Numbers section ─────────────────────────────────────── */
+    .numbers {
+      padding: 120px 0 100px;
+      border-top: var(--rule);
+      margin-top: 96px;
+      background: var(--bg);
+    }
+    .numbers-head {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+      margin-bottom: 64px;
+      align-items: end;
+    }
+    .numbers-head h2 {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: clamp(36px, 4.4vw, 60px);
+      letter-spacing: -0.035em;
+      line-height: 1.02;
+      max-width: 14ch;
+    }
+    .numbers-head .lede {
+      font-size: 16.5px;
+      color: var(--ink-2);
+      max-width: 38ch;
+      line-height: 1.55;
+    }
+    .numbers-head .lede em {
+      font-family: var(--font-serif);
+      font-style: italic;
+      color: var(--ink);
+    }
+
+    .number-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      border-top: 2px solid var(--ink);
+      border-bottom: var(--rule);
+    }
+    .number-cell {
+      padding: 36px 28px 32px;
+      border-right: var(--rule);
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .number-cell:last-child { border-right: none; }
+    .number-cell .index {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: 0.18em;
+    }
+    .number-cell .big {
+      font-family: var(--font-display);
+      font-weight: 700;
+      letter-spacing: -0.045em;
+      line-height: 0.95;
+      font-size: clamp(64px, 8vw, 110px);
+      color: var(--ink);
+      display: flex;
+      align-items: baseline;
+      gap: 14px;
+    }
+    .number-cell .big .arrow-icon {
+      color: var(--accent);
+      font-size: 0.45em;
+      transform: translateY(-0.45em);
+      font-weight: 600;
+    }
+    .number-cell .big .unit {
+      font-size: 0.34em;
+      font-weight: 600;
+      color: var(--ink-3);
+      letter-spacing: -0.02em;
+    }
+    .number-cell .big em {
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-weight: 500;
+      color: var(--accent);
+    }
+    .number-cell .label {
+      font-size: 14.5px;
+      color: var(--ink-2);
+      max-width: 28ch;
+      line-height: 1.5;
+    }
+    .number-cell .label b { color: var(--ink); font-weight: 600; }
+
+    /* ─── How it works ─────────────────────────────────────────── */
+    .how {
+      padding: 120px 0;
+      border-top: var(--rule);
+    }
+    .how-head { margin-bottom: 56px; }
+    .how-head h2 {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: clamp(36px, 4.4vw, 60px);
+      letter-spacing: -0.035em;
+      line-height: 1.02;
+      margin-top: 16px;
+      max-width: 16ch;
+    }
+    .how-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0;
+      border-top: 2px solid var(--ink);
+    }
+    .how-step {
+      padding: 28px 24px 32px;
+      border-right: var(--rule);
+      border-bottom: var(--rule);
+      position: relative;
+      transition: background-color .3s var(--tx);
+    }
+    .how-step:last-child { border-right: none; }
+    .how-step:hover { background: var(--bg-elev); }
+    .how-step:hover .step-number { color: var(--accent); }
+    .how-step:hover .step-glyph svg { transform: scale(1.04) rotate(-2deg); }
+    .step-number {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      color: var(--muted);
+      transition: color .2s var(--tx);
+    }
+    .step-glyph {
+      margin: 28px 0 22px;
+      width: 46px; height: 46px;
+      display: grid; place-items: center;
+      border: 1px solid var(--ink);
+      border-radius: 999px;
+    }
+    .step-glyph svg {
+      width: 22px; height: 22px;
+      stroke: var(--ink);
+      fill: none;
+      stroke-width: 1.6;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      transition: transform .3s var(--tx);
+    }
+    .how-step h3 {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 19px;
+      letter-spacing: -0.018em;
+      margin-bottom: 8px;
+      color: var(--ink);
+    }
+    .how-step p {
+      font-size: 14px;
+      color: var(--ink-2);
+      line-height: 1.55;
+    }
+    .how-step .step-time {
+      margin-top: 16px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--accent);
+      letter-spacing: 0.06em;
+    }
+
+    /* ─── Editorial pull quote ─────────────────────────────────── */
+    .pullquote {
+      padding: 120px 0;
+      border-top: var(--rule);
+      background: var(--bg-elev);
+    }
+    .pullquote blockquote {
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-weight: 500;
+      font-size: clamp(28px, 3.6vw, 48px);
+      letter-spacing: -0.022em;
+      line-height: 1.18;
+      color: var(--ink);
+      max-width: 24ch;
+    }
+    .pullquote blockquote::before {
+      content: '"';
+      display: block;
+      font-size: 1.4em;
+      color: var(--accent);
+      line-height: 0.7;
+      margin-bottom: 8px;
+    }
+    .pullquote cite {
+      display: block;
+      margin-top: 32px;
+      font-family: var(--font-body);
+      font-style: normal;
+      font-size: 13.5px;
+      color: var(--ink-3);
+      letter-spacing: 0.02em;
+    }
+    .pullquote cite b { color: var(--ink); font-weight: 600; }
+
+    /* ─── Trust / safety section ───────────────────────────────── */
+    .trust {
+      padding: 120px 0;
+      border-top: var(--rule);
+    }
+    .trust-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.05fr;
+      gap: 72px;
+    }
+    .trust-head h2 {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: clamp(36px, 4.4vw, 56px);
+      letter-spacing: -0.035em;
+      line-height: 1.02;
+      margin-top: 16px;
+    }
+    .trust-head h2 em {
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-weight: 500;
+      color: var(--accent);
+    }
+    .trust-head .lede {
+      margin-top: 24px;
+      font-size: 16.5px;
+      color: var(--ink-2);
+      line-height: 1.55;
+      max-width: 38ch;
+    }
+    .guards {
+      display: flex;
+      flex-direction: column;
+    }
+    .guard {
+      display: grid;
+      grid-template-columns: 60px 1fr;
+      gap: 20px;
+      align-items: start;
+      padding: 24px 0;
+      border-top: var(--rule);
+    }
+    .guard:last-child { border-bottom: var(--rule); }
+    .guard .num {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--accent);
+      letter-spacing: 0.12em;
+      padding-top: 4px;
+    }
+    .guard h4 {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 17px;
+      letter-spacing: -0.018em;
+      color: var(--ink);
+      margin-bottom: 6px;
+    }
+    .guard p {
+      font-size: 14.5px;
+      color: var(--ink-2);
+      line-height: 1.55;
+    }
+    .guard p code {
+      font-family: var(--font-mono);
+      font-size: 12.5px;
+      background: var(--accent-soft);
+      color: var(--accent-deep);
+      padding: 1px 6px;
+    }
+    [data-theme="dark"] .guard p code { color: var(--accent); }
+
+    /* ─── Pricing — spec-sheet aesthetic ──────────────────────── */
+    .pricing {
+      padding: 120px 0;
+      border-top: var(--rule);
+      background: var(--bg-elev);
+    }
+    .pricing-head { text-align: left; margin-bottom: 56px; }
+    .pricing-head h2 {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: clamp(36px, 4.4vw, 60px);
+      letter-spacing: -0.035em;
+      line-height: 1.02;
+      margin-top: 16px;
+      max-width: 18ch;
+    }
+    .pricing-head p {
+      margin-top: 20px;
+      font-size: 16px;
+      color: var(--ink-2);
+      max-width: 50ch;
+    }
+    .specsheet {
+      border: 1px solid var(--ink);
+      background: var(--paper);
+      box-shadow: var(--shadow-soft);
+    }
+    .specsheet-grid {
+      display: grid;
+      grid-template-columns: minmax(220px, 0.8fr) 1fr 1fr;
+    }
+    .spec-row {
+      display: contents;
+    }
+    .spec-cell {
+      padding: 20px 24px;
+      border-bottom: var(--rule);
+      font-size: 14px;
+      color: var(--ink-2);
+      line-height: 1.45;
+    }
+    .spec-cell + .spec-cell { border-left: var(--rule); }
+    .spec-row.head .spec-cell {
+      background: var(--bg);
+      border-bottom: 2px solid var(--ink);
+      padding: 28px 24px;
+    }
+    .spec-row.head .spec-cell:first-child {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--ink-3);
+    }
+    .plan-name {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 26px;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+      margin-bottom: 6px;
+    }
+    .plan-name.pro::after {
+      content: 'recomendado';
+      display: inline-block;
+      margin-left: 12px;
+      font-family: var(--font-mono);
+      font-size: 9.5px;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent);
+      vertical-align: middle;
+      padding: 3px 7px;
+      border: 1px solid var(--accent);
+    }
+    .plan-price {
+      display: flex;
+      align-items: baseline;
+      gap: 6px;
+      margin-top: 10px;
+    }
+    .plan-price .currency {
+      font-family: var(--font-mono);
+      font-size: 14px;
+      color: var(--ink-3);
+    }
+    .plan-price .amount {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 56px;
+      letter-spacing: -0.04em;
+      color: var(--ink);
+      line-height: 1;
+    }
+    .plan-price .per {
+      font-family: var(--font-body);
+      font-size: 13px;
+      color: var(--ink-3);
+    }
+    .plan-trial {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.04em;
+      color: var(--accent);
+      margin-top: 8px;
+    }
+    .row-label {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--ink-3);
+    }
+    .check { color: var(--ok); margin-right: 8px; font-weight: 700; }
+    .dash  { color: var(--muted); margin-right: 8px; }
+    .spec-row.cta .spec-cell {
+      padding: 22px 24px;
+      border-bottom: none;
+    }
+    .spec-row.cta .spec-cell:first-child { background: var(--bg); }
+
+    /* ─── FAQ ─────────────────────────────────────────────────── */
+    .faq {
+      padding: 120px 0;
+      border-top: var(--rule);
+    }
+    .faq-head h2 {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: clamp(36px, 4.4vw, 56px);
+      letter-spacing: -0.035em;
+      line-height: 1.02;
+      margin-top: 16px;
+      margin-bottom: 56px;
+      max-width: 18ch;
+    }
+    .faq-list { border-top: 2px solid var(--ink); }
+    .faq-item { border-bottom: var(--rule); }
+    .faq-item summary {
+      list-style: none;
+      cursor: pointer;
+      padding: 26px 0;
+      display: grid;
+      grid-template-columns: 60px 1fr 30px;
+      gap: 20px;
+      align-items: start;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 19px;
+      letter-spacing: -0.018em;
+      color: var(--ink);
+      transition: color .2s var(--tx);
+    }
+    .faq-item summary::-webkit-details-marker { display: none; }
+    .faq-item summary:hover { color: var(--accent); }
+    .faq-item summary .qnum {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--ink-3);
+      font-weight: 500;
+      padding-top: 4px;
+      letter-spacing: 0.12em;
+    }
+    .faq-item summary .toggle {
+      width: 22px; height: 22px;
+      border: 1px solid var(--ink);
+      border-radius: 999px;
+      position: relative;
+      flex-shrink: 0;
+      margin-top: 2px;
+      transition: transform .25s var(--tx), border-color .2s var(--tx);
+    }
+    .faq-item summary:hover .toggle { border-color: var(--accent); }
+    .faq-item summary .toggle::before,
+    .faq-item summary .toggle::after {
+      content: '';
+      position: absolute;
+      background: var(--ink);
+      transition: transform .25s var(--tx), background-color .2s var(--tx);
+    }
+    .faq-item summary .toggle::before {
+      top: 50%; left: 4px; right: 4px; height: 1px;
+      transform: translateY(-50%);
+    }
+    .faq-item summary .toggle::after {
+      left: 50%; top: 4px; bottom: 4px; width: 1px;
+      transform: translateX(-50%);
+    }
+    .faq-item summary:hover .toggle::before,
+    .faq-item summary:hover .toggle::after {
+      background: var(--accent);
+    }
+    .faq-item[open] summary .toggle::after { transform: translateX(-50%) scaleY(0); }
+    .faq-answer {
+      padding: 0 0 28px 80px;
+      font-size: 15px;
+      line-height: 1.6;
+      color: var(--ink-2);
+      max-width: 60ch;
+    }
+    .faq-answer + .faq-answer { padding-top: 12px; }
+
+    /* ─── Final CTA ───────────────────────────────────────────── */
+    .final {
+      padding: 140px 0 120px;
+      border-top: var(--rule);
+      background: var(--ink);
+      color: var(--bg);
+    }
+    .final-inner {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 64px;
+      align-items: end;
+    }
+    .final h2 {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: clamp(40px, 5vw, 76px);
+      letter-spacing: -0.04em;
+      line-height: 0.96;
+      max-width: 16ch;
+    }
+    .final h2 em {
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-weight: 500;
+      color: var(--accent);
+    }
+    .final-actions {
+      display: flex;
+      flex-direction: column;
+      align-items: end;
+      gap: 16px;
+    }
+    .final .btn-primary {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+      padding: 16px 22px;
+      font-size: 14.5px;
+    }
+    .final .btn-primary:hover { background: #fff; color: var(--accent); border-color: #fff; }
+    .final .btn-line {
+      color: var(--bg);
+      border-color: color-mix(in srgb, var(--bg) 35%, transparent);
+    }
+    .final .btn-line:hover { background: var(--bg); color: var(--ink); border-color: var(--bg); }
+    .final-note {
+      font-family: var(--font-mono);
+      font-size: 11.5px;
+      letter-spacing: 0.06em;
+      color: color-mix(in srgb, var(--bg) 60%, transparent);
+      margin-top: 8px;
+    }
+
+    /* ─── Footer ──────────────────────────────────────────────── */
+    .foot {
+      padding: 36px 0;
+      background: var(--ink);
+      color: color-mix(in srgb, var(--bg) 65%, transparent);
+      border-top: 1px solid color-mix(in srgb, var(--bg) 12%, transparent);
+    }
+    .foot-inner {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 32px;
+      align-items: start;
+      font-size: 13px;
+    }
+    .foot-tagline {
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-size: 14.5px;
+      color: color-mix(in srgb, var(--bg) 80%, transparent);
+      max-width: 30ch;
+      line-height: 1.5;
+    }
+    .foot h5 {
+      font-family: var(--font-mono);
+      font-size: 10.5px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: color-mix(in srgb, var(--bg) 50%, transparent);
+      margin-bottom: 14px;
+      font-weight: 500;
+    }
+    .foot a {
+      display: block;
+      padding: 4px 0;
+      color: color-mix(in srgb, var(--bg) 78%, transparent);
+      transition: color .2s var(--tx);
+    }
+    .foot a:hover { color: var(--accent); }
+    .foot-meta {
+      grid-column: 1 / -1;
+      margin-top: 36px;
+      padding-top: 24px;
+      border-top: 1px solid color-mix(in srgb, var(--bg) 10%, transparent);
+      display: flex;
+      justify-content: space-between;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.06em;
+      color: color-mix(in srgb, var(--bg) 50%, transparent);
+    }
+
+    /* ─── Reveal on scroll ────────────────────────────────────── */
+    /* A11y/SEO: visible by default; JS marks elements with data-js-reveal */
+    .reveal {
+      opacity: 1;
+      transform: none;
+      transition: opacity .7s var(--tx), transform .7s var(--tx);
+      will-change: opacity, transform;
+    }
+    /* Only animate when JS is present and user has not opted out of motion */
+    @media (prefers-reduced-motion: no-preference) {
+      .reveal[data-js-reveal] {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      .reveal[data-js-reveal].in {
+        opacity: 1;
+        transform: none;
+      }
+    }
+
+    /* ─── Reduced motion ──────────────────────────────────────── */
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.001ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+      .reveal,
+      .reveal.in { opacity: 1 !important; transform: none !important; transition: none !important; }
+      .hero h1 .strike::after { transform: scaleX(1); animation: none; }
+      .caret { display: none; }
+    }
+
+    /* ─── Focus states ────────────────────────────────────────── */
+    a:focus-visible,
+    button:focus-visible,
+    summary:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 3px;
+    }
+
+    /* ─── Responsive ──────────────────────────────────────────── */
+    @media (max-width: 1024px) {
+      .hero-grid { grid-template-columns: 1fr; gap: 48px; }
+      .hero-meta { padding-bottom: 0; }
+      .stage { grid-template-columns: 1fr; }
+      .trace-col { border-right: none; border-bottom: var(--rule); }
+      .numbers-head, .trust-grid, .final-inner { grid-template-columns: 1fr; gap: 32px; }
+      .specsheet-grid { grid-template-columns: minmax(140px, 0.7fr) 1fr 1fr; }
+    }
+
+    @media (max-width: 760px) {
+      .container, .narrow { padding: 0 22px; }
+      .topframe-inner { grid-template-columns: auto auto; row-gap: 12px; }
+      .status-strip { display: none; }
+      .topframe-right .nav-link { display: none; }
+      .hero { padding: 56px 0 16px; }
+      .hero h1 { font-size: clamp(40px, 9vw, 64px); }
+      .hero-sub { font-size: 16px; margin: 24px 0 28px; }
+      .number-grid { grid-template-columns: 1fr; }
+      .number-cell { border-right: none; border-bottom: var(--rule); }
+      .number-cell:last-child { border-bottom: none; }
+      .how-grid { grid-template-columns: 1fr 1fr; }
+      .how-step:nth-child(2n) { border-right: none; }
+      .specsheet-grid { grid-template-columns: 1fr; }
+      .spec-cell + .spec-cell { border-left: none; border-top: var(--rule); }
+      .spec-row.head .spec-cell + .spec-cell { border-top: 2px solid var(--ink); }
+      .foot-inner { grid-template-columns: 1fr 1fr; }
+      .foot-tagline { grid-column: 1 / -1; }
+      .trace-stamps { grid-template-columns: 1fr 1fr; gap: 16px 0; }
+      .faq-item summary { grid-template-columns: 40px 1fr 24px; gap: 12px; }
+      .faq-answer { padding-left: 52px; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ─── Top frame ─────────────────────────────────────────── -->
+  <header class="topframe" role="banner">
+    <div class="topframe-inner">
+      <a class="brand" href="/" aria-label="Toca Ficha Dr. — início">
+        <span class="brand-mark" aria-hidden="true">TD</span>
+        <span class="brand-name">Toca Ficha <span class="dr">Dr.</span></span>
+      </a>
+
+      <div class="status-strip" aria-label="Status de lançamento">
+        <span class="status-led" aria-hidden="true"></span>
+        <span>Em validação clínica · <b>Chrome Web Store em revisão</b></span>
+      </div>
+
+      <div class="topframe-right">
+        <a class="nav-link" href="#numeros">Números</a>
+        <a class="nav-link" href="#fluxo">Fluxo</a>
+        <a class="nav-link" href="#seguranca">Segurança</a>
+        <a class="nav-link" href="#preco">Preços</a>
+        <a class="btn btn-ghost" href="#contato">Entrar</a>
+        <a class="btn btn-primary" href="#instalar">Instalar <span class="arrow" aria-hidden="true">→</span></a>
+        <button class="theme-switch" id="themeSwitch" aria-label="Alternar tema claro/escuro" aria-pressed="false"></button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- ─── Hero ───────────────────────────────────────────── -->
+    <section class="hero" aria-labelledby="heroTitle">
+      <div class="container">
+        <div class="hero-grid">
+          <div>
+            <div class="hero-num mono">001 / Plantão pediátrico · G-Hosp</div>
+            <h1 id="heroTitle">
+              <span class="strike">35 cliques</span><br />
+              por paciente.<br />
+              Fizemos <em>quatro.</em>
+            </h1>
+            <p class="hero-sub">
+              Toca Ficha Dr. transcreve sua voz, estrutura o SOAP, sugere o CID-10 e finaliza a alta no G-Hosp. Em quatro ações. O médico continua aprovando cada palavra.
+            </p>
+            <div class="hero-ctas">
+              <a class="btn btn-primary" href="#instalar">Instalar no Chrome <span class="arrow" aria-hidden="true">→</span></a>
+              <a class="btn btn-line" href="#fluxo">Ver o fluxo · 12s</a>
+            </div>
+          </div>
+
+          <aside class="hero-meta" aria-label="Métricas-chave">
+            <div class="meta-row">
+              <div>
+                <div class="lbl">Por paciente</div>
+                <div class="delta mono">−88,5% de cliques</div>
+              </div>
+              <div class="val">35<em>→</em>4</div>
+            </div>
+            <div class="meta-row">
+              <div>
+                <div class="lbl">Por consulta</div>
+                <div class="delta mono">−91,7% de tempo</div>
+              </div>
+              <div class="val">60<em>→</em>5<span class="unit">s</span></div>
+            </div>
+            <div class="meta-row">
+              <div>
+                <div class="lbl">Por plantão · 30 pacientes</div>
+                <div class="delta mono">de volta ao café, ao prontuário, à família</div>
+              </div>
+              <div class="val">+40<span class="unit">min</span></div>
+            </div>
+          </aside>
+        </div>
+
+        <!-- ─── The instrument: centerpiece ────────────────── -->
+        <div class="instrument reveal" id="instrument" aria-label="Painel de demonstração ao vivo">
+          <div class="instrument-head">
+            <div class="dot-row" aria-hidden="true">
+              <i class="live"></i><i></i><i></i>
+            </div>
+            <div>
+              <span class="label">tocafichadr</span> <span class="pid">/ paciente · 0847 · L. 14m</span>
+            </div>
+            <div>v2.5.4</div>
+            <div>
+              <span class="mono" id="instrumentClock">+00:00.0</span>
+            </div>
+          </div>
+
+          <div class="stage">
+            <!-- LEFT: live trace + stamps -->
+            <div class="trace-col">
+              <div class="trace-col-head">
+                <div class="ttl">Sinal · entrada de voz</div>
+                <div class="trace-clock"><span id="recReadout">00.0</span><span class="unit">s</span></div>
+              </div>
+
+              <div class="trace-svg-wrap">
+                <svg class="trace-svg" viewBox="0 0 800 200" preserveAspectRatio="none" aria-hidden="true">
+                  <line class="grid-baseline" x1="0" y1="100" x2="800" y2="100" />
+                  <path id="tracePath" d="M0,100 L800,100" />
+                </svg>
+              </div>
+
+              <div class="trace-stamps" role="list">
+                <div class="trace-stamp" data-stamp="rec" role="listitem">
+                  <div class="num mono">01</div>
+                  <div class="nm">Falar</div>
+                  <div class="t mono">~3s</div>
+                </div>
+                <div class="trace-stamp" data-stamp="soap" role="listitem">
+                  <div class="num mono">02</div>
+                  <div class="nm">SOAP</div>
+                  <div class="t mono">~2s</div>
+                </div>
+                <div class="trace-stamp" data-stamp="cid" role="listitem">
+                  <div class="num mono">03</div>
+                  <div class="nm">CID-10</div>
+                  <div class="t mono">~0,5s</div>
+                </div>
+                <div class="trace-stamp" data-stamp="finish" role="listitem">
+                  <div class="num mono">04</div>
+                  <div class="nm">Finalizar</div>
+                  <div class="t mono">1 clique</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- RIGHT: output panel -->
+            <div class="output-col">
+              <div class="out-block">
+                <div class="lbl">SOAP gerado <span class="badge mono">GPT-4o-mini · t=0.1</span></div>
+                <div class="out-soap" aria-live="polite" aria-atomic="false">
+                  <span id="soapText"></span><span class="caret" id="soapCaret" aria-hidden="true"></span>
+                </div>
+              </div>
+
+              <div class="out-block">
+                <div class="lbl">CID-10 sugerido</div>
+                <div class="out-cid" id="outCid">
+                  <span class="code">J06.9</span>
+                  <span class="nm">Infecção aguda das vias aéreas superiores, NE</span>
+                  <span class="conf mono">0.91</span>
+                </div>
+              </div>
+
+              <a class="out-finish" id="outFinish" href="#instalar">Finalizar paciente <span aria-hidden="true">↵</span></a>
+            </div>
+          </div>
+
+          <div class="instrument-foot">
+            <div>Local · <b>localhost:5050</b></div>
+            <div>·</div>
+            <div>Áudio descartado em memória · <b>nada salvo</b></div>
+            <div>·</div>
+            <div>Médico aprova · <b>CRM assina</b></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── Numbers ─────────────────────────────────────────── -->
+    <section class="numbers reveal" id="numeros" aria-labelledby="numbersTitle">
+      <div class="container">
+        <div class="numbers-head">
+          <div>
+            <div class="eyebrow">02 · A matemática do plantão</div>
+            <h2 id="numbersTitle">Faça as contas. Trinta pacientes em doze horas.</h2>
+          </div>
+          <p class="lede">
+            Não é "produtividade". É a diferença entre <em>terminar o turno</em> e ainda ter caderno aberto às três da manhã. O custo do clique repetido não está no clique — está no que ele <em>impede</em> você de fazer.
+          </p>
+        </div>
+
+        <div class="number-grid">
+          <article class="number-cell">
+            <div class="index mono">N° 01 · Ações</div>
+            <div class="big">35<span class="arrow-icon">→</span>4</div>
+            <p class="label">Cliques por paciente para fechar o atendimento — medido no fluxo real do <b>G-Hosp / G-UPA</b>.</p>
+          </article>
+          <article class="number-cell">
+            <div class="index mono">N° 02 · Tempo recuperado</div>
+            <div class="big">+40<span class="unit">min</span></div>
+            <p class="label">Devolvidos por plantão de doze horas com <b>30 pacientes</b>. Não é estimativa de marketing — é diff de cliques × tempo médio.</p>
+          </article>
+          <article class="number-cell">
+            <div class="index mono">N° 03 · Privacidade</div>
+            <div class="big">100<span class="unit">%</span></div>
+            <p class="label">Áudio e SOAP processados em memória. <b>Nenhum dado de paciente</b> sai do navegador para nossos servidores. LGPD · CFM 2.454/2026.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── How it works ────────────────────────────────────── -->
+    <section class="how reveal" id="fluxo" aria-labelledby="howTitle">
+      <div class="container">
+        <div class="how-head">
+          <div class="eyebrow">03 · Fluxo por paciente</div>
+          <h2 id="howTitle">Quatro ações entre o "Bom dia" e o próximo paciente.</h2>
+        </div>
+
+        <div class="how-grid">
+          <div class="how-step">
+            <div class="step-number mono">/01</div>
+            <div class="step-glyph" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M12 3v12M8 8v7M16 8v7M4 11v3M20 11v3M12 18v3M9 21h6"/></svg>
+            </div>
+            <h3>Diga o que viu</h3>
+            <p>Ctrl+Option+A inicia a gravação. Você descreve a consulta como faria para o residente. Sem teclar.</p>
+            <div class="step-time mono">~3s · voz</div>
+          </div>
+          <div class="how-step">
+            <div class="step-number mono">/02</div>
+            <div class="step-glyph" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h12M4 18h8"/><path d="M19 14l3 3-3 3M22 17H14"/></svg>
+            </div>
+            <h3>SOAP estruturado</h3>
+            <p>Whisper transcreve. GPT-4o-mini estrutura nas quatro letras — temperatura 0.1, sem inventar. Aparece editável.</p>
+            <div class="step-time mono">~2s · IA</div>
+          </div>
+          <div class="how-step">
+            <div class="step-number mono">/03</div>
+            <div class="step-glyph" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6"/><path d="M21 21l-5.5-5.5"/><path d="M8 11h6M11 8v6"/></svg>
+            </div>
+            <h3>CID-10 sugerido</h3>
+            <p>164 códigos pediátricos em base local. A sugestão vem com o nome — você confirma ou troca em uma tecla.</p>
+            <div class="step-time mono">~0,5s · busca local</div>
+          </div>
+          <div class="how-step">
+            <div class="step-number mono">/04</div>
+            <div class="step-glyph" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M5 12l4 4L19 6"/></svg>
+            </div>
+            <h3>Finalizar paciente</h3>
+            <p>Receita do template, alta preenchida, próxima ficha aberta. Um botão. Você assina; o sistema executa.</p>
+            <div class="step-time mono">1 clique · ~1,5s</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── Editorial pull quote ─────────────────────────────── -->
+    <section class="pullquote reveal" aria-label="Citação do desenvolvedor">
+      <div class="narrow">
+        <blockquote>
+          Não é sobre digitar mais rápido. É sobre não digitar três vezes a mesma queixa.
+        </blockquote>
+        <cite>
+          <b>Christian Oliveira</b> — médico, plantonista de pediatria, autor do Toca Ficha Dr. Bento Gonçalves/RS.
+        </cite>
+      </div>
+    </section>
+
+    <!-- ─── Trust / safety ─────────────────────────────────── -->
+    <section class="trust reveal" id="seguranca" aria-labelledby="trustTitle">
+      <div class="container">
+        <div class="trust-grid">
+          <div class="trust-head">
+            <div class="eyebrow">04 · A pergunta que todo médico faz</div>
+            <h2 id="trustTitle">E se a IA <em>errar?</em></h2>
+            <p class="lede">
+              A IA não escreve no prontuário. Escreve para você revisar. Você aprova, edita ou descarta antes que qualquer caractere seja salvo. O CRM no rodapé continua sendo o seu.
+            </p>
+          </div>
+
+          <div class="guards">
+            <div class="guard">
+              <div class="num mono">G-01</div>
+              <div>
+                <h4>Revisão obrigatória antes de salvar</h4>
+                <p>O SOAP gerado aparece num editor. Você muda livremente, recusa, ou aprova com um clique. Nada chega ao G-Hosp sem o seu aval explícito.</p>
+              </div>
+            </div>
+            <div class="guard">
+              <div class="num mono">G-02</div>
+              <div>
+                <h4>Prompt com "proibido inventar"</h4>
+                <p>A instrução ao modelo inclui literalmente <code>PROIBIDO inventar sintomas, durações, localizações, quantidades</code>. Máximo quatro frases objetivas, baseadas só no que você falou.</p>
+              </div>
+            </div>
+            <div class="guard">
+              <div class="num mono">G-03</div>
+              <div>
+                <h4>Temperatura 0.1, quase determinística</h4>
+                <p>A IA não improvisa estilo nem completa lacunas com palpite. Estrutura — não cria — o relato que você ditou. Mesma entrada, mesma saída.</p>
+              </div>
+            </div>
+            <div class="guard">
+              <div class="num mono">G-04</div>
+              <div>
+                <h4>Escopo restrito a <code>*.g-hosp.com.br</code></h4>
+                <p>A extensão só carrega em domínios G-Hosp. Não lê e-mail, não lê WhatsApp Web, não toca em outro EMR. Permissão mínima, auditável no manifest.</p>
+              </div>
+            </div>
+            <div class="guard">
+              <div class="num mono">G-05</div>
+              <div>
+                <h4>Áudio descartado em memória</h4>
+                <p>Whisper recebe o áudio, devolve a transcrição, e o arquivo é destruído. Nada vai para banco, nada vai para servidor nosso. O médico controla tudo localmente.</p>
+              </div>
+            </div>
+            <div class="guard">
+              <div class="num mono">G-06</div>
+              <div>
+                <h4>Você assina — CFM 2.454/2026</h4>
+                <p>A resolução é clara: a IA é ferramenta, o médico é o autor. A extensão preserva esse princípio em cada passo. Seu CRM, sua responsabilidade, sua autoria.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── Pricing ────────────────────────────────────────── -->
+    <section class="pricing reveal" id="preco" aria-labelledby="pricingTitle">
+      <div class="container">
+        <div class="pricing-head">
+          <div class="eyebrow">05 · Preços</div>
+          <h2 id="pricingTitle">Experimente no próximo plantão.</h2>
+          <p>Se não recuperar 20 minutos no primeiro turno, cancela sem pergunta. Pro tem 14 dias grátis e dispensa cartão.</p>
+        </div>
+
+        <div class="specsheet">
+          <div class="specsheet-grid">
+            <div class="spec-row head">
+              <div class="spec-cell">Especificação</div>
+              <div class="spec-cell">
+                <div class="plan-name">Free</div>
+                <div class="plan-price">
+                  <span class="currency">R$</span>
+                  <span class="amount">0</span>
+                  <span class="per">/sempre</span>
+                </div>
+                <div class="plan-trial mono">Sem cartão · sem expiração</div>
+              </div>
+              <div class="spec-cell">
+                <div class="plan-name pro">Pro</div>
+                <div class="plan-price">
+                  <span class="currency">R$</span>
+                  <span class="amount">49</span>
+                  <span class="per">/mês</span>
+                </div>
+                <div class="plan-trial mono">14 dias grátis · sem cartão</div>
+              </div>
+            </div>
+
+            <div class="spec-row">
+              <div class="spec-cell row-label">Pacientes / dia</div>
+              <div class="spec-cell"><span class="check">✓</span> Até 5</div>
+              <div class="spec-cell"><span class="check">✓</span> Ilimitados</div>
+            </div>
+            <div class="spec-row">
+              <div class="spec-cell row-label">Backend</div>
+              <div class="spec-cell">Local (Flask · localhost:5050)</div>
+              <div class="spec-cell">Nuvem · zero setup</div>
+            </div>
+            <div class="spec-row">
+              <div class="spec-cell row-label">Chave OpenAI</div>
+              <div class="spec-cell">Sua própria chave</div>
+              <div class="spec-cell">Incluída</div>
+            </div>
+            <div class="spec-row">
+              <div class="spec-cell row-label">Atualização de seletores G-Hosp</div>
+              <div class="spec-cell"><span class="dash">—</span> Manual no GitHub</div>
+              <div class="spec-cell"><span class="check">✓</span> Push remoto, sem reinstalar</div>
+            </div>
+            <div class="spec-row">
+              <div class="spec-cell row-label">Suporte</div>
+              <div class="spec-cell">Comunidade · GitHub Issues</div>
+              <div class="spec-cell">WhatsApp · resposta no mesmo dia</div>
+            </div>
+            <div class="spec-row">
+              <div class="spec-cell row-label">Multi-hospital</div>
+              <div class="spec-cell"><span class="dash">—</span> Um hospital</div>
+              <div class="spec-cell"><span class="check">✓</span> Configuração por hospital</div>
+            </div>
+            <div class="spec-row cta">
+              <div class="spec-cell row-label">Começar</div>
+              <div class="spec-cell">
+                <a class="btn btn-line" href="#instalar">Baixar versão grátis</a>
+              </div>
+              <div class="spec-cell">
+                <a class="btn btn-primary" href="#instalar">Iniciar 14 dias <span class="arrow" aria-hidden="true">→</span></a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── FAQ ────────────────────────────────────────────── -->
+    <section class="faq reveal" aria-labelledby="faqTitle">
+      <div class="container">
+        <div class="faq-head">
+          <div class="eyebrow">06 · Perguntas honestas</div>
+          <h2 id="faqTitle">O que dá errado, e o que não dá.</h2>
+        </div>
+        <div class="faq-list">
+          <details class="faq-item">
+            <summary>
+              <span class="qnum">Q-01</span>
+              <span>Funciona no G-Hosp do meu hospital?</span>
+              <span class="toggle" aria-hidden="true"></span>
+            </summary>
+            <div class="faq-answer">
+              Hoje, validado em <b>prbentogoncalves.g-hosp.com.br</b>. O fluxo deve rodar em qualquer instância G-Hosp, mas IDs de templates de receita variam entre hospitais. No primeiro uso, a extensão tenta detectar; se algo falhar, abra um issue no GitHub com a tela e respondemos em horas.
+            </div>
+          </details>
+          <details class="faq-item">
+            <summary>
+              <span class="qnum">Q-02</span>
+              <span>Para onde vai o áudio do paciente?</span>
+              <span class="toggle" aria-hidden="true"></span>
+            </summary>
+            <div class="faq-answer">
+              No plano <b>Free</b>, o áudio sai do seu Chrome direto para a API da OpenAI usando a sua chave. Nada passa por nós. No plano <b>Pro</b>, passa por um servidor nosso em São Paulo (apenas para fazer a chamada à OpenAI) — e é descartado da memória em segundos. Nunca é gravado em disco, banco, nem usado para treinar modelo. Veja a <a href="/privacidade.html" style="color:var(--accent);text-decoration:underline;">política de privacidade</a>.
+            </div>
+          </details>
+          <details class="faq-item">
+            <summary>
+              <span class="qnum">Q-03</span>
+              <span>Posso desligar a sugestão de CID?</span>
+              <span class="toggle" aria-hidden="true"></span>
+            </summary>
+            <div class="faq-answer">
+              Sim. Cada módulo (transcrição, SOAP, CID, receita) é toggável no popup da extensão. Use só o que serve para o seu jeito de trabalhar — e nunca preenchemos o CID no campo sem o seu Enter.
+            </div>
+          </details>
+          <details class="faq-item">
+            <summary>
+              <span class="qnum">Q-04</span>
+              <span>E se eu mudar de hospital?</span>
+              <span class="toggle" aria-hidden="true"></span>
+            </summary>
+            <div class="faq-answer">
+              No plano Pro, basta apontar a extensão para o novo subdomínio G-Hosp e os novos IDs de templates são detectados automaticamente. No Free, é uma edição manual de configuração — documentada no GitHub.
+            </div>
+          </details>
+          <details class="faq-item">
+            <summary>
+              <span class="qnum">Q-05</span>
+              <span>Funciona no Safari ou Firefox?</span>
+              <span class="toggle" aria-hidden="true"></span>
+            </summary>
+            <div class="faq-answer">
+              Não. Chrome MV3 apenas. O G-Hosp é, na prática, um sistema usado por dentro do Chrome — portar para outros navegadores triplicaria a superfície de teste sem retorno proporcional. Se isso mudar, mudamos.
+            </div>
+          </details>
+          <details class="faq-item">
+            <summary>
+              <span class="qnum">Q-06</span>
+              <span>O que acontece se a IA escrever uma bobagem?</span>
+              <span class="toggle" aria-hidden="true"></span>
+            </summary>
+            <div class="faq-answer">
+              Você descarta com um clique e regrava, ou edita o texto antes de aprovar. <b>Nada é salvo no prontuário sem seu clique de "Aprovar e salvar".</b> O modelo roda em temperatura 0.1, com instrução explícita de não inventar sintomas — mas a defesa final é, sempre, o médico.
+            </div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── Final CTA ──────────────────────────────────────── -->
+    <section class="final" id="instalar" aria-labelledby="finalTitle">
+      <div class="container">
+        <div class="final-inner">
+          <div>
+            <div class="eyebrow" style="color:color-mix(in srgb, var(--bg) 65%, transparent);">07 · Instalar</div>
+            <h2 id="finalTitle">Próximo paciente, <em>quatro ações.</em></h2>
+          </div>
+          <div class="final-actions">
+            <a class="btn btn-primary" href="#" id="installBtn">Instalar no Chrome <span class="arrow" aria-hidden="true">→</span></a>
+            <a class="btn btn-line" href="mailto:contato@tocafichadr.com.br?subject=Toca%20Ficha%20Dr.%20%E2%80%94%20conversa" id="contato">Falar com o desenvolvedor</a>
+            <span class="final-note mono">v2.5.4 · 100KB · Chrome 120+</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ─── Footer ───────────────────────────────────────────── -->
+  <footer class="foot">
+    <div class="container foot-inner">
+      <div>
+        <div class="brand" style="margin-bottom:14px;">
+          <span class="brand-mark" aria-hidden="true" style="border-color:color-mix(in srgb, var(--bg) 60%, transparent); color:var(--bg);">TD</span>
+          <span class="brand-name" style="color:var(--bg);">Toca Ficha <span style="color:var(--accent);">Dr.</span></span>
+        </div>
+        <p class="foot-tagline">Feito por um plantonista, para plantonistas. De Bento Gonçalves para qualquer pediatra com vontade de chegar em casa antes da meia-noite.</p>
+      </div>
+
+      <div>
+        <h5>Produto</h5>
+        <a href="#fluxo">Como funciona</a>
+        <a href="#numeros">Números</a>
+        <a href="#preco">Preços</a>
+        <a href="#instalar">Instalar</a>
+      </div>
+
+      <div>
+        <h5>Confiança</h5>
+        <a href="#seguranca">Segurança e IA</a>
+        <a href="/privacidade.html">Privacidade · LGPD</a>
+        <a href="/privacidade.html#cfm">CFM 2.454/2026</a>
+      </div>
+
+      <div>
+        <h5>Contato</h5>
+        <a href="mailto:contato@tocafichadr.com.br">contato@tocafichadr.com.br</a>
+        <a href="https://github.com/chrislro/tocafichadr-extension" target="_blank" rel="noopener">GitHub</a>
+      </div>
+
+      <div class="foot-meta">
+        <span>(c) 2026 Toca Ficha Dr. - Porto Alegre/RS</span>
+        <span>v3.0.4 · build 2026.05.02</span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    /* ─── Theme switch ──────────────────────────────────────── */
+    (function theme() {
+      var root = document.documentElement;
+      var btn = document.getElementById('themeSwitch');
+      if (!btn) return;
+      var stored = null;
+      try { stored = localStorage.getItem('tfd-theme'); } catch (e) {}
+      var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+      var initial = stored || (prefersDark ? 'dark' : 'light');
+      root.setAttribute('data-theme', initial);
+      btn.setAttribute('aria-pressed', initial === 'dark' ? 'true' : 'false');
+      btn.addEventListener('click', function () {
+        var cur = root.getAttribute('data-theme');
+        var next = cur === 'dark' ? 'light' : 'dark';
+        root.setAttribute('data-theme', next);
+        btn.setAttribute('aria-pressed', next === 'dark' ? 'true' : 'false');
+        try { localStorage.setItem('tfd-theme', next); } catch (e) {}
+      });
+    })();
+
+    /* ─── Reveal on scroll ──────────────────────────────────── */
+    (function reveals() {
+      var els = document.querySelectorAll('.reveal');
+      var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (!('IntersectionObserver' in window) || reduce) {
+        els.forEach(function (el) { el.classList.add('in'); });
+        return;
+      }
+      /* Mark elements so CSS scopes the hidden state to JS-enhanced contexts only */
+      els.forEach(function (el) { el.setAttribute('data-js-reveal', ''); });
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+        });
+      }, { threshold: 0.12, rootMargin: '0px 0px -60px 0px' });
+      els.forEach(function (el) { io.observe(el); });
+    })();
+
+    /* ─── Centerpiece: orchestrated waveform -> SOAP -> CID -> finish ─── */
+    (function instrumentPanel() {
+      var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      var path       = document.getElementById('tracePath');
+      var recReadout = document.getElementById('recReadout');
+      var clock      = document.getElementById('instrumentClock');
+      var soapEl     = document.getElementById('soapText');
+      var caretEl    = document.getElementById('soapCaret');
+      var cidEl      = document.getElementById('outCid');
+      var finishEl   = document.getElementById('outFinish');
+      var stamps     = document.querySelectorAll('.trace-stamp');
+      if (!path || !soapEl) return;
+
+      // SOAP segments built as DOM nodes (no innerHTML — XSS-safe by construction)
+      var SOAP_SEGMENTS = [
+        { txt: 'S: ', kind: 'b' },
+        { txt: 'Lactente, 14 meses, febre 38.5°C há 48h, tosse seca, coriza hialina. ', kind: 't' },
+        { txt: 'O: ', kind: 'b' },
+        { txt: 'Bom estado geral, sem desconforto respiratório. AR: MV+ bilateral, sem ruídos adventícios. ', kind: 't' },
+        { txt: 'A: ', kind: 'b' },
+        { txt: 'IVAS · J06.9. ', kind: 't' },
+        { txt: 'P: ', kind: 'b' },
+        { txt: 'Dipirona 15mg/kg/dose 6/6h se febre. Retorno em 48h ou se piora.', kind: 't' }
+      ];
+      var SOAP_FULL = SOAP_SEGMENTS.reduce(function (n, s) { return n + s.txt.length; }, 0);
+
+      var W = 800, BASE = 100, STEP = 6;
+      var POINTS = Math.floor(W / STEP);
+      var raf = null;
+      var seed = 1;
+
+      function rand() { seed = (seed * 9301 + 49297) % 233280; return seed / 233280; }
+      function resetSeed() { seed = 1; }
+
+      function flatlinePath() { return 'M0,' + BASE + ' L' + W + ',' + BASE; }
+
+      function buildWavePath(progress, intensity) {
+        var samples = Math.max(2, Math.floor(POINTS * progress));
+        var d = 'M0,' + BASE + ' ';
+        resetSeed();
+        for (var i = 0; i <= samples; i++) {
+          var x = i * STEP;
+          var t = i / POINTS;
+          var burst = Math.sin(t * 12.5) * 0.4 + Math.sin(t * 33) * 0.25 + Math.sin(t * 7.1) * 0.55;
+          var noise = (rand() - 0.5) * 0.5;
+          var spike = 0;
+          if (Math.abs(t - 0.62) < 0.012) spike = -1.6;
+          if (Math.abs(t - 0.628) < 0.014) spike = 2.1;
+          if (Math.abs(t - 0.638) < 0.012) spike = -0.7;
+          var amp = 38 * intensity;
+          var y = BASE + (burst + noise + spike) * amp * (0.3 + 0.7 * Math.min(1, t * 1.4));
+          d += 'L' + x + ',' + y.toFixed(2) + ' ';
+        }
+        d += 'L' + W + ',' + BASE;
+        return d;
+      }
+
+      function setStampActive(name) {
+        stamps.forEach(function (s) { s.classList.remove('is-active'); });
+        if (!name) return;
+        stamps.forEach(function (s) { if (s.dataset.stamp === name) s.classList.add('is-active'); });
+      }
+      function markStampDone(name) {
+        stamps.forEach(function (s) {
+          if (s.dataset.stamp === name) { s.classList.remove('is-active'); s.classList.add('is-done'); }
+        });
+      }
+      function resetStamps() {
+        stamps.forEach(function (s) { s.classList.remove('is-active', 'is-done'); });
+      }
+
+      function setClock(ms) {
+        var s = ms / 1000;
+        clock.textContent = '+' + (s < 10 ? '0' : '') + s.toFixed(1) + 's';
+      }
+      function setRec(ms) {
+        recReadout.textContent = (ms / 1000).toFixed(1);
+      }
+
+      // Render SOAP up to character index `i` using safe DOM nodes only
+      function renderSOAP(i) {
+        // Clear children
+        while (soapEl.firstChild) soapEl.removeChild(soapEl.firstChild);
+        var consumed = 0;
+        for (var k = 0; k < SOAP_SEGMENTS.length; k++) {
+          var seg = SOAP_SEGMENTS[k];
+          var end = consumed + seg.txt.length;
+          var slice;
+          if (i >= end) {
+            slice = seg.txt;
+          } else if (i > consumed) {
+            slice = seg.txt.slice(0, i - consumed);
+          } else {
+            break;
+          }
+          if (seg.kind === 'b') {
+            var b = document.createElement('b');
+            b.appendChild(document.createTextNode(slice));
+            soapEl.appendChild(b);
+          } else {
+            soapEl.appendChild(document.createTextNode(slice));
+          }
+          if (i < end) break;
+          consumed = end;
+        }
+      }
+
+      function typeSOAP(durationMs, onDone) {
+        var start = performance.now();
+        function step(now) {
+          var t = Math.min(1, (now - start) / durationMs);
+          var i = Math.floor(t * SOAP_FULL);
+          renderSOAP(i);
+          if (t < 1) requestAnimationFrame(step);
+          else { onDone && onDone(); }
+        }
+        requestAnimationFrame(step);
+      }
+
+      function reset() {
+        path.setAttribute('d', flatlinePath());
+        while (soapEl.firstChild) soapEl.removeChild(soapEl.firstChild);
+        caretEl.classList.remove('hidden');
+        cidEl.classList.remove('show');
+        finishEl.classList.remove('armed');
+        resetStamps();
+        clock.textContent = '+00.0s';
+        recReadout.textContent = '0.0';
+      }
+
+      function runCycle() {
+        if (raf) cancelAnimationFrame(raf);
+        reset();
+        var cycleStart = performance.now();
+        setStampActive('rec');
+
+        var REC_DUR = 3000;
+        var SOAP_DUR = 2400;
+        var CID_DELAY = 600;
+        var FINISH_DELAY = 900;
+        var HOLD = 2400;
+
+        function tickRec(now) {
+          var elapsed = now - cycleStart;
+          var p = Math.min(1, elapsed / REC_DUR);
+          path.setAttribute('d', buildWavePath(p, 0.85));
+          setRec(elapsed);
+          setClock(elapsed);
+          if (p < 1) raf = requestAnimationFrame(tickRec);
+          else doSoapPhase();
+        }
+        raf = requestAnimationFrame(tickRec);
+
+        function doSoapPhase() {
+          markStampDone('rec');
+          setStampActive('soap');
+          setRec(REC_DUR);
+          var soapStart = performance.now();
+          function tickClock(now) {
+            var total = now - cycleStart;
+            setClock(total);
+            if (total < REC_DUR + SOAP_DUR + 50) raf = requestAnimationFrame(tickClock);
+          }
+          raf = requestAnimationFrame(tickClock);
+          typeSOAP(SOAP_DUR, function () {
+            caretEl.classList.add('hidden');
+            markStampDone('soap');
+            setStampActive('cid');
+            setTimeout(function () {
+              cidEl.classList.add('show');
+              markStampDone('cid');
+              setStampActive('finish');
+              setClock(REC_DUR + SOAP_DUR + CID_DELAY);
+              setTimeout(function () {
+                finishEl.classList.add('armed');
+                markStampDone('finish');
+                setClock(REC_DUR + SOAP_DUR + CID_DELAY + FINISH_DELAY);
+                setTimeout(runCycle, HOLD);
+              }, FINISH_DELAY);
+            }, CID_DELAY);
+          });
+        }
+      }
+
+      if (reduceMotion) {
+        // Static, accessible final state — show the full result
+        path.setAttribute('d', buildWavePath(1, 0.6));
+        renderSOAP(SOAP_FULL);
+        caretEl.classList.add('hidden');
+        cidEl.classList.add('show');
+        finishEl.classList.add('armed');
+        stamps.forEach(function (s) { s.classList.add('is-done'); });
+        clock.textContent = '+05.4s';
+        recReadout.textContent = '3.0';
+        return;
+      }
+
+      var inst = document.getElementById('instrument');
+      if ('IntersectionObserver' in window && inst) {
+        var io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (e) {
+            if (e.isIntersecting) { runCycle(); io.disconnect(); }
+          });
+        }, { threshold: 0.2 });
+        io.observe(inst);
+      } else {
+        runCycle();
+      }
+    })();
+  </script>
+</body>
+</html>

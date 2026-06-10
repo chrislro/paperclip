@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Smart Templates — auto-dose prescriptions (v3.4.0)</title>
+<style>
+  :root {
+    --bg-page: #050505; --bg-card: #0e0e0e; --bg-row: #161616; --bg-row-2: #181818;
+    --border: #1f1f1f; --border-strong: #2a2a2a;
+    --brand: #10b981; --brand-deep: #047857; --brand-glow: rgba(16,185,129,0.15);
+    --warn: #f59e0b; --err: #ef4444;
+    --text: #ddd; --text-dim: #888; --text-faint: #555;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    background: var(--bg-page); color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 14px; line-height: 1.5;
+  }
+  body { padding: 32px 24px 80px; }
+  .page { max-width: 1300px; margin: 0 auto; }
+
+  header {
+    display: flex; align-items: center; gap: 16px;
+    margin-bottom: 32px; padding-bottom: 20px;
+    border-bottom: 1px solid var(--border);
+  }
+  .brand-mark {
+    width: 40px; height: 40px; border-radius: 10px;
+    background: linear-gradient(135deg, var(--brand), var(--brand-deep));
+    display: inline-flex; align-items: center; justify-content: center;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.18);
+  }
+  .brand-mark svg { width: 22px; height: 22px; stroke: #fff; fill: none; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+  .title { font-size: 22px; font-weight: 700; }
+  .subtitle { font-size: 12px; color: var(--text-dim); margin-top: 2px; }
+  .stamp {
+    margin-left: auto; font-size: 11px; color: var(--text-dim);
+    background: var(--bg-card); border: 1px solid var(--border);
+    padding: 6px 10px; border-radius: 6px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  }
+
+  .lede {
+    background: linear-gradient(135deg, rgba(16,185,129,0.06), rgba(6,182,212,0.03));
+    border: 1px solid rgba(16,185,129,0.2);
+    border-radius: 10px; padding: 16px 20px; margin-bottom: 36px;
+    font-size: 13px;
+  }
+  .lede strong { color: var(--brand); }
+  .lede ul { margin-top: 8px; padding-left: 22px; }
+  .lede li { margin: 4px 0; color: var(--text-dim); font-size: 12px; }
+  .lede code { color: var(--text); background: rgba(16,185,129,0.06); padding: 1px 4px; border-radius: 3px; font-size: 11px; }
+
+  /* Schema diagram */
+  .schema {
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: 10px; padding: 20px; margin-bottom: 36px;
+  }
+  .schema-title {
+    font-size: 13px; font-weight: 700; color: var(--brand);
+    text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 12px;
+  }
+  .schema-cmp { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  .schema-side h4 { font-size: 11px; font-weight: 700; margin-bottom: 6px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.5px; }
+  .schema-side pre {
+    background: var(--bg-page); border: 1px solid var(--border);
+    border-radius: 6px; padding: 12px; font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 11px; color: var(--text); overflow-x: auto; line-height: 1.55;
+  }
+  .schema-side .added { color: var(--brand); }
+  .schema-side .removed { color: var(--text-faint); text-decoration: line-through; }
+
+  /* Workflow steps */
+  .workflow {
+    display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 18px;
+    margin-bottom: 36px;
+  }
+  .step {
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: 10px; padding: 20px;
+    position: relative;
+  }
+  .step-num {
+    position: absolute; top: -10px; left: 16px;
+    width: 24px; height: 24px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--brand), var(--brand-deep));
+    color: #fff; font-weight: 800; font-size: 12px;
+    display: inline-flex; align-items: center; justify-content: center;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.4);
+  }
+  .step-title { font-size: 14px; font-weight: 700; margin-bottom: 8px; padding-left: 18px; }
+  .step-desc { font-size: 12px; color: var(--text-dim); margin-bottom: 14px; }
+
+  .mock {
+    background: #0a0a0a; border: 1px solid var(--border);
+    border-radius: 8px; overflow: hidden;
+  }
+  .mock-body { padding: 12px; }
+  .mock-section { margin-top: 10px; }
+  .mock-section-label {
+    font-size: 9px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.7px; color: var(--text-faint); margin-bottom: 6px;
+  }
+
+  /* Template editor (Step 1) */
+  .editor-card {
+    background: var(--bg-row); border: 1px solid var(--border-strong);
+    border-radius: 6px; padding: 11px; margin-bottom: 6px;
+  }
+  .editor-row { display: flex; gap: 6px; margin-bottom: 6px; }
+  .editor-input {
+    background: var(--bg-page); border: 1px solid var(--border-strong);
+    border-radius: 4px; padding: 5px 8px; color: var(--text);
+    font-size: 11px; flex: 1; outline: none;
+  }
+  .editor-input.diag { background: rgba(16,185,129,0.06); color: var(--brand); font-weight: 600; }
+  .editor-input.age { max-width: 70px; font-family: ui-monospace, monospace; }
+
+  .med-row {
+    background: var(--bg-page); border: 1px solid var(--border-strong);
+    border-radius: 5px; padding: 7px 9px;
+    margin-bottom: 4px;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .med-name { font-size: 11px; font-weight: 600; flex: 1; }
+  .med-freq, .med-dur {
+    background: var(--bg-row); border: 1px solid var(--border-strong);
+    border-radius: 3px; padding: 3px 6px; font-size: 9px; color: var(--text-dim);
+    font-family: ui-monospace, monospace;
+  }
+  .med-x {
+    color: var(--err); font-size: 14px; cursor: pointer; padding: 0 4px;
+  }
+  .add-med-btn {
+    width: 100%; padding: 6px;
+    background: rgba(16,185,129,0.08); border: 1px dashed rgba(16,185,129,0.3);
+    border-radius: 5px; color: var(--brand); font-size: 10px; font-weight: 700;
+    margin-top: 4px;
+  }
+
+  .extra-text-area {
+    background: var(--bg-page); border: 1px solid var(--border-strong);
+    border-radius: 4px; padding: 6px 8px; color: var(--text);
+    font-size: 10px; min-height: 30px; margin-top: 5px; line-height: 1.4;
+  }
+
+  /* Patient context (Step 2) */
+  .mock-patient {
+    background: linear-gradient(135deg, rgba(16,185,129,0.06), rgba(16,185,129,0.02));
+    border: 1px solid rgba(16,185,129,0.18);
+    border-radius: 6px; padding: 8px 11px; margin-bottom: 8px;
+  }
+  .mock-patient-row { display: flex; justify-content: space-between; }
+  .mock-patient-label { font-size: 8px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.5px; font-weight: 700; }
+  .mock-patient-weight { font-size: 16px; font-weight: 700; color: var(--text); }
+  .mock-patient-age { font-size: 11px; color: var(--brand); font-family: ui-monospace, monospace; }
+
+  .mock-tpl-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; }
+  .mock-tpl {
+    background: var(--bg-row); border: 1px solid var(--border-strong);
+    border-radius: 5px; padding: 7px 5px; text-align: center;
+    font-size: 10px;
+  }
+  .mock-tpl-dx { font-weight: 700; }
+  .mock-tpl-age { font-size: 8px; color: var(--brand); font-family: ui-monospace, monospace; }
+  .mock-tpl.active { border-color: var(--brand); background: rgba(16,185,129,0.06); box-shadow: 0 0 0 1px rgba(16,185,129,0.15); }
+
+  /* Result / preview (Step 3) */
+  .preview {
+    background: var(--bg-page); border: 1px solid var(--brand);
+    border-radius: 6px; padding: 11px;
+    box-shadow: 0 0 0 1px rgba(16,185,129,0.15);
+  }
+  .preview-line {
+    font-size: 11px; line-height: 1.55;
+    padding: 4px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .preview-line:last-child { border-bottom: none; }
+  .preview-line strong { color: var(--text); font-weight: 700; }
+  .preview-line .computed { color: var(--brand); font-weight: 700; font-family: ui-monospace, monospace; }
+  .preview-line .meta { color: var(--text-dim); font-size: 10px; }
+  .preview-extra { font-size: 10px; color: var(--text-dim); margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--border); white-space: pre-wrap; line-height: 1.4; }
+
+  .preview-actions { display: flex; gap: 5px; margin-top: 10px; }
+  .preview-btn {
+    flex: 1; padding: 6px; font-size: 10px; font-weight: 700;
+    border: none; border-radius: 4px;
+  }
+  .preview-btn.primary {
+    background: linear-gradient(135deg, var(--brand), var(--brand-deep));
+    color: #fff;
+  }
+  .preview-btn.secondary {
+    background: transparent; border: 1px solid var(--border-strong);
+    color: var(--text-dim);
+  }
+
+  /* Med catalog modal */
+  .modal-card {
+    background: var(--bg-card); border: 1px solid var(--border-strong);
+    border-radius: 8px; padding: 14px; margin-top: 36px;
+  }
+  .modal-title { font-size: 14px; font-weight: 700; margin-bottom: 10px; }
+  .modal-search {
+    width: 100%; padding: 7px 10px;
+    background: var(--bg-row); border: 1px solid var(--border-strong);
+    border-radius: 5px; color: var(--text); font-size: 11px;
+    outline: none; margin-bottom: 8px;
+  }
+  .modal-list { max-height: 280px; overflow-y: auto; padding-right: 4px; }
+  .modal-med {
+    background: var(--bg-row); border: 1px solid var(--border-strong);
+    border-radius: 5px; padding: 7px 9px; margin-bottom: 4px;
+    cursor: pointer;
+  }
+  .modal-med:hover { border-color: var(--brand); }
+  .modal-med-row { display: flex; align-items: center; justify-content: space-between; }
+  .modal-med-name { font-size: 11px; font-weight: 600; }
+  .modal-med-cat { font-size: 9px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.4px; }
+  .modal-med-detail { font-size: 9px; color: var(--text-dim); margin-top: 2px; font-family: ui-monospace, monospace; }
+
+  /* Variables / placeholders */
+  .vars {
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: 10px; padding: 18px 20px; margin-bottom: 36px;
+  }
+  .vars h3 { font-size: 13px; font-weight: 700; color: var(--brand); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .vars table { width: 100%; font-size: 12px; border-collapse: collapse; margin-top: 10px; }
+  .vars td, .vars th { padding: 7px 10px; border-bottom: 1px solid var(--border); text-align: left; }
+  .vars th { font-size: 10px; text-transform: uppercase; color: var(--text-dim); letter-spacing: 0.5px; }
+  .vars code { color: var(--brand); background: rgba(16,185,129,0.06); padding: 1px 5px; border-radius: 3px; font-family: ui-monospace, monospace; font-size: 11px; }
+
+  footer {
+    margin-top: 60px; padding-top: 24px;
+    border-top: 1px solid var(--border);
+    font-size: 11px; color: var(--text-faint); text-align: center;
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+<header>
+  <span class="brand-mark"><svg viewBox="0 0 24 24"><path d="M3 13 L7 13 L9 7 L12 17 L14 11 L16 13 L21 13"/></svg></span>
+  <div>
+    <div class="title">Smart Templates — auto-dose prescriptions</div>
+    <div class="subtitle">Existing Receita Modelos extended with med-list bodies that auto-calculate per patient</div>
+  </div>
+  <span class="stamp">v3.4.0 proposal · 2026-05-07</span>
+</header>
+
+<div class="lede">
+  <strong>What changes:</strong> existing prescription templates (Resfriado, GEA, OMA, ITU, Asma, …) gain a new optional structured body that holds a list of medications. At apply time, the script computes each med's dose using the patient's weight (pediatric) or returns the fixed dose (adult), then renders a complete prescription text — ready to inject into G-Hosp's <code>#modo_usar</code>.
+  <ul>
+    <li><strong>Backwards compatible:</strong> templates with a free-text <code>body</code> keep working as today (no auto-dose). Templates with a <code>meds</code> array get the new auto-dose path.</li>
+    <li><strong>Editor:</strong> popup gains a "+ Adicionar medicação" button next to each template. Picking a med opens the catalog (12 pediatric + 20 adult). Doctor sets frequency + duration + optional notes per med.</li>
+    <li><strong>Apply:</strong> click the template button → script reads patient weight from G-Hosp DOM → computes dose for each med via cached <code>/api/dosages/full?weight=X</code> → renders text → injects into the Simples flow.</li>
+    <li><strong>Catalog:</strong> 12 pediatric meds already in backend. Adult meds need a new <code>ADULT_MEDICATIONS</code> list (~20 outpatient drugs).</li>
+    <li><strong>Variables:</strong> in addition to meds, the body can include placeholders like <code>${weight}</code>, <code>${age}</code>, <code>${patient_name}</code> for the extra-text area (orientações, retorno, etc.).</li>
+  </ul>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<!-- Schema diff                                                            -->
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<div class="schema">
+  <div class="schema-title">Schema evolution — backwards-compatible</div>
+  <div class="schema-cmp">
+    <div class="schema-side">
+      <h4>Today (legacy, still works)</h4>
+<pre>{
+  id: 't_resfriado_pe',
+  diagnosis: "Resfriado",
+  ageBand: ">6m e <2a",
+  body: "Soro fisiológico nasal 6/6h\nDipirona 1 gota/kg 6/6h se febre\nOrientar hidratação...",
+  frequency: 12
+}</pre>
+    </div>
+    <div class="schema-side">
+      <h4>v3.4.0 (smart, opt-in)</h4>
+<pre>{
+  id: 't_resfriado_pe',
+  diagnosis: "Resfriado",
+  ageBand: ">6m e <2a",
+  <span class="added">meds: [
+    { medId: 'dipyrone', freq: '6/6h', when: 'se febre' },
+    { medId: 'paracetamol', freq: '6/6h', when: 'se dor' },
+  ],
+  extraText: "Soro fisiológico nasal 6/6h\nOrientar hidratação...",</span>
+  <span class="removed">body: "..."</span>
+  frequency: 12
+}</pre>
+    </div>
+  </div>
+  <p style="margin-top: 14px; font-size: 12px; color: var(--text-dim);">
+    Migration is doctor-driven: existing templates stay legacy until edited. The editor offers a one-click "Converter para automático" that parses the legacy body for known med names and proposes a meds list (the doctor confirms each).
+  </p>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<!-- 3-step workflow                                                        -->
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<div class="workflow">
+
+  <!-- Step 1: Build template -->
+  <section class="step">
+    <span class="step-num">1</span>
+    <div class="step-title">Build the template (once, in popup)</div>
+    <div class="step-desc">Doctor opens "Modelos de Receita" → edits a card → adds meds from the catalog. Each med has frequency, duration, and notes overrides.</div>
+    <div class="mock">
+      <div class="mock-body">
+        <div class="mock-section">
+          <div class="mock-section-label">Modelo de Receita</div>
+          <div class="editor-card">
+            <div class="editor-row">
+              <input class="editor-input diag" value="Resfriado">
+              <input class="editor-input age" value=">6m e <2a">
+            </div>
+            <div class="editor-row" style="margin-bottom: 4px;">
+              <span style="font-size: 9px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.5px; font-weight: 700;">Medicações (auto-dose)</span>
+            </div>
+            <div class="med-row">
+              <div class="med-name">💊 Dipirona</div>
+              <div class="med-freq">6/6h</div>
+              <div class="med-dur">SN</div>
+              <div class="med-x">×</div>
+            </div>
+            <div class="med-row">
+              <div class="med-name">💊 Paracetamol</div>
+              <div class="med-freq">6/6h</div>
+              <div class="med-dur">SN</div>
+              <div class="med-x">×</div>
+            </div>
+            <button class="add-med-btn">+ Adicionar medicação</button>
+            <div style="font-size: 9px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.5px; font-weight: 700; margin-top: 8px;">Texto adicional</div>
+            <div class="extra-text-area">Soro fisiológico nasal 6/6h
+Orientar hidratação e elevação da cabeceira.
+Retorno se piora respiratória ou febre persistente &gt; 72h.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Step 2: Patient + click -->
+  <section class="step">
+    <span class="step-num">2</span>
+    <div class="step-title">Open patient → click template</div>
+    <div class="step-desc">Doctor opens a 12 kg / 1a 4m patient. The same template card appears, frequency-sorted as today. One click triggers compute + apply.</div>
+    <div class="mock">
+      <div class="mock-body">
+        <div class="mock-patient">
+          <div class="mock-patient-row">
+            <span class="mock-patient-label">Paciente</span>
+            <span class="mock-patient-age">1a 4m</span>
+          </div>
+          <div class="mock-patient-weight">12 kg</div>
+        </div>
+        <div class="mock-section">
+          <div class="mock-section-label">Receita — Modelos</div>
+          <div class="mock-tpl-grid">
+            <div class="mock-tpl active">
+              <div class="mock-tpl-dx">Resfriado</div>
+              <div class="mock-tpl-age">&gt;6m &lt;2a</div>
+            </div>
+            <div class="mock-tpl">
+              <div class="mock-tpl-dx">GEA</div>
+              <div class="mock-tpl-age">qualquer</div>
+            </div>
+            <div class="mock-tpl">
+              <div class="mock-tpl-dx">OMA</div>
+              <div class="mock-tpl-age">qualquer</div>
+            </div>
+            <div class="mock-tpl">
+              <div class="mock-tpl-dx">ITU</div>
+              <div class="mock-tpl-age">≥3m</div>
+            </div>
+            <div class="mock-tpl">
+              <div class="mock-tpl-dx">Asma</div>
+              <div class="mock-tpl-age">≥2a</div>
+            </div>
+            <div class="mock-tpl">
+              <div class="mock-tpl-dx">Lombalgia</div>
+              <div class="mock-tpl-age">adulto</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Step 3: Computed result -->
+  <section class="step">
+    <span class="step-num">3</span>
+    <div class="step-title">Auto-dose preview → confirm → apply</div>
+    <div class="step-desc">A small inline preview shows the rendered prescription with computed doses. Doctor can edit before injecting into G-Hosp's <code>#modo_usar</code> via the existing Simples flow.</div>
+    <div class="mock">
+      <div class="mock-body">
+        <div class="mock-section">
+          <div class="mock-section-label">Receita gerada (peso 12 kg)</div>
+          <div class="preview">
+            <div class="preview-line">
+              <strong>Dipirona</strong> gotas 500mg/mL<br>
+              <span class="computed">12 gotas</span> VO 6/6h se febre/dor
+              <div class="meta">≈ 1 gota/kg · 4 doses/dia</div>
+            </div>
+            <div class="preview-line">
+              <strong>Paracetamol</strong> gotas 200mg/mL<br>
+              <span class="computed">12 gotas</span> VO 6/6h se febre/dor
+              <div class="meta">≈ 1 gota/kg · 4 doses/dia</div>
+            </div>
+            <div class="preview-extra">Soro fisiológico nasal 6/6h
+Orientar hidratação e elevação da cabeceira.
+Retorno se piora respiratória ou febre persistente &gt; 72h.</div>
+          </div>
+          <div class="preview-actions">
+            <button class="preview-btn secondary">Editar</button>
+            <button class="preview-btn primary">Aplicar e abrir Receita</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<!-- Variables                                                              -->
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<div class="vars">
+  <h3>Variables for the "Texto adicional" area</h3>
+  <p style="font-size: 12px; color: var(--text-dim); margin-bottom: 4px;">
+    Patient context auto-substituted at apply time. Use these in the extraText area for personalized retorno / orientações.
+  </p>
+  <table>
+    <thead>
+      <tr><th>Placeholder</th><th>Source</th><th>Example output</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>${weight}</code></td><td>G-Hosp DOM</td><td>12 kg</td></tr>
+      <tr><td><code>${age}</code></td><td>G-Hosp DOM</td><td>1a 4m</td></tr>
+      <tr><td><code>${patient_name}</code></td><td>G-Hosp DOM</td><td>JOÃO DA SILVA</td></tr>
+      <tr><td><code>${date}</code></td><td>local clock</td><td>07/05/2026</td></tr>
+      <tr><td><code>${cid}</code></td><td>active suggestion</td><td>J06.9</td></tr>
+      <tr><td><code>${return_in:48h}</code></td><td>helper</td><td>retorno em 09/05</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<!-- Med catalog modal                                                      -->
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<div class="modal-card">
+  <div class="modal-title">Med catalog — opens when clicking "+ Adicionar medicação"</div>
+  <p style="font-size: 12px; color: var(--text-dim); margin-bottom: 10px;">
+    Single search-first list mixing pediatric (weight-based) and adult (fixed-dose) meds. Each row shows the dose strategy. Categories: Antibióticos, Analgésicos, Corticoides, Outros.
+  </p>
+  <input class="modal-search" placeholder="Buscar medicação..." value="amox">
+  <div class="modal-list">
+    <div class="modal-med">
+      <div class="modal-med-row">
+        <span class="modal-med-name">Amoxicilina (Faringite)</span>
+        <span class="modal-med-cat">PED · Antibiótico</span>
+      </div>
+      <div class="modal-med-detail">50mg/kg/dia · 12/12h · 7d · 250mg/5mL</div>
+    </div>
+    <div class="modal-med">
+      <div class="modal-med-row">
+        <span class="modal-med-name">Amoxicilina (Pneumonia/OMA)</span>
+        <span class="modal-med-cat">PED · Antibiótico</span>
+      </div>
+      <div class="modal-med-detail">90mg/kg/dia · 12/12h · 7-10d · 250mg/5mL</div>
+    </div>
+    <div class="modal-med">
+      <div class="modal-med-row">
+        <span class="modal-med-name">Amoxi+Clav (BD)</span>
+        <span class="modal-med-cat">PED · Antibiótico</span>
+      </div>
+      <div class="modal-med-detail">50mg/kg/dia · 12/12h · 7-10d · 400/5mL</div>
+    </div>
+    <div class="modal-med">
+      <div class="modal-med-row">
+        <span class="modal-med-name">Amoxicilina 500mg</span>
+        <span class="modal-med-cat">ADULTO · Antibiótico</span>
+      </div>
+      <div class="modal-med-detail">500mg · 8/8h · 7d (fixed)</div>
+    </div>
+    <div class="modal-med">
+      <div class="modal-med-row">
+        <span class="modal-med-name">Amoxi+Clav 875/125mg</span>
+        <span class="modal-med-cat">ADULTO · Antibiótico</span>
+      </div>
+      <div class="modal-med-detail">875/125mg · 12/12h · 7-10d (fixed)</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<!-- Implementation notes                                                   -->
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<section style="background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 24px; margin-top: 36px;">
+  <h2 style="font-size: 16px; font-weight: 700; margin-bottom: 14px;">Implementation breakdown</h2>
+  <table style="width: 100%; font-size: 12px; border-collapse: collapse;">
+    <thead>
+      <tr style="background: var(--bg-row);">
+        <th style="padding: 10px 14px; text-align: left; font-size: 10px; text-transform: uppercase; letter-spacing: 0.6px; color: var(--text-dim);">Layer</th>
+        <th style="padding: 10px 14px; text-align: left; font-size: 10px; text-transform: uppercase; letter-spacing: 0.6px; color: var(--text-dim);">Change</th>
+        <th style="padding: 10px 14px; text-align: left; font-size: 10px; text-transform: uppercase; letter-spacing: 0.6px; color: var(--text-dim);">Effort</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td style="padding: 10px 14px; border-bottom: 1px solid var(--border); font-weight: 700; color: var(--brand);">Backend (Pediatrics)</td><td style="padding: 10px 14px; border-bottom: 1px solid var(--border);">Add <code>ADULT_MEDICATIONS</code> list (~20 meds). Extend <code>/api/dosages/full</code> to accept <code>?type=pediatric|adult|both</code> and return both lists when needed. Tests for the new schema.</td><td style="padding: 10px 14px; border-bottom: 1px solid var(--border);">~3h</td></tr>
+      <tr><td style="padding: 10px 14px; border-bottom: 1px solid var(--border); font-weight: 700; color: var(--brand);">Storage migration</td><td style="padding: 10px 14px; border-bottom: 1px solid var(--border);">Templates schema gains <code>meds: []</code> and <code>extraText</code>. Backwards-compatible: legacy <code>body</code> still works. Auto-migrate on first read.</td><td style="padding: 10px 14px; border-bottom: 1px solid var(--border);">~1h</td></tr>
+      <tr><td style="padding: 10px 14px; border-bottom: 1px solid var(--border); font-weight: 700; color: var(--brand);">Popup template editor</td><td style="padding: 10px 14px; border-bottom: 1px solid var(--border);">"+ Adicionar medicação" button per template card. Med catalog modal with search. Per-med freq/duration/notes inputs. "Texto adicional" textarea. Variable hints under it.</td><td style="padding: 10px 14px; border-bottom: 1px solid var(--border);">~5h</td></tr>
+      <tr><td style="padding: 10px 14px; border-bottom: 1px solid var(--border); font-weight: 700; color: var(--brand);">Side panel apply</td><td style="padding: 10px 14px; border-bottom: 1px solid var(--border);">Cache <code>/api/dosages/full</code> result per patient weight. On template click: lookup each <code>medId</code>, render a line with computed dose (ml/gotas/mg per the existing rules), append <code>extraText</code> with variable substitution, show preview drawer, confirm → inject into Simples flow's <code>#modo_usar</code>.</td><td style="padding: 10px 14px; border-bottom: 1px solid var(--border);">~4h</td></tr>
+      <tr><td style="padding: 10px 14px; border-bottom: 1px solid var(--border); font-weight: 700; color: var(--brand);">Variable substitution</td><td style="padding: 10px 14px; border-bottom: 1px solid var(--border);"><code>${weight}</code>, <code>${age}</code>, <code>${patient_name}</code>, <code>${date}</code>, <code>${cid}</code>, <code>${return_in:Nh}</code>. Pure string replace.</td><td style="padding: 10px 14px; border-bottom: 1px solid var(--border);">~1h</td></tr>
+      <tr><td style="padding: 10px 14px; font-weight: 700; color: var(--brand);">Preview drawer + edit</td><td style="padding: 10px 14px;">Inline preview of the rendered prescription before applying. Editable textarea with the auto-rendered text — doctor can tweak before clicking "Aplicar e abrir Receita".</td><td style="padding: 10px 14px;">~2h</td></tr>
+    </tbody>
+  </table>
+  <p style="margin-top: 14px; font-size: 12px; color: var(--text-dim);">
+    <strong>Total: ~16h</strong> across backend + extension. Larger than the prior small ideas — but this is a feature evolution that replaces the v3.1.8 "Modelos G-Hosp" probe (which we're rolling back) with something the doctor actually owns.
+  </p>
+</section>
+
+<footer>
+  Generated 2026-05-07 · Toca Ficha Dr. v3.3.0 · open <code>docs/smart-templates.html</code> in your browser
+</footer>
+
+</div>
+</body>
+</html>

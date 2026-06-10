@@ -82,6 +82,27 @@ describe.sequential("merger gates", () => {
     });
   }, 30000);
 
+  it("fails gate when PR has no linked issue", async () => {
+    mockWorkProductService.getById.mockResolvedValue({
+      id: "wp-1",
+      companyId: "company-1",
+      issueId: null,
+      type: "pull_request",
+    });
+
+    const app = await createApp();
+    const res = await request(app).get("/api/work-products/wp-1/merge-gates");
+
+    expect(res.status).toBe(200);
+    expect(res.body.canMerge).toBe(false);
+    expect(res.body.gates).toHaveLength(1);
+    expect(res.body.gates[0]).toEqual({
+      gateId: "issue_approval",
+      passed: false,
+      reason: "Work product has no linked issue",
+    });
+  }, 30000);
+
   it("passes gate when PR has an approved approval", async () => {
     mockWorkProductService.getById.mockResolvedValue({
       id: "wp-1",

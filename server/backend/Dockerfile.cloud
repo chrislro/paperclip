@@ -1,0 +1,24 @@
+FROM python:3.11-slim
+
+WORKDIR /app
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    gcc libpq-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt \
+    && pip install --no-cache-dir gunicorn psycopg2-binary flask-cors PyJWT stripe sqlalchemy alembic
+
+COPY emr_automation/ emr_automation/
+COPY keychain_helper.py keychain_helper.py
+COPY run_dashboard.py run_dashboard.py
+COPY data/ data/
+COPY config.ini.example config.ini
+
+EXPOSE 5050
+
+CMD ["gunicorn", "emr_automation.dashboard.app:create_app()", \
+     "--bind", "0.0.0.0:5050", \
+     "--workers", "2", \
+     "--timeout", "120"]

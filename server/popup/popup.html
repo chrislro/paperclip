@@ -1,0 +1,1274 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Toca Ficha Dr.</title>
+  <style>
+    :root {
+      --alarm: #ef4444;
+      --caution: #f59e0b;
+      --vital: #10b981;
+      --info: #3b82f6;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      width: 340px;
+      background: #0d0d0d;
+      color: #ddd;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      font-size: 13px;
+    }
+
+    /* Tabs */
+    .tabs {
+      display: flex;
+      border-bottom: 1px solid #1f1f1f;
+    }
+    .tab-btn {
+      flex: 1;
+      padding: 10px;
+      background: #111;
+      border: none;
+      color: #666;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .tab-btn.active {
+      color: #10b981;
+      border-bottom: 2px solid #10b981;
+      background: #0d0d0d;
+    }
+    .tab-btn:hover { color: #aaa; }
+
+    .tab-panel { display: none; padding: 14px; }
+    .tab-panel.active { display: block; }
+
+    /* Scribe Tab */
+    .record-section {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+    .record-btn {
+      width: 64px; height: 64px;
+      border-radius: 50%;
+      border: 3px solid #10b981;
+      background: transparent;
+      color: #10b981;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .record-btn:hover { background: rgba(16,185,129,0.1); }
+    .record-btn.recording {
+      background: var(--alarm);
+      border-color: var(--alarm);
+      color: #fff;
+      animation: pulse 1.5s infinite;
+    }
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(239,68,68,0.4); }
+      70% { box-shadow: 0 0 0 10px rgba(239,68,68,0); }
+      100% { box-shadow: 0 0 0 0 rgba(239,68,68,0); }
+    }
+    .timer {
+      font-size: 18px;
+      font-weight: 700;
+      color: #ccc;
+      font-variant-numeric: tabular-nums;
+    }
+    .scribe-status {
+      font-size: 11px;
+      min-height: 14px;
+      color: #888;
+    }
+    .scribe-status.ok { color: var(--vital); }
+    .scribe-status.err { color: var(--alarm); }
+
+    /* v3.8.0 — Inline usage chip in scribe tab */
+    .scribe-usage-chip {
+      margin-top: 8px;
+      font-size: 10.5px;
+      letter-spacing: 0.2px;
+      color: #888;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      background: #111;
+      border: 1px solid #1f1f1f;
+      border-radius: 999px;
+    }
+    .scribe-usage-chip .scribe-usage-count { font-variant-numeric: tabular-nums; }
+    .scribe-usage-chip.near { color: #f59e0b; border-color: rgba(245,158,11,0.3); }
+    .scribe-usage-chip.at   { color: #ef4444; border-color: rgba(239,68,68,0.3); font-weight: 600; }
+    .scribe-upgrade-link {
+      margin-left: auto;
+      color: #10b981;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 10px;
+    }
+    .scribe-upgrade-link:hover { text-decoration: underline; }
+
+    .soap-section { margin-top: 8px; }
+    .soap-textarea {
+      width: 100%;
+      min-height: 160px;
+      background: #161616;
+      border: 1px solid #2a2a2a;
+      border-radius: 6px;
+      padding: 8px 10px;
+      color: #ddd;
+      font-size: 12px;
+      resize: vertical;
+      outline: none;
+    }
+    .soap-textarea:focus { border-color: #10b981; }
+    .soap-textarea::placeholder { color: #333; }
+
+    .copy-btn {
+      width: 100%;
+      margin-top: 8px;
+      padding: 8px;
+      background: #161616;
+      border: 1px solid #2a2a2a;
+      border-radius: 6px;
+      color: #888;
+      font-size: 11px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .copy-btn:hover { border-color: #10b981; color: #10b981; }
+
+    .mode-row {
+      margin-top: 10px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      color: #888;
+    }
+    .mode-row input { accent-color: #10b981; cursor: pointer; }
+    .mode-row label { cursor: pointer; }
+
+    /* Config Tab (existing styles) */
+    .field { display: flex; flex-direction: column; gap: 5px; margin-bottom: 12px; }
+    .label { font-size: 11px; color: #555; text-transform: uppercase; letter-spacing: 0.8px; font-weight: 600; }
+    .input {
+      background: #161616;
+      border: 1px solid #2a2a2a;
+      border-radius: 6px;
+      padding: 8px 10px;
+      color: #ddd;
+      font-size: 12px;
+      outline: none;
+      width: 100%;
+      transition: border-color 0.15s;
+    }
+    .input:focus { border-color: #10b981; }
+    .input::placeholder { color: #333; }
+    .conn-row { display: flex; gap: 8px; align-items: center; }
+    .conn-row .input { flex: 1; }
+    .test-btn {
+      padding: 8px 10px;
+      background: #161616;
+      border: 1px solid #2a2a2a;
+      border-radius: 6px;
+      color: #888;
+      font-size: 11px;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.15s;
+    }
+    .test-btn:hover { border-color: #10b981; color: #10b981; }
+    .conn-status { font-size: 11px; min-height: 14px; }
+    .conn-status.ok { color: var(--vital); }
+    .conn-status.err { color: var(--alarm); }
+    .toggle-row { display: flex; align-items: center; justify-content: space-between; }
+    .toggle-label { font-size: 12px; color: #888; }
+    .toggle { position: relative; width: 38px; height: 20px; }
+    .toggle input { opacity: 0; width: 0; height: 0; }
+    .toggle-slider {
+      position: absolute; inset: 0;
+      background: #222; border-radius: 10px;
+      cursor: pointer; transition: background 0.2s;
+    }
+    .toggle-slider:before {
+      content: ''; position: absolute;
+      width: 14px; height: 14px;
+      left: 3px; top: 3px;
+      background: #555; border-radius: 50%;
+      transition: all 0.2s;
+    }
+    .toggle input:checked + .toggle-slider { background: #059669; }
+    .toggle input:checked + .toggle-slider:before { transform: translateX(18px); background: #fff; }
+    .divider { height: 1px; background: #1a1a1a; margin: 10px 0; }
+    .save-btn {
+      width: 100%; padding: 10px;
+      background: linear-gradient(135deg, #059669, #047857);
+      color: #fff; border: none; border-radius: 8px;
+      font-size: 13px; font-weight: 700; cursor: pointer;
+      transition: all 0.15s;
+    }
+    .save-btn:hover { background: linear-gradient(135deg, #10b981, #059669); }
+    .status { font-size: 11px; color: var(--vital); text-align: center; min-height: 16px; }
+    .hint { font-size: 10px; color: #444; margin-top: 3px; line-height: 1.4; }
+    .textarea {
+      background: #161616; border: 1px solid #2a2a2a;
+      border-radius: 6px; padding: 8px 10px;
+      color: #ddd; font-size: 12px;
+      outline: none; width: 100%; resize: vertical;
+      min-height: 60px; font-family: inherit;
+      transition: border-color 0.15s;
+    }
+    .textarea:focus { border-color: #10b981; }
+    .rx-save-error { color: #b91c1c; font-size: 12px; min-height: 14px; }
+
+    /* ============================================================
+       v3.4.0 — Smart-template med rows + catalog modal
+       ============================================================ */
+    .rx-tpl-meds {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      background: #0a0a0a;
+      border: 1px solid #1a1a1a;
+      border-radius: 6px;
+      padding: 6px;
+    }
+    .rx-tpl-med {
+      display: grid;
+      grid-template-columns: minmax(64px, 1.2fr) 58px 52px 46px minmax(56px, .9fr) auto;
+      gap: 4px;
+      align-items: center;
+    }
+    .rx-tpl-med-name {
+      font-size: 11px;
+      color: #ddd;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .rx-tpl-med input {
+      background: #161616;
+      border: 1px solid #2a2a2a;
+      border-radius: 4px;
+      padding: 4px 6px;
+      color: #ddd;
+      font-size: 11px;
+      outline: none;
+      width: 100%;
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    }
+    .rx-tpl-med input:focus { border-color: #10b981; }
+    .rx-tpl-med-x {
+      background: transparent;
+      border: 1px solid #2a2a2a;
+      border-radius: 4px;
+      color: #888;
+      font-size: 13px;
+      line-height: 1;
+      padding: 2px 7px;
+      cursor: pointer;
+    }
+    .rx-tpl-med-x:hover { color: var(--alarm); border-color: var(--alarm); }
+
+    .rx-tpl-add-med {
+      background: transparent;
+      border: 1px dashed #2a2a2a;
+      border-radius: 6px;
+      color: #888;
+      font-size: 11px;
+      padding: 6px;
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.12s;
+    }
+    .rx-tpl-add-med:hover { color: #10b981; border-color: #10b981; }
+
+    .rx-tpl-extra {
+      font-size: 11.5px;
+      min-height: 50px;
+    }
+    .rx-tpl-vars-hint {
+      display: block;
+      font-size: 10px;
+      color: #555;
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    }
+
+    /* Catalog modal — covers the whole popup, dismiss on backdrop click */
+    .med-catalog-modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.75);
+      z-index: 9999;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 24px 12px;
+    }
+    .med-catalog-content {
+      background: #0d0d0d;
+      border: 1px solid #2a2a2a;
+      border-radius: 10px;
+      width: 100%;
+      max-width: 320px;
+      max-height: calc(100vh - 48px);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+    }
+    .med-catalog-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 12px;
+      border-bottom: 1px solid #1a1a1a;
+      background: linear-gradient(180deg, #131313, #0f0f0f);
+    }
+    .med-catalog-title {
+      font-size: 12px;
+      font-weight: 700;
+      color: #ddd;
+    }
+    .med-catalog-close {
+      background: transparent;
+      border: none;
+      color: #888;
+      font-size: 18px;
+      line-height: 1;
+      cursor: pointer;
+      padding: 0 4px;
+    }
+    .med-catalog-close:hover { color: var(--alarm); }
+    .med-catalog-search {
+      margin: 8px 12px 4px;
+      background: #161616;
+      border: 1px solid #2a2a2a;
+      border-radius: 6px;
+      padding: 7px 10px;
+      color: #ddd;
+      font-size: 12px;
+      outline: none;
+    }
+    .med-catalog-search:focus { border-color: #10b981; }
+    .med-catalog-list {
+      overflow-y: auto;
+      padding: 4px 6px 10px;
+      flex: 1 1 auto;
+    }
+    .med-catalog-item {
+      background: #111;
+      border: 1px solid #1f1f1f;
+      border-radius: 6px;
+      padding: 7px 8px;
+      margin: 4px;
+      cursor: pointer;
+      transition: all 0.1s;
+    }
+    .med-catalog-item:hover {
+      border-color: #10b981;
+      background: rgba(16, 185, 129, 0.06);
+    }
+    .med-catalog-name {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #ddd;
+    }
+    .med-catalog-cat {
+      font-size: 9px;
+      letter-spacing: 0.4px;
+      color: #10b981;
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      flex-shrink: 0;
+    }
+    .med-catalog-detail {
+      font-size: 10.5px;
+      color: #888;
+      margin-top: 2px;
+      line-height: 1.35;
+    }
+    .med-catalog-empty {
+      text-align: center;
+      color: #666;
+      font-size: 11px;
+      padding: 20px 10px;
+    }
+    .med-catalog-fallback {
+      background: rgba(217, 119, 6, 0.12);
+      border: 1px solid rgba(217, 119, 6, 0.35);
+      color: #fbbf24;
+      font-size: 10.5px;
+      padding: 8px 10px;
+      margin: 4px;
+      border-radius: 6px;
+      line-height: 1.4;
+    }
+
+    /* ============================================================
+       Branded popup header (improvement #4)
+       ============================================================ */
+    .pbrand {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 14px;
+      background: linear-gradient(180deg, #131313, #0f0f0f);
+      border-bottom: 1px solid #1a1a1a;
+    }
+    .pbrand-left { display: flex; align-items: center; gap: 8px; }
+    .pbrand-mark {
+      width: 22px; height: 22px;
+      border-radius: 6px;
+      background: linear-gradient(135deg, #10b981, #047857);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.15);
+    }
+    .pbrand-mark svg {
+      width: 14px; height: 14px;
+      stroke: #fff;
+      fill: none;
+      stroke-width: 2.2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .pbrand-name { font-size: 12px; font-weight: 600; color: #ddd; }
+    .pbrand-right { display: flex; align-items: center; gap: 8px; }
+    .avatar {
+      width: 24px; height: 24px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #6366f1, #4f46e5);
+      color: #fff;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.4px;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    .avatar.empty {
+      background: #181818;
+      border: 1px solid #2a2a2a;
+      color: #555;
+    }
+
+    /* Status pill — small, inline with header */
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: #0f1916;
+      border: 1px solid #163026;
+      color: #10b981;
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      padding: 3px 7px;
+      border-radius: 999px;
+      text-transform: uppercase;
+      font-variant-numeric: tabular-nums;
+    }
+    .status-pill .pill-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: #10b981;
+      box-shadow: 0 0 4px #10b981;
+    }
+    .status-pill.offline { background: #1c0f0f; border-color: #301616; color: var(--alarm); }
+    .status-pill.offline .pill-dot { background: var(--alarm); box-shadow: 0 0 4px var(--alarm); }
+
+    /* ============================================================
+       Logged-in card redesign (improvement #4)
+       ============================================================ */
+    .login-card {
+      background: linear-gradient(135deg, rgba(16,185,129,0.10), rgba(16,185,129,0.02));
+      border: 1px solid rgba(16,185,129,0.18);
+      border-radius: 10px;
+      padding: 12px;
+    }
+    .login-card-row { display: flex; align-items: center; gap: 10px; }
+    .login-card-row .avatar { width: 36px; height: 36px; font-size: 13px; }
+    .login-card .em {
+      color: #ddd;
+      font-size: 12px;
+      font-weight: 600;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .login-card .pl {
+      color: #888;
+      font-size: 10px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 2px;
+    }
+    .plan-badge {
+      display: inline-block;
+      background: rgba(99,102,241,0.15);
+      color: #a5a8ff;
+      border: 1px solid rgba(99,102,241,0.25);
+      border-radius: 4px;
+      padding: 1px 6px;
+      font-size: 9px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .plan-badge.pro {
+      background: rgba(16,185,129,0.15);
+      color: #10b981;
+      border-color: rgba(16,185,129,0.3);
+    }
+    .usage-bar {
+      margin-top: 12px;
+      height: 4px;
+      background: #181818;
+      border-radius: 2px;
+      overflow: hidden;
+    }
+    .usage-bar .fill {
+      height: 100%;
+      background: linear-gradient(90deg, #10b981, #06b6d4);
+      transition: width 0.3s;
+    }
+    .usage-text {
+      display: flex;
+      justify-content: space-between;
+      font-size: 10px;
+      color: #666;
+      margin-top: 6px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* ============================================================
+       v3.8.0 — Upgrade nudge for free-tier users near limit
+       ============================================================ */
+    .upgrade-nudge {
+      margin-top: 12px;
+      background: linear-gradient(135deg, rgba(245,158,11,0.08), rgba(239,68,68,0.04));
+      border: 1px solid rgba(245,158,11,0.25);
+      border-radius: 10px;
+      padding: 12px;
+      text-align: center;
+    }
+    .upgrade-nudge-title {
+      font-size: 12px;
+      font-weight: 700;
+      color: #f59e0b;
+      margin-bottom: 6px;
+    }
+    .upgrade-nudge-desc {
+      font-size: 11px;
+      color: #888;
+      line-height: 1.45;
+      margin-bottom: 10px;
+    }
+    .upgrade-nudge-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      background: linear-gradient(135deg, #f59e0b, #d97706);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 700;
+      text-decoration: none;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(245,158,11,0.18);
+      transition: all 0.15s;
+    }
+    .upgrade-nudge-btn:hover {
+      background: linear-gradient(135deg, #fbbf24, #f59e0b);
+      box-shadow: 0 6px 18px rgba(245,158,11,0.3);
+      transform: translateY(-1px);
+    }
+
+    /* ============================================================
+       Auth gate (phase 03-02) — full-surface sign-in landing
+       ============================================================ */
+    #auth-gate {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 28px 22px 22px;
+      text-align: center;
+      min-height: calc(100vh - 50px);
+    }
+    .auth-gate-inner { max-width: 280px; display: flex; flex-direction: column; align-items: center; gap: 8px; }
+    .auth-gate-mark {
+      width: 48px; height: 48px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #10b981, #047857);
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 6px 18px rgba(16,185,129,0.25);
+      margin-bottom: 4px;
+    }
+    .auth-gate-mark svg { width: 24px; height: 24px; stroke: #fff; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+    .auth-gate-title { font-size: 16px; font-weight: 700; color: #ddd; margin: 0; }
+    .auth-gate-desc { font-size: 12px; color: #999; line-height: 1.5; margin: 4px 0 12px; }
+    .auth-gate-btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 11px 20px;
+      background: linear-gradient(135deg, #10b981, #047857);
+      color: #fff; border: none; border-radius: 8px;
+      font-size: 13px; font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(16,185,129,0.25);
+      transition: all 0.15s;
+    }
+    .auth-gate-btn:hover { box-shadow: 0 6px 18px rgba(16,185,129,0.35); transform: translateY(-1px); }
+    .auth-gate-btn svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+    .auth-gate-why { font-size: 10.5px; color: #666; line-height: 1.5; margin-top: 12px; max-width: 260px; }
+    .auth-gate-status { font-size: 11px; color: var(--caution); min-height: 14px; margin-top: 4px; }
+    .auth-gate-status.err { color: var(--alarm); }
+
+    body:not([data-authed="true"]) #auth-gate { display: flex; }
+    body:not([data-authed="true"]) .tabs,
+    body:not([data-authed="true"]) .tab-panel,
+    body:not([data-authed="true"]) #perfCard { display: none !important; }
+
+    /* ============================================================
+       Sign-in CTA prominence
+       ============================================================ */
+    .signin-cta {
+      width: 100%;
+      padding: 12px;
+      background: linear-gradient(135deg, #059669, #047857);
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      box-shadow: 0 4px 12px rgba(16,185,129,0.18);
+      transition: all 0.15s;
+    }
+    .signin-cta:hover {
+      background: linear-gradient(135deg, #10b981, #059669);
+      box-shadow: 0 6px 18px rgba(16,185,129,0.3);
+    }
+    .signin-cta svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+    .signout-link {
+      width: 100%;
+      margin-top: 8px;
+      padding: 6px;
+      background: transparent;
+      border: none;
+      color: #555;
+      font-size: 11px;
+      cursor: pointer;
+      text-align: center;
+      transition: color 0.15s;
+    }
+    .signout-link:hover { color: var(--alarm); }
+
+    /* ============================================================
+       Time-saved analytics tile (idea #6)
+       ============================================================ */
+    .perf-card {
+      background: linear-gradient(135deg, rgba(16,185,129,0.08), rgba(6,182,212,0.04));
+      border: 1px solid rgba(16,185,129,0.25);
+      border-radius: 10px;
+      padding: 12px;
+    }
+    .perf-row {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 6px;
+    }
+    .perf-label {
+      font-size: 9px; color: #888;
+      text-transform: uppercase; letter-spacing: 0.7px; font-weight: 600;
+    }
+    .perf-value {
+      font-size: 26px; font-weight: 800; line-height: 1;
+      color: #ddd; font-variant-numeric: tabular-nums;
+    }
+    .perf-value .perf-unit { font-size: 12px; color: #666; margin-left: 4px; font-weight: 600; }
+    .perf-trend { font-size: 10px; color: #10b981; font-weight: 700; }
+    .perf-trend.down { color: #888; }
+    .perf-spark {
+      display: flex; gap: 2px; align-items: end; height: 24px; margin-top: 8px;
+    }
+    .perf-spark > div {
+      flex: 1; background: linear-gradient(180deg, #10b981, #047857);
+      border-radius: 1px; min-height: 3px; opacity: 0.85;
+    }
+    .perf-spark > div.today {
+      background: linear-gradient(180deg, #10b981, #06b6d4);
+      box-shadow: 0 0 6px rgba(16,185,129,0.4);
+      opacity: 1;
+    }
+    .perf-foot {
+      font-size: 10px; color: #666; margin-top: 6px;
+      display: flex; justify-content: space-between;
+    }
+
+    /* ============================================================
+       Recording button 4-state (improvement #5)
+       ============================================================ */
+    .record-btn {
+      position: relative;
+      width: 72px; height: 72px;
+      border-radius: 50%;
+      background: transparent;
+      border: 2.5px solid #10b981;
+      color: #10b981;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+      animation: rec-breathe 2.5s ease-in-out infinite;
+    }
+    @keyframes rec-breathe {
+      0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(16,185,129,0); }
+      50%      { transform: scale(0.97); box-shadow: 0 0 0 6px rgba(16,185,129,0.06); }
+    }
+    .record-btn .rec-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 0;
+    }
+    .record-btn .rec-icon svg {
+      width: 26px; height: 26px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .record-btn .rec-timer { display: none; }
+    .record-btn .rec-check { display: none; }
+
+    .record-btn.recording {
+      background: var(--alarm);
+      border-color: var(--alarm);
+      color: #fff;
+      animation: rec-ring 1.5s infinite;
+    }
+    @keyframes rec-ring {
+      0%   { box-shadow: 0 0 0 0   rgba(239,68,68,0.55); }
+      70%  { box-shadow: 0 0 0 14px rgba(239,68,68,0);    }
+      100% { box-shadow: 0 0 0 0   rgba(239,68,68,0);    }
+    }
+    .record-btn.recording .rec-icon { display: none; }
+    .record-btn.recording .rec-timer {
+      display: block;
+      font-size: 16px;
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+      letter-spacing: 0.4px;
+    }
+
+    .record-btn.processing {
+      border: 2.5px solid transparent;
+      background-image:
+        linear-gradient(#0d0d0d, #0d0d0d),
+        conic-gradient(from 0deg, var(--caution) 0deg, transparent 270deg, var(--caution) 360deg);
+      background-origin: border-box;
+      background-clip: padding-box, border-box;
+      color: var(--caution);
+      animation: rec-spin 1s linear infinite;
+    }
+    @keyframes rec-spin { to { transform: rotate(360deg); } }
+    .record-btn.processing .rec-icon svg { animation: rec-spin-reverse 1s linear infinite; }
+    @keyframes rec-spin-reverse { to { transform: rotate(-360deg); } }
+
+    .record-btn.done {
+      background: var(--vital);
+      border-color: var(--vital);
+      color: #fff;
+      animation: none;
+    }
+    .record-btn.done .rec-icon { display: none; }
+    .record-btn.done .rec-check {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .record-btn.done .rec-check svg {
+      width: 32px; height: 32px;
+      stroke: #fff; stroke-width: 3;
+      fill: none; stroke-linecap: round; stroke-linejoin: round;
+    }
+
+    .record-btn:hover { transform: scale(1.02); }
+
+    /* ============================================================
+       v3.7.0 — Option B: smart-template cards with live preview
+       ============================================================ */
+    .rx-card-b {
+      background: #111;
+      border: 1px solid #1f1f1f;
+      border-radius: 10px;
+      padding: 12px;
+      display: flex;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+    .rx-b-preview-col {
+      flex: 0 0 150px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .rx-b-preview-label {
+      font-size: 10px;
+      color: #666;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .rx-b-preview-pill {
+      background: #0a0a0a;
+      border: 1px solid #2a2a2a;
+      border-radius: 8px;
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .rx-b-preview-name {
+      font-size: 13px;
+      font-weight: 600;
+      color: #ddd;
+    }
+    .rx-b-preview-sub {
+      font-size: 11px;
+      color: #888;
+    }
+    .rx-b-preview-hint {
+      font-size: 10px;
+      color: #10b981;
+      line-height: 1.4;
+    }
+    .rx-b-editor-col {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .rx-b-name-row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 6px;
+      align-items: center;
+    }
+    .rx-b-pills-wrap {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .rx-b-med-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #0d0d0d;
+      border: 1px solid #2a2a2a;
+      border-radius: 6px;
+      padding: 4px 10px;
+      font-size: 12px;
+    }
+    .rx-b-med-name {
+      color: #ddd;
+    }
+    .rx-b-med-badge {
+      font-size: 10px;
+      color: #10b981;
+      background: rgba(16,185,129,0.1);
+      border-radius: 4px;
+      padding: 1px 5px;
+    }
+    .rx-b-med-badge-override {
+      color: #f59e0b;
+      background: rgba(245,158,11,0.1);
+    }
+    .rx-b-med-x {
+      background: none;
+      border: none;
+      color: #555;
+      font-size: 14px;
+      cursor: pointer;
+      padding: 0 2px;
+      line-height: 1;
+    }
+    .rx-b-med-x:hover { color: #ef4444; }
+
+    .rx-b-search-wrap { position: relative; }
+    .rx-b-search-input {
+      width: 100%;
+      font-size: 12px;
+      padding: 7px 10px;
+    }
+    .rx-b-search-dropdown {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      background: #161616;
+      border: 1px solid #2a2a2a;
+      border-radius: 6px;
+      margin-top: 4px;
+      max-height: 220px;
+      overflow-y: auto;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+    }
+    .rx-b-search-empty {
+      padding: 10px;
+      font-size: 12px;
+      color: #666;
+      text-align: center;
+    }
+    .rx-b-search-item {
+      padding: 8px 10px;
+      cursor: pointer;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    .rx-b-search-item:last-child { border-bottom: none; }
+    .rx-b-search-item:hover { background: #1a1a1a; }
+    .rx-b-search-item-name {
+      font-size: 12px;
+      color: #ddd;
+    }
+    .rx-b-search-item-detail {
+      font-size: 10px;
+      color: #666;
+      margin-top: 2px;
+    }
+
+    .rx-b-override {
+      border: 1px solid #2a2a2a;
+      border-radius: 6px;
+      padding: 8px;
+      margin-top: 4px;
+    }
+    .rx-b-override summary {
+      font-size: 11px;
+      color: #888;
+      cursor: pointer;
+      list-style: none;
+    }
+    .rx-b-override summary::-webkit-details-marker { display: none; }
+    .rx-b-extra {
+      border: 1px solid #2a2a2a;
+      border-radius: 6px;
+      padding: 8px;
+      margin-top: 4px;
+    }
+    .rx-b-extra summary {
+      font-size: 11px;
+      color: #888;
+      cursor: pointer;
+      list-style: none;
+    }
+    .rx-b-extra summary::-webkit-details-marker { display: none; }
+  </style>
+</head>
+<body>
+
+  <!-- Branded header -->
+  <div class="pbrand">
+    <div class="pbrand-left">
+      <span class="pbrand-mark">
+        <svg viewBox="0 0 24 24"><path d="M3 13 L7 13 L9 7 L12 17 L14 11 L16 13 L21 13"/></svg>
+      </span>
+      <span class="pbrand-name">Toca Ficha Dr.</span>
+    </div>
+    <div class="pbrand-right">
+      <span id="brandStatus" class="status-pill" style="display:none;">
+        <span class="pill-dot"></span>
+        <span id="brandStatusText">ON</span>
+      </span>
+      <span id="brandAvatar" class="avatar empty" title="Não autenticado">—</span>
+    </div>
+  </div>
+
+  <!-- Auth gate (phase 03-02) — see sidepanel.html for the parallel block. -->
+  <div id="auth-gate">
+    <div class="auth-gate-inner">
+      <span class="auth-gate-mark">
+        <svg viewBox="0 0 24 24"><path d="M3 13 L7 13 L9 7 L12 17 L14 11 L16 13 L21 13"/></svg>
+      </span>
+      <h2 class="auth-gate-title">Toca Ficha Dr.</h2>
+      <p class="auth-gate-desc">Faça login para acessar seus modelos de receita, vozes do SOAP, configurações e gravações de consulta.</p>
+      <button id="auth-gate-signin-btn" class="auth-gate-btn" type="button">
+        <svg viewBox="0 0 24 24"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+        Entrar / Cadastrar
+      </button>
+      <div id="auth-gate-status" class="auth-gate-status" aria-live="polite"></div>
+      <p class="auth-gate-why">Cada médico tem seus próprios modelos e configurações, vinculados à sua conta — sincronizados entre dispositivos.</p>
+    </div>
+  </div>
+
+  <!-- Tabs -->
+  <div class="tabs">
+    <button class="tab-btn active" data-tab="scribe">Prontuário</button>
+    <button class="tab-btn" data-tab="account">Conta</button>
+    <button class="tab-btn" data-tab="config">Config</button>
+  </div>
+
+  <!-- Scribe Tab -->
+  <div id="scribeTab" class="tab-panel active">
+    <div class="record-section">
+      <button id="recordBtn" class="record-btn" aria-label="Iniciar gravação">
+        <span class="rec-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="9" y="2" width="6" height="13" rx="3"/>
+            <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+            <line x1="12" y1="19" x2="12" y2="23"/>
+            <line x1="8" y1="23" x2="16" y2="23"/>
+          </svg>
+        </span>
+        <span class="rec-timer" id="recTimer">00:00</span>
+        <span class="rec-check">
+          <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+        </span>
+      </button>
+      <div id="timer" class="timer">00:00</div>
+      <div id="scribeStatus" class="scribe-status">Pronto</div>
+      <!-- v3.8.0 — Inline usage chip in scribe tab -->
+      <div id="scribeUsageChip" class="scribe-usage-chip" style="display:none;">
+        <span id="scribeUsageText">0 / 5 hoje</span>
+        <a id="scribeUpgradeLink" class="scribe-upgrade-link" href="https://tocafichadr.com.br/#precos" target="_blank" rel="noopener">Upgrade</a>
+      </div>
+    </div>
+
+    <div class="soap-section">
+      <textarea id="soapOutput" class="soap-textarea" placeholder="A nota SOAP aparecerá aqui..."></textarea>
+      <button id="copyBtn" class="copy-btn">Copiar SOAP</button>
+    </div>
+
+    <!-- Time-saved analytics tile (idea #6) -->
+    <div id="perfCard" class="perf-card" style="margin-top:14px;">
+      <div class="perf-row">
+        <span class="perf-label">Tempo poupado · hoje</span>
+        <span id="perfTrend" class="perf-trend"></span>
+      </div>
+      <div class="perf-value">
+        <span id="perfValue">0</span><span class="perf-unit">min</span>
+      </div>
+      <div id="perfSpark" class="perf-spark"></div>
+      <div class="perf-foot">
+        <span id="perfFootLeft">0 ações</span>
+        <span id="perfFootRight">7 dias</span>
+      </div>
+    </div>
+
+    <div class="mode-row">
+      <input type="checkbox" id="realtimeMode">
+      <label for="realtimeMode">Realtime API (experimental — requer proxy local)</label>
+    </div>
+    <div class="mode-row">
+      <input type="checkbox" id="ghospMode">
+      <label for="ghospMode">Ativar automação G-Hosp (avançado)</label>
+    </div>
+  </div>
+
+  <!-- Account Tab -->
+  <div id="accountTab" class="tab-panel">
+    <div id="authSection">
+      <div id="loggedOutView">
+        <div class="label">Conta</div>
+        <p style="font-size:11px;color:#888;margin-bottom:10px;line-height:1.45;">Entre ou cadastre-se para sincronizar consultas e usar o backend na nuvem.</p>
+        <button class="signin-cta" id="signInBtn">
+          <svg viewBox="0 0 24 24"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+          Entrar / Cadastrar
+        </button>
+        <div class="conn-status" id="authStatus"></div>
+      </div>
+      <div id="loggedInView" style="display:none;">
+        <div class="login-card">
+          <div class="login-card-row">
+            <span class="avatar" id="userAvatarLg">—</span>
+            <div style="flex:1;min-width:0;">
+              <div class="em" id="userEmail"></div>
+              <div class="pl">
+                <span id="userPlan">Free</span>
+                <span class="plan-badge" id="userPlanBadge">FREE</span>
+              </div>
+            </div>
+          </div>
+          <div class="usage-bar"><div class="fill" id="userUsageBar" style="width:0%;"></div></div>
+          <div class="usage-text">
+            <span id="userUsage">0 hoje</span>
+            <span id="userUsageLimit">ilimitado</span>
+          </div>
+        </div>
+        <!-- v3.8.0 — Upgrade nudge for free-tier users near limit -->
+        <div id="upgradeNudge" class="upgrade-nudge" style="display:none;">
+          <div class="upgrade-nudge-title">Aumente seu limite</div>
+          <p class="upgrade-nudge-desc">Você está próximo do limite diário de transcrições. Assine o Pro para uso ilimitado.</p>
+          <a id="upgradeLink" class="upgrade-nudge-btn" href="https://tocafichadr.com.br/#precos" target="_blank" rel="noopener">Ver planos Pro</a>
+        </div>
+        <button class="signout-link" id="signOutBtn">Sair da conta</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Config Tab -->
+  <div id="configTab" class="tab-panel">
+
+    <div class="field">
+      <div class="label">Backend</div>
+      <div style="display:flex;gap:8px;">
+        <label style="display:flex;align-items:center;gap:4px;cursor:pointer;">
+          <input type="radio" name="backendMode" value="local" id="modeLocal" checked style="accent-color:#10b981;">
+          <span style="font-size:12px;color:#888;">Local</span>
+        </label>
+        <label style="display:flex;align-items:center;gap:4px;cursor:pointer;">
+          <input type="radio" name="backendMode" value="cloud" id="modeCloud" style="accent-color:#10b981;">
+          <span style="font-size:12px;color:#888;">Cloud</span>
+        </label>
+      </div>
+    </div>
+
+    <div class="field" id="urlField">
+      <div class="label">URL do Servidor</div>
+      <div class="conn-row">
+        <input type="text" class="input" id="apiBaseUrl" placeholder="https://api.tocafichadr.com.br" />
+        <button class="test-btn" id="testBtn">Testar</button>
+      </div>
+      <div class="conn-status" id="connStatus"></div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="field">
+      <div class="toggle-row">
+        <span class="toggle-label">Limpar SOAP automaticamente</span>
+        <label class="toggle">
+          <input type="checkbox" id="autoClearSoap" checked>
+          <span class="toggle-slider"></span>
+        </label>
+      </div>
+    </div>
+
+    <div class="field">
+      <div class="toggle-row">
+        <span class="toggle-label">Sugerir CID por IA</span>
+        <label class="toggle">
+          <input type="checkbox" id="autoCid" checked>
+          <span class="toggle-slider"></span>
+        </label>
+      </div>
+    </div>
+
+    <div class="field">
+      <div class="toggle-row">
+        <span class="toggle-label">Modo de teste (banner visual)</span>
+        <label class="toggle">
+          <input type="checkbox" id="testMode">
+          <span class="toggle-slider"></span>
+        </label>
+      </div>
+      <div class="hint">Ativa banner fixo no G-Hosp indicando que nenhum dado real será salvo.</div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- v3.1 idea #8: SOAP voices — verbosity / perspective / customRules / few-shots -->
+    <div class="field">
+      <div class="label">Voz do SOAP</div>
+      <div class="hint" style="margin-bottom:6px;">Escolha um estilo (Conciso, Padrão, Detalhado) ou crie uma <b>voz pessoal</b> com regras + exemplos do seu próprio jeito de escrever — o GPT replica seu estilo.</div>
+      <div id="voicesList" style="display:flex;flex-direction:column;gap:6px;"></div>
+      <button class="test-btn" id="addVoiceBtn" style="margin-top:6px;width:100%;">+ Nova voz pessoal</button>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="field">
+      <div class="label">Instrucoes para o SOAP (opcional, legado)</div>
+      <textarea class="textarea" id="customInstructions" placeholder="Ex: Inclua sempre escala de dor..."></textarea>
+      <div class="hint">Aplicado a TODAS as vozes. Para regras por voz, use o editor de voz acima.</div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="field">
+      <div class="label">Medicamentos da Receita</div>
+      <div class="hint" style="margin-bottom:6px;">Crie os botões que aparecem em <b>Receita — Modelos</b>. Cada botão pode ter medicação, dose, frequência, duração e condição de uso; o médico seleciona vários e imprime uma receita combinada.</div>
+      <div id="rx-save-error" class="rx-save-error" aria-live="polite" style="margin-bottom:8px;"></div>
+      <div id="rxTemplatesList" style="display:flex;flex-direction:column;gap:10px;"></div>
+      <div style="display:flex;gap:6px;margin-top:8px;">
+        <button class="test-btn" id="addRxTemplateBtn" style="flex:1;">+ Adicionar modelo</button>
+        <button class="test-btn" id="restoreRxDefaultsBtn" style="flex:1;" title="Substitui pelos atalhos padrão">↺ Restaurar padrões</button>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <button class="save-btn" id="saveBtn">Salvar Configuracoes</button>
+    <div class="status" id="status"></div>
+
+  </div>
+
+  <!-- v3.4.0 — Smart-template med catalog modal. Hidden until "+ Adicionar
+       medicação" is clicked from a template card. Renders the dosages catalog
+       (cached 24h in chrome.storage.local). Click a row to push the med ref
+       onto the active template's `meds` array. -->
+  <div id="medCatalogModal" class="med-catalog-modal" style="display:none;" role="dialog" aria-modal="true" aria-label="Adicionar medicação ao modelo">
+    <div class="med-catalog-content">
+      <div class="med-catalog-header">
+        <span class="med-catalog-title">Adicionar medicação</span>
+        <button type="button" class="med-catalog-close" id="medCatalogClose" aria-label="Fechar">×</button>
+      </div>
+      <input type="text" class="med-catalog-search" id="medCatalogSearch" placeholder="Buscar medicação...">
+      <div class="med-catalog-list" id="medCatalogList"></div>
+    </div>
+  </div>
+
+  <!-- CHRA-2166 — connectivity tracker + offline write queue, loaded BEFORE
+       user-config-client.js so its reconnect-flush listener can wire up. -->
+  <script src="../shared/connectivity.js"></script>
+  <script src="../shared/offline-queue.js"></script>
+  <!-- Phase 03-03 user-config client. Loaded BEFORE popup.bundle.js so
+       window.TOCAFICHADR_userConfig is available when the bundle calls
+       loadRxTemplates() during its IIFE. -->
+  <script src="../shared/user-config-client.js"></script>
+  <script src="popup.bundle.js"></script>
+  <!-- Build-artifact watchdog (mirrors sidepanel.html). popup.bundle.js is
+       gitignored; if the file is missing the script tag above 404s silently
+       and nothing wires up. Surface that within 5s instead of leaving the
+       user with dead buttons. -->
+  <script>
+    setTimeout(function () {
+      if (typeof window.TOCAFICHADR_clerk === 'undefined') {
+        var msg = '[Toca Ficha Dr.] popup.bundle.js did not load — run "npm run build" in the extension repo and reload.';
+        console.error(msg);
+        var gate = document.getElementById('auth-gate-status');
+        if (gate) { gate.textContent = 'Erro: bundle não carregado. Reinstale a extensão.'; gate.className = 'auth-gate-status err'; }
+      }
+    }, 5000);
+  </script>
+</body>
+</html>

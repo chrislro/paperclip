@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Toca Ficha Dr. — UI/UX Ideas (v3.2.0)</title>
+<style>
+  /* ───── Palette mirrors sidepanel.html ───── */
+  :root {
+    --bg-page: #050505;
+    --bg-card: #0e0e0e;
+    --bg-row: #161616;
+    --bg-row-2: #181818;
+    --border: #1f1f1f;
+    --border-strong: #2a2a2a;
+    --brand: #10b981;
+    --brand-deep: #047857;
+    --brand-glow: rgba(16,185,129,0.15);
+    --warn: #f59e0b;
+    --err: #ef4444;
+    --text: #ddd;
+    --text-dim: #888;
+    --text-faint: #555;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    background: var(--bg-page);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+  body { padding: 32px 24px 80px; }
+  .page {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  header {
+    display: flex; align-items: center; gap: 16px;
+    margin-bottom: 32px; padding-bottom: 20px;
+    border-bottom: 1px solid var(--border);
+  }
+  .brand-mark {
+    width: 40px; height: 40px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, var(--brand), var(--brand-deep));
+    display: inline-flex; align-items: center; justify-content: center;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.18);
+  }
+  .brand-mark svg {
+    width: 22px; height: 22px;
+    stroke: #fff; fill: none; stroke-width: 2.2;
+    stroke-linecap: round; stroke-linejoin: round;
+  }
+  .title { font-size: 22px; font-weight: 700; }
+  .subtitle { font-size: 12px; color: var(--text-dim); margin-top: 2px; }
+  .stamp {
+    margin-left: auto;
+    font-size: 11px;
+    color: var(--text-dim);
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  }
+  .lede {
+    background: linear-gradient(135deg, rgba(16,185,129,0.06), rgba(6,182,212,0.03));
+    border: 1px solid rgba(16,185,129,0.2);
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin-bottom: 36px;
+    color: var(--text);
+    font-size: 13px;
+  }
+  .lede strong { color: var(--brand); }
+
+  /* ───── Idea cards ───── */
+  .idea {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 28px;
+  }
+  .idea-head {
+    display: flex; align-items: flex-start; gap: 14px;
+    margin-bottom: 14px;
+  }
+  .idea-num {
+    flex-shrink: 0;
+    width: 32px; height: 32px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--brand), var(--brand-deep));
+    color: #fff; font-weight: 800; font-size: 14px;
+    display: inline-flex; align-items: center; justify-content: center;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.4);
+  }
+  .idea-title { font-size: 16px; font-weight: 700; flex: 1; line-height: 1.3; }
+  .idea-tags { display: flex; gap: 6px; flex-shrink: 0; }
+  .tag {
+    font-size: 10px; font-weight: 700;
+    padding: 3px 7px; border-radius: 4px;
+    text-transform: uppercase; letter-spacing: 0.6px;
+  }
+  .tag.effort { background: rgba(245,158,11,0.12); color: var(--warn); border: 1px solid rgba(245,158,11,0.3); }
+  .tag.impact { background: rgba(16,185,129,0.12); color: var(--brand); border: 1px solid rgba(16,185,129,0.3); }
+  .tag.priority { background: rgba(99,102,241,0.12); color: #a5a8ff; border: 1px solid rgba(99,102,241,0.3); }
+
+  .idea-desc {
+    color: var(--text);
+    font-size: 13px;
+    margin-bottom: 18px;
+    padding-left: 46px;
+  }
+
+  .compare {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+    align-items: start;
+  }
+  .pane {
+    background: var(--bg-page);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px;
+  }
+  .pane-label {
+    font-size: 9px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.7px;
+    margin-bottom: 10px;
+    color: var(--text-dim);
+  }
+  .pane.before .pane-label { color: var(--text-faint); }
+  .pane.after .pane-label { color: var(--brand); }
+  .pane.after { border-color: rgba(16,185,129,0.3); }
+
+  /* ───── Mock side panel (reused across cards) ───── */
+  .mock {
+    background: #0a0a0a;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    width: 100%;
+    max-width: 360px;
+    margin: 0 auto;
+    overflow: hidden;
+  }
+  .mock-header {
+    background: linear-gradient(180deg, #131313, #0f0f0f);
+    border-bottom: 1px solid var(--border);
+    padding: 10px 14px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .mock-brand { display: flex; align-items: center; gap: 8px; }
+  .mock-brand-mark {
+    width: 22px; height: 22px;
+    border-radius: 6px;
+    background: linear-gradient(135deg, var(--brand), var(--brand-deep));
+    display: inline-flex; align-items: center; justify-content: center;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.15);
+  }
+  .mock-brand-mark svg { width: 14px; height: 14px; stroke: #fff; fill: none; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+  .mock-brand-name { font-size: 13px; font-weight: 700; color: var(--text); }
+  .mock-status-pill {
+    display: inline-flex; align-items: center; gap: 5px;
+    font-size: 9px; font-weight: 700; letter-spacing: 0.5px;
+    padding: 3px 7px; border-radius: 999px;
+    text-transform: uppercase;
+    background: #0f1916; border: 1px solid #163026; color: var(--brand);
+  }
+  .mock-pill-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--brand); box-shadow: 0 0 4px var(--brand); }
+
+  .mock-tabs { display: flex; border-bottom: 1px solid var(--border); }
+  .mock-tab {
+    flex: 1; padding: 10px;
+    background: #111;
+    color: var(--text-dim);
+    font-size: 11px; font-weight: 700;
+    text-align: center;
+  }
+  .mock-tab.active {
+    color: var(--brand);
+    border-bottom: 2px solid var(--brand);
+    background: #0a0a0a;
+  }
+
+  .mock-body { padding: 14px; }
+
+  .mock-section { margin-top: 12px; }
+  .mock-section-label {
+    font-size: 9px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.7px;
+    color: var(--text-faint);
+    margin-bottom: 6px;
+  }
+  .mock-section-label.bright { color: var(--brand); }
+
+  /* Patient card */
+  .mock-patient {
+    background: linear-gradient(135deg, rgba(16,185,129,0.06), rgba(16,185,129,0.02));
+    border: 1px solid rgba(16,185,129,0.18);
+    border-radius: 8px;
+    padding: 9px 12px;
+    margin-bottom: 10px;
+  }
+  .mock-patient-row { display: flex; justify-content: space-between; align-items: center; }
+  .mock-patient-label { font-size: 8px; font-weight: 700; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.5px; }
+  .mock-patient-id { font-family: ui-monospace, monospace; font-size: 10px; color: var(--brand); }
+  .mock-patient-weight { font-size: 16px; font-weight: 700; color: var(--text); margin: 2px 0; }
+  .mock-patient-complaint { font-size: 11px; color: var(--text-dim); }
+
+  /* Record button */
+  .mock-record {
+    width: 100%; padding: 11px;
+    background: linear-gradient(135deg, var(--brand), var(--brand-deep));
+    border: none; border-radius: 8px;
+    color: #fff; font-size: 12px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    box-shadow: 0 3px 10px rgba(16,185,129,0.2);
+  }
+  .mock-record.recording {
+    background: linear-gradient(135deg, var(--err), #b91c1c);
+    box-shadow: 0 3px 10px rgba(239,68,68,0.3);
+  }
+  .mock-record.processing {
+    background: linear-gradient(135deg, var(--warn), #b45309);
+  }
+  .mock-record-icon { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 1.8; }
+
+  .mock-status {
+    margin-top: 8px;
+    font-size: 11px;
+    color: var(--text-dim);
+    min-height: 14px;
+  }
+  .mock-status.loading { color: var(--warn); }
+  .mock-status.ok { color: var(--brand); }
+  .mock-status.err { color: var(--err); }
+
+  /* CID search */
+  .mock-input {
+    background: var(--bg-row);
+    border: 1px solid var(--border-strong);
+    border-radius: 5px;
+    padding: 7px 10px;
+    color: var(--text);
+    font-size: 11px;
+    width: 100%;
+    outline: none;
+  }
+  .mock-suggest-row {
+    background: var(--bg-row);
+    border: 1px solid var(--border-strong);
+    border-radius: 5px;
+    padding: 6px 9px;
+    margin-top: 5px;
+    display: flex; gap: 8px; align-items: center;
+    font-size: 10px;
+  }
+  .mock-suggest-row.ai {
+    background: rgba(16,185,129,0.08);
+    border-color: rgba(16,185,129,0.4);
+    box-shadow: 0 0 0 1px rgba(16,185,129,0.15);
+  }
+  .mock-suggest-badge {
+    background: linear-gradient(135deg, var(--brand), var(--brand-deep));
+    color: #fff;
+    font-size: 8px; font-weight: 700; letter-spacing: 0.5px;
+    padding: 2px 5px; border-radius: 4px;
+  }
+  .mock-suggest-code { font-family: ui-monospace, monospace; color: var(--brand); font-weight: 700; min-width: 38px; }
+  .mock-suggest-name { color: var(--text); flex: 1; }
+
+  /* Templates grid */
+  .mock-tpl-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; }
+  .mock-tpl {
+    background: var(--bg-row);
+    border: 1px solid var(--border-strong);
+    border-radius: 6px;
+    padding: 7px 5px;
+    text-align: center;
+    font-size: 10px;
+  }
+  .mock-tpl-dx { font-weight: 700; }
+  .mock-tpl-age { font-size: 8px; color: var(--brand); font-family: ui-monospace, monospace; }
+  .mock-sync-btn {
+    width: 100%; margin-top: 6px;
+    padding: 6px;
+    background: var(--bg-row);
+    border: 1px dashed var(--border-strong);
+    border-radius: 5px;
+    color: var(--text-dim);
+    font-size: 10px;
+  }
+
+  /* Tabs (for #1 mockup) */
+  .mock-mini-tabs {
+    display: flex; gap: 4px;
+    margin-bottom: 8px;
+    background: var(--bg-row);
+    border-radius: 5px; padding: 3px;
+  }
+  .mock-mini-tab {
+    flex: 1;
+    padding: 5px 8px;
+    font-size: 10px; font-weight: 700;
+    text-align: center;
+    color: var(--text-dim);
+    border-radius: 3px;
+    cursor: pointer;
+  }
+  .mock-mini-tab.active { background: rgba(16,185,129,0.12); color: var(--brand); }
+
+  /* Action grid */
+  .mock-act-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; }
+  .mock-act {
+    background: var(--bg-row);
+    border: 1px solid var(--border-strong);
+    border-radius: 5px;
+    padding: 7px;
+    color: var(--text);
+    font-size: 11px;
+    text-align: center;
+  }
+  .mock-act.secondary {
+    background: transparent;
+    border-style: dashed;
+    color: var(--text-dim);
+    font-size: 10px;
+    padding: 6px;
+  }
+
+  /* Letter drawer */
+  .mock-drawer {
+    margin-top: 6px;
+    background: rgba(16,185,129,0.04);
+    border: 1px solid rgba(16,185,129,0.25);
+    border-radius: 6px;
+    padding: 9px;
+    font-size: 10px;
+  }
+  .mock-drawer-context {
+    color: var(--text-dim); font-size: 10px;
+    padding: 5px 7px;
+    background: var(--bg-row);
+    border-radius: 4px;
+    margin-bottom: 6px;
+  }
+  .mock-drawer-textarea {
+    background: var(--bg-row);
+    border: 1px solid var(--border-strong);
+    border-radius: 4px;
+    padding: 6px;
+    font-size: 10px;
+    color: var(--text);
+    width: 100%;
+    min-height: 38px;
+  }
+  .mock-drawer-actions { display: flex; gap: 5px; margin-top: 5px; }
+  .mock-drawer-btn {
+    flex: 1; padding: 6px;
+    background: linear-gradient(135deg, var(--brand), var(--brand-deep));
+    border: none; border-radius: 4px;
+    color: #fff; font-size: 10px; font-weight: 700;
+  }
+  .mock-drawer-btn.secondary {
+    background: transparent;
+    border: 1px solid var(--border-strong);
+    color: var(--text-dim);
+  }
+
+  /* Progress bar */
+  .mock-progress {
+    margin-top: 6px;
+    height: 4px;
+    background: var(--bg-row);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .mock-progress > div {
+    height: 100%;
+    background: linear-gradient(90deg, var(--brand), #06b6d4);
+    width: 64%;
+    border-radius: 2px;
+    box-shadow: 0 0 8px rgba(16,185,129,0.4);
+    animation: pulse 1.6s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 0.85; }
+    50% { opacity: 1; }
+  }
+
+  /* Inline icon button */
+  .mock-status-row {
+    display: flex; align-items: center; gap: 5px;
+    margin-top: 8px;
+  }
+  .mock-icon-btn {
+    background: transparent;
+    border: none;
+    color: var(--brand);
+    font-size: 13px;
+    cursor: pointer;
+    padding: 0 4px;
+  }
+
+  /* Recovery legacy button */
+  .mock-recover-btn {
+    width: 100%; margin-top: 7px;
+    padding: 8px;
+    background: rgba(245,158,11,0.08);
+    border: 1px solid rgba(245,158,11,0.4);
+    border-radius: 5px;
+    color: var(--warn);
+    font-size: 11px;
+  }
+
+  /* Waveform */
+  .mock-waveform {
+    margin-top: 8px;
+    display: flex; align-items: end; gap: 2px;
+    height: 28px;
+  }
+  .mock-waveform > div {
+    flex: 1;
+    background: linear-gradient(180deg, var(--brand), var(--brand-deep));
+    border-radius: 1px;
+    opacity: 0.85;
+  }
+
+  /* Toggle row (config tab idea) */
+  .mock-toggle-group {
+    background: var(--bg-row);
+    border: 1px solid var(--border-strong);
+    border-radius: 6px;
+    padding: 8px 10px;
+  }
+  .mock-toggle-row {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 5px 0;
+    font-size: 11px;
+  }
+  .mock-toggle-row + .mock-toggle-row { border-top: 1px solid var(--border); }
+  .mock-toggle {
+    width: 28px; height: 16px;
+    background: var(--brand);
+    border-radius: 8px;
+    position: relative;
+  }
+  .mock-toggle::after {
+    content: '';
+    position: absolute;
+    width: 12px; height: 12px;
+    background: #fff;
+    border-radius: 50%;
+    top: 2px; right: 2px;
+  }
+  .mock-toggle.off { background: #2a2a2a; }
+  .mock-toggle.off::after { right: auto; left: 2px; }
+
+  .mock-toggle-label-group { font-size: 10px; color: var(--text-dim); margin-bottom: 6px; text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px; }
+
+  /* Recommendation table */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 16px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    font-size: 12px;
+  }
+  thead { background: var(--bg-row); }
+  th, td {
+    padding: 10px 14px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+  }
+  th { font-size: 10px; text-transform: uppercase; letter-spacing: 0.6px; color: var(--text-dim); }
+  tr:last-child td { border-bottom: none; }
+  td.num { text-align: center; font-weight: 700; color: var(--brand); width: 40px; }
+
+  /* Footer */
+  footer {
+    margin-top: 60px; padding-top: 24px;
+    border-top: 1px solid var(--border);
+    font-size: 11px;
+    color: var(--text-faint);
+    text-align: center;
+  }
+
+  /* Responsive */
+  @media (max-width: 800px) {
+    .compare { grid-template-columns: 1fr; }
+    .idea-desc { padding-left: 0; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+<header>
+  <span class="brand-mark">
+    <svg viewBox="0 0 24 24"><path d="M3 13 L7 13 L9 7 L12 17 L14 11 L16 13 L21 13"/></svg>
+  </span>
+  <div>
+    <div class="title">Toca Ficha Dr. — UI/UX Ideas</div>
+    <div class="subtitle">6 concrete suggestions to evaluate before shipping</div>
+  </div>
+  <span class="stamp">post-v3.2.0 · 2026-05-07</span>
+</header>
+
+<div class="lede">
+The Prontuário tab now stacks <strong>9 sections vertically</strong>, several added in v3.1.6–v3.2.0 (Modelos G-Hosp, Carta de orientação panel, SOAP recovery button, Atestado finalize bar). At 230 px wide that's a lot of scroll. These six ideas trade implementation effort for layout simplicity and signal clarity. Mocks use the same brand palette and components as the actual side panel.
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<!-- IDEA 1 — Tabbed prescription templates                                -->
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<section class="idea">
+  <div class="idea-head">
+    <span class="idea-num">1</span>
+    <div class="idea-title">Collapse "Modelos G-Hosp" + "Receita — Modelos" into one tabbed section</div>
+    <div class="idea-tags">
+      <span class="tag effort">~2 h</span>
+      <span class="tag impact">High</span>
+      <span class="tag priority">Recommend</span>
+    </div>
+  </div>
+  <div class="idea-desc">
+    Two prescription-template surfaces stacked vertically (G-Hosp's server-side templates + the doctor's own Simples-flow templates) is the biggest visual offender. They share a mental model: "pick a template, run it." A 2-tab toggle inside one section halves the vertical space and clarifies the pick-by-source decision.
+  </div>
+
+  <div class="compare">
+    <div class="pane before">
+      <div class="pane-label">Before — two stacked sections</div>
+      <div class="mock">
+        <div class="mock-body">
+          <div class="mock-section">
+            <div class="mock-section-label">Modelos G-Hosp</div>
+            <div class="mock-tpl-grid">
+              <div class="mock-tpl"><div class="mock-tpl-dx">OMA amoxi</div><div class="mock-tpl-age">637</div></div>
+              <div class="mock-tpl"><div class="mock-tpl-dx">Resfr. >6m</div><div class="mock-tpl-age">1079</div></div>
+              <div class="mock-tpl"><div class="mock-tpl-dx">PAC amoxi</div><div class="mock-tpl-age">643</div></div>
+              <div class="mock-tpl"><div class="mock-tpl-dx">GEA >2a</div><div class="mock-tpl-age">1081</div></div>
+            </div>
+            <button class="mock-sync-btn">🔄 Sincronizar</button>
+          </div>
+          <div class="mock-section" style="margin-top:18px;">
+            <div class="mock-section-label">Receita — Modelos</div>
+            <div class="mock-tpl-grid">
+              <div class="mock-tpl"><div class="mock-tpl-dx">Resfriado</div><div class="mock-tpl-age">>6m e &lt;2a</div></div>
+              <div class="mock-tpl"><div class="mock-tpl-dx">GEA</div><div class="mock-tpl-age">qualquer</div></div>
+              <div class="mock-tpl"><div class="mock-tpl-dx">OMA</div><div class="mock-tpl-age">qualquer</div></div>
+              <div class="mock-tpl"><div class="mock-tpl-dx">ITU</div><div class="mock-tpl-age">≥3m</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pane after">
+      <div class="pane-label">After — single tabbed section</div>
+      <div class="mock">
+        <div class="mock-body">
+          <div class="mock-section">
+            <div class="mock-section-label bright">Modelos de Receita</div>
+            <div class="mock-mini-tabs">
+              <div class="mock-mini-tab active">G-Hosp</div>
+              <div class="mock-mini-tab">Meus modelos</div>
+              <button class="mock-mini-tab" style="flex:0 0 auto; background:transparent; border:none;">🔄</button>
+            </div>
+            <div class="mock-tpl-grid">
+              <div class="mock-tpl"><div class="mock-tpl-dx">OMA amoxi</div><div class="mock-tpl-age">637</div></div>
+              <div class="mock-tpl"><div class="mock-tpl-dx">Resfr. >6m</div><div class="mock-tpl-age">1079</div></div>
+              <div class="mock-tpl"><div class="mock-tpl-dx">PAC amoxi</div><div class="mock-tpl-age">643</div></div>
+              <div class="mock-tpl"><div class="mock-tpl-dx">GEA >2a</div><div class="mock-tpl-age">1081</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<!-- IDEA 2 — Progress bar for streaming SOAP                              -->
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<section class="idea">
+  <div class="idea-head">
+    <span class="idea-num">2</span>
+    <div class="idea-title">Streaming token counter → animated progress bar</div>
+    <div class="idea-tags">
+      <span class="tag effort">~1 h</span>
+      <span class="tag impact">Medium</span>
+    </div>
+  </div>
+  <div class="idea-desc">
+    "Gerando SOAP… 47 palavras" is honest but text-heavy. A thin pulsing progress bar under the record button reads as <em>"I'm doing something"</em> in a single glance. The word count can stay on the right edge of the bar as a fine print.
+  </div>
+
+  <div class="compare">
+    <div class="pane before">
+      <div class="pane-label">Before — text-only counter</div>
+      <div class="mock">
+        <div class="mock-body">
+          <button class="mock-record processing">
+            <svg class="mock-record-icon" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            Processando…
+          </button>
+          <div class="mock-status loading">Gerando SOAP… 47 palavras</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pane after">
+      <div class="pane-label">After — animated bar</div>
+      <div class="mock">
+        <div class="mock-body">
+          <button class="mock-record processing">
+            <svg class="mock-record-icon" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            Processando…
+          </button>
+          <div class="mock-progress"><div></div></div>
+          <div class="mock-status loading" style="display:flex;justify-content:space-between;">
+            <span>Gerando SOAP…</span>
+            <span style="color:var(--text-faint);">47 palavras</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<!-- IDEA 3 — Inline clipboard recovery icon                                -->
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<section class="idea">
+  <div class="idea-head">
+    <span class="idea-num">3</span>
+    <div class="idea-title">SOAP recovery button → inline 📋 icon next to status text</div>
+    <div class="idea-tags">
+      <span class="tag effort">~30 min</span>
+      <span class="tag impact">Low-Med</span>
+    </div>
+  </div>
+  <div class="idea-desc">
+    Currently the "📋 Copiar SOAP novamente" recovery button takes a full row when shown. An inline icon button next to the status line keeps the recovery affordance without consuming vertical space. Same user-gesture flow; less weight.
+  </div>
+
+  <div class="compare">
+    <div class="pane before">
+      <div class="pane-label">Before — full-width recovery button</div>
+      <div class="mock">
+        <div class="mock-body">
+          <button class="mock-record">
+            <svg class="mock-record-icon" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            Gravar Novamente
+          </button>
+          <div class="mock-status ok">SOAP colado no G-Hosp ✓ — clipboard falhou</div>
+          <button class="mock-recover-btn">📋 Copiar SOAP novamente</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="pane after">
+      <div class="pane-label">After — inline icon</div>
+      <div class="mock">
+        <div class="mock-body">
+          <button class="mock-record">
+            <svg class="mock-record-icon" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            Gravar Novamente
+          </button>
+          <div class="mock-status-row">
+            <span class="mock-status ok" style="flex:1;">SOAP colado no G-Hosp ✓</span>
+            <button class="mock-icon-btn" title="Copiar SOAP">📋</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<!-- IDEA 4 — Letter mode as drawer below Atestado                         -->
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<section class="idea">
+  <div class="idea-head">
+    <span class="idea-num">4</span>
+    <div class="idea-title">Letter mode panel → slide-down drawer below Atestado action button</div>
+    <div class="idea-tags">
+      <span class="tag effort">~2 h</span>
+      <span class="tag impact">High</span>
+      <span class="tag priority">Recommend</span>
+    </div>
+  </div>
+  <div class="idea-desc">
+    Today the Carta de orientação panel lives in its own section between Modelos and Ações. That visually decouples it from its trigger (the standard "Atestado" button it's parallel to). Folding it into a drawer that opens directly under the Atestado/✉ row keeps the spatial relationship obvious.
+  </div>
+
+  <div class="compare">
+    <div class="pane before">
+      <div class="pane-label">Before — separate section</div>
+      <div class="mock">
+        <div class="mock-body">
+          <div class="mock-section">
+            <div class="mock-section-label">Atestado</div>
+            <div class="mock-drawer" style="background:rgba(16,185,129,0.08);">
+              <div class="mock-drawer-context">Paciente · 5m · J21.0 Bronquiolite</div>
+              <div class="mock-drawer-textarea" style="min-height:60px;">Sobre o que orientar?</div>
+              <div class="mock-drawer-actions">
+                <button class="mock-drawer-btn">Gerar carta</button>
+                <button class="mock-drawer-btn secondary">Cancelar</button>
+              </div>
+            </div>
+          </div>
+          <div class="mock-section">
+            <div class="mock-section-label">Ações</div>
+            <div class="mock-act-grid">
+              <div class="mock-act">Salvar</div>
+              <div class="mock-act">Receita</div>
+              <div class="mock-act">Atestado</div>
+              <div class="mock-act">Baú Médico</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pane after">
+      <div class="pane-label">After — drawer below trigger</div>
+      <div class="mock">
+        <div class="mock-body">
+          <div class="mock-section">
+            <div class="mock-section-label">Ações</div>
+            <div class="mock-act-grid">
+              <div class="mock-act">Salvar</div>
+              <div class="mock-act">Receita</div>
+              <div class="mock-act" style="border-color:var(--brand); color:var(--brand);">Atestado ▾</div>
+              <div class="mock-act">Baú Médico</div>
+            </div>
+            <div class="mock-drawer">
+              <div class="mock-drawer-context">✉ Carta · Paciente · 5m · J21.0</div>
+              <div class="mock-drawer-textarea">Sobre o que orientar?</div>
+              <div class="mock-drawer-actions">
+                <button class="mock-drawer-btn">Gerar carta</button>
+                <button class="mock-drawer-btn secondary">Atestado normal</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<!-- IDEA 5 — Live audio waveform                                           -->
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<section class="idea">
+  <div class="idea-head">
+    <span class="idea-num">5</span>
+    <div class="idea-title">Live audio waveform during recording</div>
+    <div class="idea-tags">
+      <span class="tag effort">~3 h</span>
+      <span class="tag impact">High</span>
+      <span class="tag priority">Recommend</span>
+    </div>
+  </div>
+  <div class="idea-desc">
+    `attachVisualizer()` exists in <code>content/audio-capture.js</code> from the HUD era but was never re-wired in the v3.1+ side panel. Without a visible mic-active signal, doctors don't trust that recording is actually happening. Plan: broadcast analyser bins from the content script to the side panel at ~30 Hz, render in a small canvas next to the record button.
+  </div>
+
+  <div class="compare">
+    <div class="pane before">
+      <div class="pane-label">Before — silent recording</div>
+      <div class="mock">
+        <div class="mock-body">
+          <button class="mock-record recording">
+            <svg class="mock-record-icon" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2" width="6" height="13" rx="3"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/></svg>
+            Parar Gravação · 00:23
+          </button>
+          <div class="mock-status loading">Gravando…</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pane after">
+      <div class="pane-label">After — live waveform</div>
+      <div class="mock">
+        <div class="mock-body">
+          <button class="mock-record recording">
+            <svg class="mock-record-icon" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2" width="6" height="13" rx="3"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/></svg>
+            Parar Gravação · 00:23
+          </button>
+          <div class="mock-waveform">
+            <div style="height:40%;"></div><div style="height:65%;"></div><div style="height:25%;"></div>
+            <div style="height:80%;"></div><div style="height:55%;"></div><div style="height:35%;"></div>
+            <div style="height:70%;"></div><div style="height:90%;"></div><div style="height:45%;"></div>
+            <div style="height:60%;"></div><div style="height:30%;"></div><div style="height:75%;"></div>
+            <div style="height:50%;"></div><div style="height:85%;"></div><div style="height:40%;"></div>
+            <div style="height:65%;"></div><div style="height:55%;"></div><div style="height:30%;"></div>
+            <div style="height:70%;"></div><div style="height:50%;"></div>
+          </div>
+          <div class="mock-status loading">Gravando…</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<!-- IDEA 6 — Config tab automatismos toggles                              -->
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<section class="idea">
+  <div class="idea-head">
+    <span class="idea-num">6</span>
+    <div class="idea-title">Config tab — "Automatismos" toggles group</div>
+    <div class="idea-tags">
+      <span class="tag effort">~1 h</span>
+      <span class="tag impact">Low-Med</span>
+    </div>
+  </div>
+  <div class="idea-desc">
+    v3.1.6 (encaminh prefill) and v3.1.7 (companion auto-fill) added storage flags <code>autoPrefillEncaminh</code> and <code>autoFillCompanion</code>, both opt-out via DevTools only. Doctors who want a different default need a UI. One labeled group with three checkboxes (autoCid, autoFillCompanion, autoPrefillEncaminh) closes the gap.
+  </div>
+
+  <div class="compare">
+    <div class="pane before">
+      <div class="pane-label">Before — only autoCid surfaced</div>
+      <div class="mock">
+        <div class="mock-tabs">
+          <div class="mock-tab">Prontuário</div>
+          <div class="mock-tab active">Config</div>
+        </div>
+        <div class="mock-body">
+          <div class="mock-toggle-row" style="background:var(--bg-row);padding:8px 10px;border-radius:5px;border:1px solid var(--border-strong);">
+            <span style="font-size:11px;">Sugerir CID por IA</span>
+            <span class="mock-toggle"></span>
+          </div>
+          <p style="font-size:10px;color:var(--text-faint);margin-top:8px;">Outros automatismos só via DevTools…</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="pane after">
+      <div class="pane-label">After — grouped toggles</div>
+      <div class="mock">
+        <div class="mock-tabs">
+          <div class="mock-tab">Prontuário</div>
+          <div class="mock-tab active">Config</div>
+        </div>
+        <div class="mock-body">
+          <div class="mock-toggle-label-group">Automatismos</div>
+          <div class="mock-toggle-group">
+            <div class="mock-toggle-row">
+              <span>Sugerir CID por IA</span>
+              <span class="mock-toggle"></span>
+            </div>
+            <div class="mock-toggle-row">
+              <span>Auto-preencher acompanhante</span>
+              <span class="mock-toggle"></span>
+            </div>
+            <div class="mock-toggle-row">
+              <span>Sem encaminhamento (alta)</span>
+              <span class="mock-toggle"></span>
+            </div>
+            <div class="mock-toggle-row">
+              <span>Limpar SOAP automaticamente</span>
+              <span class="mock-toggle off"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<!-- Recommendation table                                                   -->
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<section class="idea" style="background: var(--bg-card);">
+  <div class="idea-head">
+    <span class="idea-num" style="background:linear-gradient(135deg, #6366f1, #4f46e5);">⭐</span>
+    <div class="idea-title">Ship priority — if you only do three</div>
+  </div>
+  <div class="idea-desc">
+    These three combine highest impact with lowest risk. They're all visual changes (no new flows, no new backend), so live-shift validation of v3.2.0 doesn't have to wait.
+  </div>
+  <table>
+    <thead>
+      <tr><th>#</th><th>Idea</th><th>Why first</th><th>Effort</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="num">1</td>
+        <td>Tabbed prescription templates</td>
+        <td>Halves the most cluttered area of the panel; the doctor's most-used surface.</td>
+        <td>~2 h</td>
+      </tr>
+      <tr>
+        <td class="num">5</td>
+        <td>Live audio waveform</td>
+        <td>Long-standing trust gap (open since v3.1.0). Visible signal that mic is active.</td>
+        <td>~3 h</td>
+      </tr>
+      <tr>
+        <td class="num">4</td>
+        <td>Letter mode as drawer below Atestado</td>
+        <td>Couples the trigger to its panel; removes a section from the vertical stack.</td>
+        <td>~2 h</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<footer>
+  Generated 2026-05-07 · Toca Ficha Dr. v3.2.0 · open <code>docs/ui-ideas-v3.2.0.html</code> in your browser
+</footer>
+
+</div>
+</body>
+</html>

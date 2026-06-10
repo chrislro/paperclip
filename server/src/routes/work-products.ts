@@ -9,7 +9,7 @@ export function workProductRoutes(db: Db) {
   const mergerGatesSvc = mergerGateService(db);
 
   router.get("/work-products/:id/merge-gates", async (req, res) => {
-    const id = req.params.id as string;
+    const id = req.params.id;
     const workProduct = await workProductsSvc.getById(id);
     if (!workProduct) {
       res.status(404).json({ error: "Work product not found" });

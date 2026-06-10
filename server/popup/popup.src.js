@@ -259,7 +259,7 @@ async function _renderAuthState() {
     if (loggedOut) loggedOut.style.display = "";
     if (loggedIn) loggedIn.style.display = "none";
     if (brandAvatar) { brandAvatar.textContent = "—"; brandAvatar.classList.add("empty"); brandAvatar.title = "Não autenticado"; }
-    chrome.storage.session.remove(["authToken", "authTokenExpiry", "refreshToken", "authUser"]);
+    await chrome.storage.session.remove(["authToken", "authTokenExpiry", "refreshToken", "authUser"]);
     // v3.8.0 — Hide usage chip when logged out
     const scribeUsageChip = document.getElementById("scribeUsageChip");
     if (scribeUsageChip) scribeUsageChip.style.display = "none";
@@ -548,6 +548,7 @@ function blobToBase64(blob) {
 }
 
 function startTimer() {
+  if (timerInterval) clearInterval(timerInterval);
   timerSeconds = 0;
   updateTimerDisplay();
   timerInterval = setInterval(() => { timerSeconds++; updateTimerDisplay(); }, 1000);

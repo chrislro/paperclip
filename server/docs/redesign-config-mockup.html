@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Toca Ficha — Redesign Aba Config</title>
+<style>
+  :root {
+    --bg: #0a0a0a;
+    --surface: #111;
+    --surface-2: #1a1a1a;
+    --surface-3: #222;
+    --border: #2a2a2a;
+    --text: #e5e5e5;
+    --text-dim: #888;
+    --accent: #10b981;
+    --accent-dim: #059669;
+    --danger: #ef4444;
+    --warning: #f59e0b;
+    --info: #3b82f6;
+    --radius: 10px;
+    --font: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font);
+    line-height: 1.5;
+    margin: 0;
+    padding: 28px 20px 80px;
+    max-width: 840px;
+    margin-inline: auto;
+  }
+  h1 { font-size: 22px; margin: 0 0 6px; }
+  .lead { color: var(--text-dim); margin: 0 0 22px; }
+  h2 {
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-dim);
+    margin: 36px 0 12px;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 8px;
+  }
+  h3 {
+    font-size: 13px;
+    color: var(--text);
+    margin: 24px 0 10px;
+    font-weight: 600;
+  }
+  .option-label {
+    display: inline-block;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    padding: 2px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+    color: var(--accent);
+    margin-bottom: 10px;
+  }
+
+  /* Chrome */
+  .chrome {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 16px;
+    margin-bottom: 28px;
+  }
+  .chrome-header {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+  .tab {
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 13px;
+    background: transparent;
+    color: var(--text-dim);
+  }
+  .tab.active { background: var(--surface-2); color: var(--text); }
+
+  /* Cards */
+  .rx-card {
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  .rx-card-header {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 8px;
+    align-items: center;
+  }
+  input, textarea {
+    background: #0d0d0d;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: var(--text);
+    padding: 8px 10px;
+    font: inherit;
+    font-size: 13px;
+    width: 100%;
+    outline: none;
+  }
+  input::placeholder, textarea::placeholder { color: #555; }
+  input:focus, textarea:focus { border-color: #444; }
+  .btn {
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    color: var(--text);
+    border-radius: 6px;
+    padding: 8px 12px;
+    font: inherit;
+    font-size: 13px;
+    cursor: pointer;
+  }
+  .btn-primary {
+    background: var(--accent);
+    border-color: var(--accent-dim);
+    color: #fff;
+  }
+  .btn-ghost {
+    background: transparent;
+    border-color: transparent;
+    color: var(--text-dim);
+  }
+  .btn-danger { color: var(--danger); }
+  .btn-sm { padding: 4px 10px; font-size: 12px; }
+
+  /* Med row */
+  .med-row {
+    display: grid;
+    grid-template-columns: 1fr 80px 80px 80px 28px;
+    gap: 6px;
+    align-items: center;
+  }
+  .med-name { font-size: 13px; color: var(--text); }
+  .med-name::before { content: "💊 "; }
+
+  /* Preview pill */
+  .preview-pill {
+    display: inline-flex;
+    flex-direction: column;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 8px 12px;
+    min-width: 140px;
+    margin-top: 6px;
+  }
+  .preview-pill .name { font-size: 13px; font-weight: 600; }
+  .preview-pill .sub  { font-size: 11px; color: var(--text-dim); margin-top: 2px; }
+
+  .note {
+    font-size: 12px;
+    color: var(--text-dim);
+    margin-top: 6px;
+  }
+  .note.warn { color: var(--warning); }
+  .note.ok   { color: var(--accent); }
+  .note.info { color: var(--info); }
+
+  .inline-add {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    margin-top: 4px;
+  }
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 4px 10px;
+    font-size: 12px;
+  }
+  .pill button { background: none; border: none; color: var(--text-dim); cursor: pointer; font-size: 14px; }
+
+  details { border: 1px solid var(--border); border-radius: 8px; padding: 10px; margin-top: 8px; }
+  summary { font-size: 12px; color: var(--text-dim); cursor: pointer; list-style: none; }
+  summary::-webkit-details-marker { display: none; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 10px; }
+  th, td { text-align: left; padding: 8px; border-bottom: 1px solid var(--border); }
+  th { color: var(--text-dim); font-weight: 500; }
+
+  .catalog-hint {
+    font-size: 11px;
+    color: var(--accent);
+    background: rgba(16,185,129,0.08);
+    border: 1px solid rgba(16,185,129,0.2);
+    border-radius: 6px;
+    padding: 6px 10px;
+    margin-top: 6px;
+  }
+
+  .override-badge {
+    display: inline-block;
+    font-size: 10px;
+    color: var(--warning);
+    border: 1px solid rgba(245,158,11,0.3);
+    border-radius: 4px;
+    padding: 1px 6px;
+    margin-left: 6px;
+    vertical-align: middle;
+  }
+
+  .scenario-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--info);
+    margin-bottom: 6px;
+  }
+
+  hr { border: none; border-top: 1px solid var(--border); margin: 32px 0; }
+</style>
+</head>
+<body>
+
+<h1>🎨 Redesign — Aba Config / Receitas</h1>
+<p class="lead">Duas propostas de interface + regra de auto-preenchimento. Cada opção tem 4 exemplos reais.</p>
+
+<!-- ========================================================== -->
+<h2>Regra de ouro: como funciona o auto-preenchimento</h2>
+
+<div class="chrome">
+  <div class="note ok" style="margin-bottom:10px;">✓ Deixe em branco para usar a dose calculada automaticamente pelo peso do paciente.</div>
+  <table>
+    <thead>
+      <tr><th>Campo no template</th><th>Se você digitar algo</th><th>Se deixar em branco</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><b>Dose</b></td>
+        <td>Usa o que você digitou <span class="override-badge">OVERRIDE</span></td>
+        <td>Catálogo <code>/api/dosages/full?weight=XX</code> → ex: "12 gotas (1mL)"</td>
+      </tr>
+      <tr>
+        <td><b>Frequência</b></td>
+        <td>Usa o que você digitou <span class="override-badge">OVERRIDE</span></td>
+        <td>Catálogo → ex: "6/6h" ou "12/12h"</td>
+      </tr>
+      <tr>
+        <td><b>Duração</b></td>
+        <td>Usa o que você digitou <span class="override-badge">OVERRIDE</span></td>
+        <td>Catálogo → ex: "7 dias"</td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="catalog-hint" style="margin-top:12px;">
+    💡 O catálogo sabe o peso do paciente. Quando você clica no botão da receita, o backend calcula a dose exata para aquele peso. Cada medicação no template recebe sua própria dose.
+  </div>
+</div>
+
+<hr>
+
+<!-- ========================================================== -->
+<h2>Opção A — Limpeza mínima (implementado agora)</h2>
+<span class="option-label">Menor esforço · já no código</span>
+
+<div class="chrome">
+  <div class="chrome-header">
+    <div class="tab active">Config</div>
+    <div class="tab">Prontuário</div>
+  </div>
+
+  <div style="font-size:13px;font-weight:600;margin-bottom:4px;">Medicamentos da Receita</div>
+  <div class="note" style="margin-bottom:12px;">Crie os botões que aparecem em <b>Receita — Modelos</b>.</div>
+
+  <!-- EXEMPLO 1: Uma medicação, tudo auto -->
+  <h3>Exemplo 1 — Uma medicação, tudo automático</h3>
+  <div class="scenario-label">Cenário: paracetamol para criança. Dose, frequência e duração vêm do catálogo.</div>
+  <div class="rx-card">
+    <div class="rx-card-header">
+      <input placeholder="Nome da Receita" value="Paracetamol">
+      <button class="btn btn-sm btn-danger">×</button>
+    </div>
+    <div class="med-name">💊 Paracetamol gotas</div>
+    <div class="med-row">
+      <input placeholder="Auto: 12 gotas (1mL)">
+      <input placeholder="Auto: 6/6h">
+      <input placeholder="Auto: —">
+      <button class="btn btn-sm btn-ghost">×</button>
+    </div>
+    <button class="btn btn-sm" style="width:fit-content;">+ Adicionar medicação</button>
+    <div class="note ok" style="margin-top:4px;">
+      ✓ Preview:
+      <span class="preview-pill" style="margin-left:6px;vertical-align:middle;">
+        <span class="name">Paracetamol</span>
+        <span class="sub">dose auto pelo peso</span>
+      </span>
+    </div>
+  </div>
+
+  <!-- EXEMPLO 2: Duas medicações -->
+  <h3>Exemplo 2 — Duas medicações (protocolo completo)</h3>
+  <div class="scenario-label">Cenário: dor de garganta com antibiótico + analgésico. Duas doses automáticas.</div>
+  <div class="rx-card">
+    <div class="rx-card-header">
+      <input placeholder="Nome da Receita" value="Dor de garganta">
+      <button class="btn btn-sm btn-danger">×</button>
+    </div>
+    <div class="med-name">💊 Amoxicilina 250mg/5mL</div>
+    <div class="med-row">
+      <input placeholder="Auto: 10mL (500mg)">
+      <input placeholder="Auto: 12/12h">
+      <input placeholder="Auto: 7 dias">
+      <button class="btn btn-sm btn-ghost">×</button>
+    </div>
+    <div class="med-name" style="margin-top:4px;">💊 Paracetamol gotas</div>
+    <div class="med-row">
+      <input placeholder="Auto: 12 gotas (1mL)">
+      <input placeholder="Auto: 6/6h">
+      <input placeholder="Auto: —">
+      <button class="btn btn-sm btn-ghost">×</button>
+    </div>
+    <button class="btn btn-sm" style="width:fit-content;">+ Adicionar medicação</button>
+    <div class="note ok" style="margin-top:4px;">
+      ✓ Preview:
+      <span class="preview-pill" style="margin-left:6px;vertical-align:middle;">
+        <span class="name">Dor de garganta</span>
+        <span class="sub">2 medicações · 7 dias</span>
+      </span>
+    </div>
+  </div>
+
+  <!-- EXEMPLO 3: Override manual -->
+  <h3>Exemplo 3 — Override manual (ignora catálogo)</h3>
+  <div class="scenario-label">Cenário: médico quer dose fixa, independente do peso. Campos preenchidos = override.</div>
+  <div class="rx-card">
+    <div class="rx-card-header">
+      <input placeholder="Nome da Receita" value="Prednisolona — dose fixa">
+      <button class="btn btn-sm btn-danger">×</button>
+    </div>
+    <div class="med-name">💊 Prednisolona 3mg/mL <span class="override-badge">OVERRIDE</span></div>
+    <div class="med-row">
+      <input value="5mL (15mg)">
+      <input value="1x/dia">
+      <input value="5 dias">
+      <button class="btn btn-sm btn-ghost">×</button>
+    </div>
+    <button class="btn btn-sm" style="width:fit-content;">+ Adicionar medicação</button>
+    <div class="note warn" style="margin-top:4px;">
+      ⚠ Preview:
+      <span class="preview-pill" style="margin-left:6px;vertical-align:middle;">
+        <span class="name">Prednisolona — dose fixa</span>
+        <span class="sub">1 medicação · override</span>
+      </span>
+    </div>
+  </div>
+
+  <!-- EXEMPLO 4: Com texto extra -->
+  <h3>Exemplo 4 — Com texto adicional e variáveis</h3>
+  <div class="scenario-label">Cenário: receita com instrução de retorno usando peso do paciente automaticamente.</div>
+  <div class="rx-card">
+    <div class="rx-card-header">
+      <input placeholder="Nome da Receita" value="Amoxil + Ibuprofeno">
+      <button class="btn btn-sm btn-danger">×</button>
+    </div>
+    <div class="med-name">💊 Amoxicilina 250mg/5mL</div>
+    <div class="med-row">
+      <input placeholder="Auto: 10mL (500mg)">
+      <input placeholder="Auto: 12/12h">
+      <input placeholder="Auto: 7 dias">
+      <button class="btn btn-sm btn-ghost">×</button>
+    </div>
+    <div class="med-name" style="margin-top:4px;">💊 Ibuprofeno 100mg/5mL</div>
+    <div class="med-row">
+      <input placeholder="Auto: 7,5mL (150mg)">
+      <input placeholder="Auto: 8/8h">
+      <input placeholder="Auto: —">
+      <button class="btn btn-sm btn-ghost">×</button>
+    </div>
+    <button class="btn btn-sm" style="width:fit-content;">+ Adicionar medicação</button>
+    <textarea rows="2" placeholder="Texto adicional (use ${weight}, ${age}, ${patient_name})">Retornar em 7 dias se não houver melhora. Peso atual: ${weight}.</textarea>
+    <div class="note">Variáveis: <code>${weight}</code> · <code>${age}</code> · <code>${patient_name}</code></div>
+    <div class="note ok" style="margin-top:4px;">
+      ✓ Preview:
+      <span class="preview-pill" style="margin-left:6px;vertical-align:middle;">
+        <span class="name">Amoxil + Ibuprofeno</span>
+        <span class="sub">2 medicações · 7 dias</span>
+      </span>
+    </div>
+  </div>
+
+  <div style="display:flex;gap:6px;margin-top:12px;">
+    <button class="btn" style="flex:1;">+ Adicionar modelo</button>
+    <button class="btn" style="flex:1;">↺ Restaurar padrões</button>
+  </div>
+</div>
+
+<hr>
+
+<!-- ========================================================== -->
+<h2>Opção B — Cards com preview em tempo real</h2>
+<span class="option-label">Médio esforço · melhor UX</span>
+
+<div class="chrome">
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+    <div style="font-size:15px;font-weight:600;">Minhas Receitas</div>
+    <button class="btn btn-primary btn-sm">+ Nova receita</button>
+  </div>
+
+  <!-- EXEMPLO 1: Uma medicação simples -->
+  <h3>Exemplo 1 — Uma medicação, tudo automático</h3>
+  <div class="scenario-label">Cenário: paracetamol. Preview mostra como o botão ficará no grid principal.</div>
+  <div class="rx-card">
+    <div style="display:flex;gap:10px;align-items:flex-start;">
+      <div style="flex:0 0 170px;">
+        <div style="font-size:11px;color:var(--text-dim);margin-bottom:6px;">Como aparece no grid</div>
+        <div class="preview-pill" style="width:100%;background:#0d0d0d;">
+          <span class="name">Paracetamol</span>
+          <span class="sub">dose auto pelo peso</span>
+        </div>
+        <div class="catalog-hint" style="margin-top:8px;font-size:11px;">
+          💡 Dose será calculada pelo peso no momento de clicar.
+        </div>
+      </div>
+      <div style="flex:1;">
+        <input placeholder="Nome da receita" value="Paracetamol">
+        <div style="margin-top:10px;display:flex;flex-direction:column;gap:6px;">
+          <div class="pill">💊 Paracetamol gotas <span style="color:var(--text-dim);font-size:11px;">· dose auto</span> <button>×</button></div>
+        </div>
+        <div class="inline-add" style="margin-top:8px;">
+          <input placeholder="Buscar medicação no catálogo…" style="flex:1;">
+          <button class="btn btn-sm btn-primary">Adicionar</button>
+        </div>
+      </div>
+      <button class="btn btn-sm btn-ghost" style="align-self:flex-start;">×</button>
+    </div>
+  </div>
+
+  <!-- EXEMPLO 2: Protocolo completo -->
+  <h3>Exemplo 2 — Protocolo com 3 medicações</h3>
+  <div class="scenario-label">Cenário: tratamento completo para otite. Preview já mostra "3 medicações".</div>
+  <div class="rx-card">
+    <div style="display:flex;gap:10px;align-items:flex-start;">
+      <div style="flex:0 0 170px;">
+        <div style="font-size:11px;color:var(--text-dim);margin-bottom:6px;">Como aparece no grid</div>
+        <div class="preview-pill" style="width:100%;background:#0d0d0d;">
+          <span class="name">Otite</span>
+          <span class="sub">3 medicações · 10 dias</span>
+        </div>
+        <div class="catalog-hint" style="margin-top:8px;font-size:11px;">
+          💡 Cada medicação terá dose calculada individualmente pelo peso.
+        </div>
+      </div>
+      <div style="flex:1;">
+        <input placeholder="Nome da receita" value="Otite">
+        <div style="margin-top:10px;display:flex;flex-direction:column;gap:6px;">
+          <div class="pill">💊 Amoxicilina + Clavulanato <span style="color:var(--text-dim);font-size:11px;">· dose auto</span> <button>×</button></div>
+          <div class="pill">💊 Ibuprofeno gotas <span style="color:var(--text-dim);font-size:11px;">· dose auto</span> <button>×</button></div>
+          <div class="pill">💊 Naproxeno gotas <span style="color:var(--text-dim);font-size:11px;">· dose auto</span> <button>×</button></div>
+        </div>
+        <div class="inline-add" style="margin-top:8px;">
+          <input placeholder="Buscar medicação no catálogo…" style="flex:1;">
+          <button class="btn btn-sm btn-primary">Adicionar</button>
+        </div>
+        <details style="margin-top:10px;">
+          <summary>Texto extra &amp; variáveis</summary>
+          <textarea rows="2" placeholder="Texto adicional (use ${weight}, ${age}, ${patient_name})"></textarea>
+        </details>
+      </div>
+      <button class="btn btn-sm btn-ghost" style="align-self:flex-start;">×</button>
+    </div>
+  </div>
+
+  <!-- EXEMPLO 3: Override visível -->
+  <h3>Exemplo 3 — Com override manual explícito</h3>
+  <div class="scenario-label">Cenário: médico quer dose fixa. Campos de override aparecem preenchidos com alerta.</div>
+  <div class="rx-card">
+    <div style="display:flex;gap:10px;align-items:flex-start;">
+      <div style="flex:0 0 170px;">
+        <div style="font-size:11px;color:var(--text-dim);margin-bottom:6px;">Como aparece no grid</div>
+        <div class="preview-pill" style="width:100%;background:#0d0d0d;">
+          <span class="name">Prednisolona fixa</span>
+          <span class="sub">1 medicação · override</span>
+        </div>
+        <div class="catalog-hint" style="margin-top:8px;font-size:11px;">
+          ⚠ Override ativo — catálogo será ignorado.
+        </div>
+      </div>
+      <div style="flex:1;">
+        <input placeholder="Nome da receita" value="Prednisolona fixa">
+        <div style="margin-top:10px;display:flex;flex-direction:column;gap:6px;">
+          <div class="pill">
+            💊 Prednisolona 3mg/mL
+            <span style="color:var(--warning);font-size:11px;">· override</span>
+            <button>×</button>
+          </div>
+        </div>
+        <details open style="margin-top:10px;">
+          <summary>Ajustes manuais (override do catálogo)</summary>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-top:8px;">
+            <input value="5mL (15mg)">
+            <input value="1x/dia">
+            <input value="5 dias">
+          </div>
+          <div class="note warn" style="margin-top:6px;">⚠ Você preencheu manualmente — o cálculo automático pelo peso será ignorado.</div>
+        </details>
+      </div>
+      <button class="btn btn-sm btn-ghost" style="align-self:flex-start;">×</button>
+    </div>
+  </div>
+
+  <!-- EXEMPLO 4: Adulto vs Pediátrico -->
+  <h3>Exemplo 4 — Adulto (catálogo adulto)</h3>
+  <div class="scenario-label">Cenário: receita para adulto. O catálogo retorna doses adultas quando o peso > 40kg.</div>
+  <div class="rx-card">
+    <div style="display:flex;gap:10px;align-items:flex-start;">
+      <div style="flex:0 0 170px;">
+        <div style="font-size:11px;color:var(--text-dim);margin-bottom:6px;">Como aparece no grid</div>
+        <div class="preview-pill" style="width:100%;background:#0d0d0d;">
+          <span class="name">Dor de garganta (adulto)</span>
+          <span class="sub">2 medicações · 7 dias</span>
+        </div>
+        <div class="catalog-hint" style="margin-top:8px;font-size:11px;">
+          💡 Adulto: doses de comprimido, não gotas.
+        </div>
+      </div>
+      <div style="flex:1;">
+        <input placeholder="Nome da receita" value="Dor de garganta (adulto)">
+        <div style="margin-top:10px;display:flex;flex-direction:column;gap:6px;">
+          <div class="pill">💊 Amoxicilina 500mg cp <span style="color:var(--text-dim);font-size:11px;">· dose auto adulto</span> <button>×</button></div>
+          <div class="pill">💊 Paracetamol 750mg cp <span style="color:var(--text-dim);font-size:11px;">· dose auto adulto</span> <button>×</button></div>
+        </div>
+        <div class="inline-add" style="margin-top:8px;">
+          <input placeholder="Buscar medicação no catálogo…" style="flex:1;">
+          <button class="btn btn-sm btn-primary">Adicionar</button>
+        </div>
+        <details style="margin-top:10px;">
+          <summary>Texto extra &amp; variáveis</summary>
+          <textarea rows="2" placeholder="Texto adicional (use ${weight}, ${age}, ${patient_name})">Evitar álcool durante o tratamento.</textarea>
+        </details>
+      </div>
+      <button class="btn btn-sm btn-ghost" style="align-self:flex-start;">×</button>
+    </div>
+  </div>
+</div>
+
+<hr>
+
+<h2>📋 Comparativo rápido</h2>
+<div class="chrome">
+  <table>
+    <thead>
+      <tr><th>Opção</th><th>Pro</th><th>Contra</th><th>Esforço</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><b>A — Limpeza</b></td>
+        <td>Já implementado; resolve a confusão imediata</td>
+        <td>Lista vertical de cartões; sem preview WYSIWYG</td>
+        <td>Pronto</td>
+      </tr>
+      <tr>
+        <td><b>B — Preview</b></td>
+        <td>Vê como o botão ficará; busca inline; "dose auto" visível</td>
+        <td>Mais código; precisa de autocomplete robusto</td>
+        <td>2–3 dias</td>
+      </tr>
+    </tbody>
+  </table>
+  <p class="note" style="margin-top:14px;">
+    <b>Recomendação:</b> ficar com a <b>Opção A</b> por agora. Se sentir falta do preview ao vivo, migramos para <b>B</b> depois.
+  </p>
+</div>
+
+</body>
+</html>

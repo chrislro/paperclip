@@ -1,0 +1,1037 @@
+{
+  "generatedAt": "2026-05-18T02:53:37.040Z",
+  "modes": [
+    {
+      "mode": "off",
+      "avgF1": 0.777,
+      "avgSavedPercent": 0,
+      "totalPauses": 0,
+      "clippedFirstScenarios": 0,
+      "clippedEndingsScenarios": 0,
+      "scenarioCount": 8
+    },
+    {
+      "mode": "current",
+      "avgF1": 0.494,
+      "avgSavedPercent": 66.4,
+      "totalPauses": 8,
+      "clippedFirstScenarios": 5,
+      "clippedEndingsScenarios": 0,
+      "scenarioCount": 8
+    },
+    {
+      "mode": "less-aggressive",
+      "avgF1": 0.485,
+      "avgSavedPercent": 67.9,
+      "totalPauses": 8,
+      "clippedFirstScenarios": 5,
+      "clippedEndingsScenarios": 0,
+      "scenarioCount": 8
+    },
+    {
+      "mode": "post-trim",
+      "avgF1": 0.975,
+      "avgSavedPercent": 74.6,
+      "totalPauses": 8,
+      "clippedFirstScenarios": 0,
+      "clippedEndingsScenarios": 0,
+      "scenarioCount": 8
+    }
+  ],
+  "scenarios": [
+    {
+      "id": "immediate-speech",
+      "name": "Doctor starts speaking immediately",
+      "modeResults": [
+        {
+          "mode": "off",
+          "f1": 1,
+          "savedPercent": 0,
+          "pauseCount": 0,
+          "resumeCount": 0,
+          "clippedFirstWords": false,
+          "clippedWordEndings": false
+        },
+        {
+          "mode": "current",
+          "f1": 0.169,
+          "savedPercent": 90.7,
+          "pauseCount": 1,
+          "resumeCount": 0,
+          "clippedFirstWords": true,
+          "clippedWordEndings": false
+        },
+        {
+          "mode": "less-aggressive",
+          "f1": 0.286,
+          "savedPercent": 83.3,
+          "pauseCount": 1,
+          "resumeCount": 0,
+          "clippedFirstWords": true,
+          "clippedWordEndings": false
+        },
+        {
+          "mode": "post-trim",
+          "f1": 1,
+          "savedPercent": 100,
+          "pauseCount": 1,
+          "resumeCount": 0,
+          "clippedFirstWords": false,
+          "clippedWordEndings": false
+        }
+      ]
+    },
+    {
+      "id": "quiet-speech-noisy-room",
+      "name": "Quiet speech in noisy room",
+      "modeResults": [
+        {
+          "mode": "off",
+          "f1": 0.755,
+          "savedPercent": 0,
+          "pauseCount": 0,
+          "resumeCount": 0,
+          "clippedFirstWords": false,
+          "clippedWordEndings": false
+        },
+        {
+          "mode": "current",
+          "f1": 0.941,
+          "savedPercent": 25,
+          "pauseCount": 1,
+          "resumeCount": 0,
+          "clippedFirstWords": false,
+          "clippedWordEndings": false
+        },
+        {
+          "mode": "less-aggressive",
+          "f1": 0.899,
+          "savedPercent": 18.3,
+          "pauseCount": 1,
+          "resumeCount": 0,
+          "clippedFirstWords": false,
+          "clippedWordEndings": false
+        },
+        {
+          "mode": "post-trim",
+          "f1": 1,
+          "savedPercent": 32.2,
+          "pauseCount": 1,
+          "resumeCount": 0,
+          "clippedFirstWords": false,
+          "clippedWordEndings": false
+        }
+      ]
+    },
+    {
+      "id": "trailing-silence",
+      "name": "Trailing silence after speech",
+      "modeResults": [
+        {
+          "mode": "off",
+          "f1": 0.667,
+          "savedPercent": 0,
+          "pauseCount": 0,
+          "resumeCount": 0,
+          "clippedFirstWords": false,
+          "clippedWordEndings": false
+        },
+        {
+          "mode": "current",
+          "f1": 0.256,
+          "savedPercent": 93.2,
+          "pauseCount": 1,
+          "resumeCount": 0,
+          "clippedFirstWords": true,
+          "clippedWordEndings": false
+        },
+        {
+          "mode": "less-aggressive",
+          "f1": 0.419,
+          "savedPercent": 87.8,
+          "pauseCount": 1,
+          "resumeCount": 0,
+          "clippedFirstWords": true,
+          "clippedWordEndings": false
+        },
+        {
+          "mode": "post-trim",
+          "f1": 1,
+          "savedPercent": 100,
+          "pauseCount": 1,
+          "resumeCount": 0,
+          "clippedFirstWords": false,
+          "clippedWordEndings": false
+        }
+      ]
+    },
+    {
+      "id": "brief-pauses",
+      "name": "Brief pauses mid-sentence",
+      "modeResults": [
+        {
+          "mode": "off",
+          "f1": 0.882,
+          "savedPercent": 0,
+          "pauseCount": 0,
+          "resumeCount": 0,
+          "clippedFirstWords": false,
+          "clippedWordEndings": false
+        },
+        {
+          "mode": "current",
+          "f1": 0.276,
+          "savedPercent": 84.4,
+          "pauseCount": 1,
+          "resumeCount": 0,
+          "clippedFirstWords": true,
+          "clippedWordEndings": false
+        },
+        {
+          "mode": "less-aggressive",
+          "f1": 0.303,
+          "savedPercent": 71.9,
+          "pauseCount": 1,
+          "resumeCount": 0,
+          "clippedFirstWords": true,
+          "clippedWordEndings": false
+        },
+        {
+          "mode": "post-trim",
+          "f1": 1,
+          "savedPercent": 100,
+          "pauseCount": 1,
+          "resumeCount": 0,
+          "clippedFirstWords": false,
+          "clippedWordEndings": false
+        }
+      ]
+    },
+    {
+      "id": "natural-pauses",
+      "name": "Natural pauses between sentences",
+      "modeResults": [
+        {
+          "mode": "off",
+          "f1": 0.833,
+          "savedPercent": 0,
+          "pauseCount": 0,
+          "resumeCount": 0,
+          "clippedFirstWords": false,
+          "clippedWordEndings": false
+        },
+        {
+          "mode": "current",
+          "f1": 0.169,
+          "savedPercent": 93.6,
+          "pauseCount": 1,
+          "resumeCount": 0,
+          "clippedFirstWords": true,
+          "clippedWordEndings": false
+        },
+        {
+          "mode": "less-aggressive",
+          "f1": 0.286,
+          "savedPercent": 88.5,
+          "pauseCount": 1,
+          "resumeCount": 0,
+          "clippedFirstWords": true,
+          "clippedWordEndings": false
+        },
+        {
+          "mode": "post-trim",
+          "f1": 1,
+          "savedPercent": 100,
+          "pauseCount": 1,
+          "resumeCount": 0,
+          "clippedFirstWords": false,
+          "clippedWordEndings": false
+        }
+      ]
+    },
+    {
+      "id": "long-silence-mid-recording",
+      "name": "Long silence mid-recording",
+      "modeResults": [
+        {
+          "mode": "off",
+          "f1": 0.571,
+          "savedPercent": 0,
+          "pauseCount": 0,
+          "resumeCount": 0,
+          "clippedFirstWords": false,
+          "clippedWordEndings": false
+        },
+        {
+          "mode": "current",
+          "f1": 0.256,
+          "savedPercent": 94.7,
+          "pauseCount": 1,
+          "resumeCount": 0,
+          "clippedFirstWords": true,
+          "clippedWordEndings": false
+        },
+        {
+          "mode": "less-aggressive",
+          "f1": 0.419,
+          "savedPercent": 90.4,
+          "pauseCount": 1,
+          "resumeCount": 0,
+          "clippedFirstWords": true,
+          "clippedWordEndings": false
+        },
+        {
+          "mode": "post-trim",
+          "f1": 1,
+          "savedPercent": 100,
+          "pauseCount": 1,
+          "resumeCount": 0,
+          "clippedFirstWords": false,
+          "clippedWordEndings": false
+        }
+      ]
+    },
+    {
+      "id": "very-quiet-room",
+      "name": "Very quiet room (-80dB ambient)",
+      "modeResults": [
+        {
+          "mode": "off",
+          "f1": 0.755,
+          "savedPercent": 0,
+          "pauseCount": 0,
+          "resumeCount": 0,
+          "clippedFirstWords": false,
+          "clippedWordEndings": false
+        },
+        {
+          "mode": "current",
+          "f1": 0.941,
+          "savedPercent": 25,
+          "pauseCount": 1,
+          "resumeCount": 0,
+          "clippedFirstWords": false,
+          "clippedWordEndings": false
+        },
+        {
+          "mode": "less-aggressive",
+          "f1": 0.899,
+          "savedPercent": 18.3,
+          "pauseCount": 1,
+          "resumeCount": 0,
+          "clippedFirstWords": false,
+          "clippedWordEndings": false
+        },
+        {
+          "mode": "post-trim",
+          "f1": 1,
+          "savedPercent": 32.2,
+          "pauseCount": 1,
+          "resumeCount": 0,
+          "clippedFirstWords": false,
+          "clippedWordEndings": false
+        }
+      ]
+    },
+    {
+      "id": "loud-room",
+      "name": "Loud room (-30dB ambient)",
+      "modeResults": [
+        {
+          "mode": "off",
+          "f1": 0.755,
+          "savedPercent": 0,
+          "pauseCount": 0,
+          "resumeCount": 0,
+          "clippedFirstWords": false,
+          "clippedWordEndings": false
+        },
+        {
+          "mode": "current",
+          "f1": 0.941,
+          "savedPercent": 25,
+          "pauseCount": 1,
+          "resumeCount": 0,
+          "clippedFirstWords": false,
+          "clippedWordEndings": false
+        },
+        {
+          "mode": "less-aggressive",
+          "f1": 0.367,
+          "savedPercent": 85,
+          "pauseCount": 1,
+          "resumeCount": 0,
+          "clippedFirstWords": false,
+          "clippedWordEndings": false
+        },
+        {
+          "mode": "post-trim",
+          "f1": 0.8,
+          "savedPercent": 32.2,
+          "pauseCount": 1,
+          "resumeCount": 0,
+          "clippedFirstWords": false,
+          "clippedWordEndings": false
+        }
+      ]
+    }
+  ],
+  "recommendations": {
+    "primary": "off",
+    "reason": "Current VAD degrades accuracy too much; recommend disabling"
+  }
+}
+{
+  "generatedAt": "2026-05-18T02:53:37.094Z",
+  "modes": [
+    {
+      "mode": "off",
+      "avgF1": 0.777,
+      "avgSavedPercent": 0,
+      "totalPauses": 0,
+      "clippedFirstScenarios": 0,
+      "clippedEndingsScenarios": 0,
+      "scenarioCount": 8
+    },
+    {
+      "mode": "current",
+      "avgF1": 0.494,
+      "avgSavedPercent": 66.4,
+      "totalPauses": 8,
+      "clippedFirstScenarios": 5,
+      "clippedEndingsScenarios": 0,
+      "scenarioCount": 8
+    },
+    {
+      "mode": "less-aggressive",
+      "avgF1": 0.485,
+      "avgSavedPercent": 67.9,
+      "totalPauses": 8,
+      "clippedFirstScenarios": 5,
+      "clippedEndingsScenarios": 0,
+      "scenarioCount": 8
+    },
+    {
+      "mode": "post-trim",
+      "avgF1": 0.975,
+      "avgSavedPercent": 74.6,
+      "totalPauses": 8,
+      "clippedFirstScenarios": 0,
+      "clippedEndingsScenarios": 0,
+      "scenarioCount": 8
+    }
+  ],
+  "scenarios": [
+    {
+      "id": "immediate-speech",
+      "name": "Doctor starts speaking immediately",
+      "modeResults": [
+        {
+          "mode": "off",
+          "f1": 1,
+          "savedPercent": 0,
+          "pauseCount": 0,
+          "resumeCount": 0,
+          "clippedFirstWords": false,
+          "clippedWordEndings": false
+        },
+        {
+          "mode": "current",
+          "f1": 0.169,
+          "savedPercent": 90.7,
+          "pauseCount": 1,
+          "resumeCount": 0,
+          "clippedFirstWords": true,
+          "clippedWordEndings": false
+        },
+        {
+          "mode": "less-aggressive",
+          "f1": 0.286,
+          "savedPercent": 83.3,
+          "pauseCount": 1,
+          "resumeCount": 0,
+          "clippedFirstWords": true,
+          "clippedWordEndings": false
+        },
+        {
+          "mode": "post-trim",
+          "f1": 1,
+          "savedPercent": 100,
+          "pauseCount": 1,
+          "resumeCount": 0,
+          "clippedFirstWords": false,
+          "clippedWordEndings": false
+        }
+      ]
+    },
+    {
+      "id": "quiet-speech-noisy-room",
+      "name": "Quiet speech in noisy room",
+      "modeResults": [
+        {
+          "mode": "off",
+          "f1": 0.755,
+          "savedPercent": 0,
+          "pauseCount": 0,
+          "resumeCount": 0,
+          "clippedFirstWords": false,
+          "clippedWordEndings": false
+        },
+        {
+          "mode": "current",
+          "f1": 0.941,
+          "savedPercent": 25,
+          "pauseCount": 1,
+          "resumeCount": 0,
+          "clippedFirstWords": false,
+          "clippedWordEndings": false
+        },
+        {
+          "mode": "less-aggressive",
+          "f1": 0.899,
+          "savedPercent": 18.3,
+          "pauseCount": 1,
+          "resumeCount": 0,
+          "clippedFirstWords": false,
+          "clippedWordEndings": false
+        },
+        {
+          "mode": "post-trim",
+          "f1": 1,
+          "savedPercent": 32.2,
+          "pauseCount": 1,
+          "resumeCount": 0,
+          "clippedFirstWords": false,
+          "clippedWordEndings": false
+        }
+      ]
+    },
+    {
+      "id": "trailing-silence",
+      "name": "Trailing silence after speech",
+      "modeResults": [
+        {
+          "mode": "off",
+          "f1": 0.667,
+          "savedPercent": 0,
+          "pauseCount": 0,
+          "resumeCount": 0,
+          "clippedFirstWords": false,
+          "clippedWordEndings": false
+        },
+        {
+          "mode": "current",
+          "f1": 0.256,
+          "savedPercent": 93.2,
+          "pauseCount": 1,
+          "resumeCount": 0,
+          "clippedFirstWords": true,
+          "clippedWordEndings": false
+        },
+        {
+          "mode": "less-aggressive",
+          "f1": 0.419,
+          "savedPercent": 87.8,
+          "pauseCount": 1,
+          "resumeCount": 0,
+          "clippedFirstWords": true,
+          "clippedWordEndings": false
+        },
+        {
+          "mode": "post-trim",
+          "f1": 1,
+          "savedPercent": 100,
+          "pauseCount": 1,
+          "resumeCount": 0,
+          "clippedFirstWords": false,
+          "clippedWordEndings": false
+        }
+      ]
+    },
+    {
+      "id": "brief-pauses",
+      "name": "Brief pauses mid-sentence",
+      "modeResults": [
+        {
+          "mode": "off",
+          "f1": 0.882,
+          "savedPercent": 0,
+          "pauseCount": 0,
+          "resumeCount": 0,
+          "clippedFirstWords": false,
+          "clippedWordEndings": false
+        },
+        {
+          "mode": "current",
+          "f1": 0.276,
+          "savedPercent": 84.4,
+          "pauseCount": 1,
+          "resumeCount": 0,
+          "clippedFirstWords": true,
+          "clippedWordEndings": false
+        },
+        {
+          "mode": "less-aggressive",
+          "f1": 0.303,
+          "savedPercent": 71.9,
+          "pauseCount": 1,
+          "resumeCount": 0,
+          "clippedFirstWords": true,
+          "clippedWordEndings": false
+        },
+        {
+          "mode": "post-trim",
+          "f1": 1,
+          "savedPercent": 100,
+          "pauseCount": 1,
+          "resumeCount": 0,
+          "clippedFirstWords": false,
+          "clippedWordEndings": false
+        }
+      ]
+    },
+    {
+      "id": "natural-pauses",
+      "name": "Natural pauses between sentences",
+      "modeResults": [
+        {
+          "mode": "off",
+          "f1": 0.833,
+          "savedPercent": 0,
+          "pauseCount": 0,
+          "resumeCount": 0,
+          "clippedFirstWords": false,
+          "clippedWordEndings": false
+        },
+        {
+          "mode": "current",
+          "f1": 0.169,
+          "savedPercent": 93.6,
+          "pauseCount": 1,
+          "resumeCount": 0,
+          "clippedFirstWords": true,
+          "clippedWordEndings": false
+        },
+        {
+          "mode": "less-aggressive",
+          "f1": 0.286,
+          "savedPercent": 88.5,
+          "pauseCount": 1,
+          "resumeCount": 0,
+          "clippedFirstWords": true,
+          "clippedWordEndings": false
+        },
+        {
+          "mode": "post-trim",
+          "f1": 1,
+          "savedPercent": 100,
+          "pauseCount": 1,
+          "resumeCount": 0,
+          "clippedFirstWords": false,
+          "clippedWordEndings": false
+        }
+      ]
+    },
+    {
+      "id": "long-silence-mid-recording",
+      "name": "Long silence mid-recording",
+      "modeResults": [
+        {
+          "mode": "off",
+          "f1": 0.571,
+          "savedPercent": 0,
+          "pauseCount": 0,
+          "resumeCount": 0,
+          "clippedFirstWords": false,
+          "clippedWordEndings": false
+        },
+        {
+          "mode": "current",
+          "f1": 0.256,
+          "savedPercent": 94.7,
+          "pauseCount": 1,
+          "resumeCount": 0,
+          "clippedFirstWords": true,
+          "clippedWordEndings": false
+        },
+        {
+          "mode": "less-aggressive",
+          "f1": 0.419,
+          "savedPercent": 90.4,
+          "pauseCount": 1,
+          "resumeCount": 0,
+          "clippedFirstWords": true,
+          "clippedWordEndings": false
+        },
+        {
+          "mode": "post-trim",
+          "f1": 1,
+          "savedPercent": 100,
+          "pauseCount": 1,
+          "resumeCount": 0,
+          "clippedFirstWords": false,
+          "clippedWordEndings": false
+        }
+      ]
+    },
+    {
+      "id": "very-quiet-room",
+      "name": "Very quiet room (-80dB ambient)",
+      "modeResults": [
+        {
+          "mode": "off",
+          "f1": 0.755,
+          "savedPercent": 0,
+          "pauseCount": 0,
+          "resumeCount": 0,
+          "clippedFirstWords": false,
+          "clippedWordEndings": false
+        },
+        {
+          "mode": "current",
+          "f1": 0.941,
+          "savedPercent": 25,
+          "pauseCount": 1,
+          "resumeCount": 0,
+          "clippedFirstWords": false,
+          "clippedWordEndings": false
+        },
+        {
+          "mode": "less-aggressive",
+          "f1": 0.899,
+          "savedPercent": 18.3,
+          "pauseCount": 1,
+          "resumeCount": 0,
+          "clippedFirstWords": false,
+          "clippedWordEndings": false
+        },
+        {
+          "mode": "post-trim",
+          "f1": 1,
+          "savedPercent": 32.2,
+          "pauseCount": 1,
+          "resumeCount": 0,
+          "clippedFirstWords": false,
+          "clippedWordEndings": false
+        }
+      ]
+    },
+    {
+      "id": "loud-room",
+      "name": "Loud room (-30dB ambient)",
+      "modeResults": [
+        {
+          "mode": "off",
+          "f1": 0.755,
+          "savedPercent": 0,
+          "pauseCount": 0,
+          "resumeCount": 0,
+          "clippedFirstWords": false,
+          "clippedWordEndings": false
+        },
+        {
+          "mode": "current",
+          "f1": 0.941,
+          "savedPercent": 25,
+          "pauseCount": 1,
+          "resumeCount": 0,
+          "clippedFirstWords": false,
+          "clippedWordEndings": false
+        },
+        {
+          "mode": "less-aggressive",
+          "f1": 0.367,
+          "savedPercent": 85,
+          "pauseCount": 1,
+          "resumeCount": 0,
+          "clippedFirstWords": false,
+          "clippedWordEndings": false
+        },
+        {
+          "mode": "post-trim",
+          "f1": 0.8,
+          "savedPercent": 32.2,
+          "pauseCount": 1,
+          "resumeCount": 0,
+          "clippedFirstWords": false,
+          "clippedWordEndings": false
+        }
+      ]
+    }
+  ],
+  "recommendations": {
+    "primary": "off",
+    "reason": "Current VAD degrades accuracy too much; recommend disabling"
+  }
+}
+TAP version 13
+# Subtest: VAD A/B evaluation
+    # Subtest: immediate-speech
+        # Subtest: off: completes without error
+        ok 1 - off: completes without error
+          ---
+          duration_ms: 1.289034
+          type: 'test'
+          ...
+        # Subtest: current: completes without error
+        ok 2 - current: completes without error
+          ---
+          duration_ms: 0.22104
+          type: 'test'
+          ...
+        # Subtest: less-aggressive: completes without error
+        ok 3 - less-aggressive: completes without error
+          ---
+          duration_ms: 0.139249
+          type: 'test'
+          ...
+        # Subtest: post-trim: completes without error
+        ok 4 - post-trim: completes without error
+          ---
+          duration_ms: 0.184407
+          type: 'test'
+          ...
+        1..4
+    ok 1 - immediate-speech
+      ---
+      duration_ms: 3.54248
+      type: 'suite'
+      ...
+    # Subtest: quiet-speech-noisy-room
+        # Subtest: off: completes without error
+        ok 1 - off: completes without error
+          ---
+          duration_ms: 0.237486
+          type: 'test'
+          ...
+        # Subtest: current: completes without error
+        ok 2 - current: completes without error
+          ---
+          duration_ms: 0.245867
+          type: 'test'
+          ...
+        # Subtest: less-aggressive: completes without error
+        ok 3 - less-aggressive: completes without error
+          ---
+          duration_ms: 0.16182
+          type: 'test'
+          ...
+        # Subtest: post-trim: completes without error
+        ok 4 - post-trim: completes without error
+          ---
+          duration_ms: 0.358897
+          type: 'test'
+          ...
+        1..4
+    ok 2 - quiet-speech-noisy-room
+      ---
+      duration_ms: 1.523808
+      type: 'suite'
+      ...
+    # Subtest: trailing-silence
+        # Subtest: off: completes without error
+        ok 1 - off: completes without error
+          ---
+          duration_ms: 0.335058
+          type: 'test'
+          ...
+        # Subtest: current: completes without error
+        ok 2 - current: completes without error
+          ---
+          duration_ms: 0.992908
+          type: 'test'
+          ...
+        # Subtest: less-aggressive: completes without error
+        ok 3 - less-aggressive: completes without error
+          ---
+          duration_ms: 0.177731
+          type: 'test'
+          ...
+        # Subtest: post-trim: completes without error
+        ok 4 - post-trim: completes without error
+          ---
+          duration_ms: 0.138448
+          type: 'test'
+          ...
+        1..4
+    ok 3 - trailing-silence
+      ---
+      duration_ms: 1.999304
+      type: 'suite'
+      ...
+    # Subtest: brief-pauses
+        # Subtest: off: completes without error
+        ok 1 - off: completes without error
+          ---
+          duration_ms: 0.56649
+          type: 'test'
+          ...
+        # Subtest: current: completes without error
+        ok 2 - current: completes without error
+          ---
+          duration_ms: 0.103641
+          type: 'test'
+          ...
+        # Subtest: less-aggressive: completes without error
+        ok 3 - less-aggressive: completes without error
+          ---
+          duration_ms: 1.869573
+          type: 'test'
+          ...
+        # Subtest: post-trim: completes without error
+        ok 4 - post-trim: completes without error
+          ---
+          duration_ms: 0.355416
+          type: 'test'
+          ...
+        1..4
+    ok 4 - brief-pauses
+      ---
+      duration_ms: 3.426324
+      type: 'suite'
+      ...
+    # Subtest: natural-pauses
+        # Subtest: off: completes without error
+        ok 1 - off: completes without error
+          ---
+          duration_ms: 0.271158
+          type: 'test'
+          ...
+        # Subtest: current: completes without error
+        ok 2 - current: completes without error
+          ---
+          duration_ms: 0.103123
+          type: 'test'
+          ...
+        # Subtest: less-aggressive: completes without error
+        ok 3 - less-aggressive: completes without error
+          ---
+          duration_ms: 0.083369
+          type: 'test'
+          ...
+        # Subtest: post-trim: completes without error
+        ok 4 - post-trim: completes without error
+          ---
+          duration_ms: 0.21183
+          type: 'test'
+          ...
+        1..4
+    ok 5 - natural-pauses
+      ---
+      duration_ms: 0.999146
+      type: 'suite'
+      ...
+    # Subtest: long-silence-mid-recording
+        # Subtest: off: completes without error
+        ok 1 - off: completes without error
+          ---
+          duration_ms: 0.75537
+          type: 'test'
+          ...
+        # Subtest: current: completes without error
+        ok 2 - current: completes without error
+          ---
+          duration_ms: 0.137723
+          type: 'test'
+          ...
+        # Subtest: less-aggressive: completes without error
+        ok 3 - less-aggressive: completes without error
+          ---
+          duration_ms: 15.55391
+          type: 'test'
+          ...
+        # Subtest: post-trim: completes without error
+        ok 4 - post-trim: completes without error
+          ---
+          duration_ms: 0.230271
+          type: 'test'
+          ...
+        1..4
+    ok 6 - long-silence-mid-recording
+      ---
+      duration_ms: 18.051404
+      type: 'suite'
+      ...
+    # Subtest: very-quiet-room
+        # Subtest: off: completes without error
+        ok 1 - off: completes without error
+          ---
+          duration_ms: 0.177108
+          type: 'test'
+          ...
+        # Subtest: current: completes without error
+        ok 2 - current: completes without error
+          ---
+          duration_ms: 0.086034
+          type: 'test'
+          ...
+        # Subtest: less-aggressive: completes without error
+        ok 3 - less-aggressive: completes without error
+          ---
+          duration_ms: 0.0807
+          type: 'test'
+          ...
+        # Subtest: post-trim: completes without error
+        ok 4 - post-trim: completes without error
+          ---
+          duration_ms: 0.244565
+          type: 'test'
+          ...
+        1..4
+    ok 7 - very-quiet-room
+      ---
+      duration_ms: 1.41696
+      type: 'suite'
+      ...
+    # Subtest: loud-room
+        # Subtest: off: completes without error
+        ok 1 - off: completes without error
+          ---
+          duration_ms: 0.210814
+          type: 'test'
+          ...
+        # Subtest: current: completes without error
+        ok 2 - current: completes without error
+          ---
+          duration_ms: 0.144674
+          type: 'test'
+          ...
+        # Subtest: less-aggressive: completes without error
+        ok 3 - less-aggressive: completes without error
+          ---
+          duration_ms: 0.252337
+          type: 'test'
+          ...
+        # Subtest: post-trim: completes without error
+        ok 4 - post-trim: completes without error
+          ---
+          duration_ms: 0.159205
+          type: 'test'
+          ...
+        1..4
+    ok 8 - loud-room
+      ---
+      duration_ms: 1.020845
+      type: 'suite'
+      ...
+    # Subtest: generates aggregate report
+    ok 9 - generates aggregate report
+      ---
+      duration_ms: 2.400038
+      type: 'test'
+      ...
+    1..9
+ok 1 - VAD A/B evaluation
+  ---
+  duration_ms: 38.919454
+  type: 'suite'
+  ...
+1..1
+# tests 33
+# suites 9
+# pass 33
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1091.632757

@@ -1,0 +1,881 @@
+/* hud.css — HUD flutuante Toca Ficha Dr. (v2.5.11 layout refresh) */
+/* Tokens consumed from styles/tokens.css (CHRA-475).
+ * tokens.css is injected before this file by registerContentScripts in popup.src.js. */
+
+#tocafichadr-hud {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  width: 320px;
+  z-index: 999999;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 13px;
+  user-select: none;
+  transition: width 0.3s ease;
+}
+
+/* Container principal */
+#tocafichadr-hud .pb-panel {
+  background: var(--hud-surface-base);
+  border: 1px solid var(--hud-border);
+  border-radius: var(--hud-radius-2xl);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.7), 0 0 0 1px rgba(var(--hud-vital-rgb),0.08);
+  overflow: hidden;
+  transition: all 0.2s ease;
+}
+
+/* Header — !important defeats G-Hosp's global element styles bleeding into the HUD */
+#tocafichadr-hud .pb-header {
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: nowrap !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  padding: 11px 14px !important;
+  margin: 0 !important;
+  background: linear-gradient(180deg, var(--hud-surface-card), var(--hud-surface-base));
+  border-bottom: 1px solid var(--hud-border);
+  cursor: move;
+  width: auto !important;
+  min-height: 0 !important;
+}
+
+#tocafichadr-hud .pb-title {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  gap: 7px;
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--hud-vital);
+  letter-spacing: 0.4px;
+  white-space: nowrap !important;
+  min-width: 0;
+  flex: 1 1 auto !important;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+#tocafichadr-hud .pb-title .pb-label {
+  white-space: nowrap !important;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+#tocafichadr-hud .pb-title .pb-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--hud-vital);
+  box-shadow: 0 0 6px var(--hud-vital);
+  animation: pb-pulse 2s infinite;
+}
+
+@keyframes pb-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+#tocafichadr-hud .pb-header-actions {
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: nowrap !important;
+  align-items: center !important;
+  gap: 2px;
+  flex: 0 0 auto !important;
+  margin: 0 !important;
+}
+
+#tocafichadr-hud .pb-icon-btn {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  background: none !important;
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  color: var(--hud-text-muted) !important;
+  cursor: pointer !important;
+  padding: 6px 8px !important;
+  margin: 0 !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  width: auto !important;
+  height: auto !important;
+  border-radius: var(--hud-radius-sm) !important;
+  font-size: 14px !important;
+  line-height: 1 !important;
+  font-family: inherit !important;
+  transition: all 0.15s;
+}
+
+#tocafichadr-hud .pb-icon-btn:hover { color: var(--hud-vital) !important; background: var(--hud-surface-hover) !important; }
+
+/* SVG icon — uniform 14px stroke-based across the HUD */
+#tocafichadr-hud .pb-icon { display: inline-flex !important; align-items: center !important; justify-content: center !important; line-height: 0 !important; }
+#tocafichadr-hud .pb-icon svg { width: 14px !important; height: 14px !important; display: block !important; }
+#tocafichadr-hud .pb-icon-btn .pb-icon svg { stroke: currentColor !important; }
+
+/* Compact status pill — replaces redundant dot + Conectado/Offline label.
+   Inline in header-actions next to the icon buttons. */
+#tocafichadr-hud .pb-status-pill {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 5px;
+  background: var(--hud-vital-bg-deep);
+  border: 1px solid var(--hud-vital-border-dim);
+  color: var(--hud-vital);
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  padding: 3px 8px;
+  border-radius: var(--hud-radius-pill);
+  text-transform: uppercase;
+  font-variant-numeric: tabular-nums;
+  margin-right: 4px;
+  white-space: nowrap;
+}
+#tocafichadr-hud .pb-status-pill.offline {
+  background: var(--hud-alarm-bg-deep);
+  border-color: var(--hud-alarm-border-dim);
+  color: var(--hud-alarm);
+}
+#tocafichadr-hud .pb-pill-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--hud-vital);
+  box-shadow: 0 0 4px var(--hud-vital);
+  flex-shrink: 0;
+}
+#tocafichadr-hud .pb-status-pill.offline .pb-pill-dot {
+  background: var(--hud-alarm);
+  box-shadow: 0 0 4px var(--hud-alarm);
+}
+#tocafichadr-hud .pb-pill-state { color: inherit; }
+#tocafichadr-hud .pb-pill-sep { color: var(--hud-vital-sep); opacity: 0.6; }
+#tocafichadr-hud .pb-status-pill.offline .pb-pill-sep { color: var(--hud-alarm-sep); }
+#tocafichadr-hud .pb-pill-usage {
+  color: var(--hud-vital-muted);
+  font-weight: 500;
+  text-transform: none;
+  font-size: 10px;
+  letter-spacing: 0.2px;
+}
+#tocafichadr-hud .pb-status-pill.offline .pb-pill-usage { color: var(--hud-alarm-muted); }
+
+/* Hide usage portion when offline (no usage to show) */
+#tocafichadr-hud .pb-status-pill.offline .pb-pill-sep,
+#tocafichadr-hud .pb-status-pill.offline .pb-pill-usage { display: none; }
+
+/* Body */
+#tocafichadr-hud .pb-body {
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Card do paciente — agora com acento lateral teal */
+#tocafichadr-hud .pb-patient-card {
+  background: var(--hud-surface-card);
+  border: 1px solid var(--hud-border);
+  border-left: 3px solid var(--hud-vital);
+  border-radius: var(--hud-radius-lg);
+  padding: 9px 12px;
+}
+
+#tocafichadr-hud .pb-patient-id {
+  font-size: 10px;
+  color: var(--hud-text-muted);
+  margin-bottom: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+#tocafichadr-hud .pb-patient-id span {
+  color: var(--hud-text-secondary);
+  font-weight: 500;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+#tocafichadr-hud .pb-patient-weight {
+  font-size: 14px;
+  color: var(--hud-vital);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+#tocafichadr-hud .pb-patient-complaint {
+  font-size: 11px;
+  color: var(--hud-text-faint);
+  margin-top: 5px;
+  line-height: 1.45;
+  font-style: italic;
+}
+
+/* Seção de gravação — botão maior, mais "primary" */
+#tocafichadr-hud .pb-record-section {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* v3.1 idea #3: live waveform canvas — fades in only during recording. */
+#tocafichadr-hud .pb-waveform {
+  display: block;
+  width: 100%;
+  height: 36px;
+  background: rgba(var(--hud-vital-rgb), 0.04);
+  border: 1px solid rgba(var(--hud-vital-rgb), 0.15);
+  border-radius: var(--hud-radius-sm);
+  margin-top: 4px;
+}
+
+#tocafichadr-hud .pb-record-btn {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: var(--hud-radius-xl);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.2s;
+  letter-spacing: 0.2px;
+}
+
+#tocafichadr-hud button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+#tocafichadr-hud .pb-record-btn.idle {
+  background: linear-gradient(135deg, var(--hud-vital-border), var(--hud-vital-bg));
+  color: var(--hud-vital);
+  border: 1px solid var(--hud-vital);
+}
+
+#tocafichadr-hud .pb-record-btn.idle:hover {
+  background: linear-gradient(135deg, var(--hud-vital), var(--hud-vital-dim));
+  color: #000;
+  box-shadow: 0 4px 14px rgba(var(--hud-vital-rgb), 0.3);
+}
+
+#tocafichadr-hud .pb-record-btn.recording {
+  background: linear-gradient(135deg, var(--hud-alarm-border), var(--hud-alarm-bg));
+  color: var(--hud-alarm);
+  border: 1px solid var(--hud-alarm);
+  animation: pb-record-pulse 1s infinite;
+}
+
+@keyframes pb-record-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(var(--hud-alarm-rgb), 0.4); }
+  50% { box-shadow: 0 0 0 8px rgba(var(--hud-alarm-rgb), 0); }
+}
+
+#tocafichadr-hud .pb-record-btn.processing {
+  background: linear-gradient(135deg, var(--hud-caution-bg), var(--hud-caution-bg-deep));
+  color: var(--hud-caution);
+  border: 1px solid var(--hud-caution);
+}
+
+#tocafichadr-hud .pb-record-btn.processing .pb-record-mic {
+  display: inline-block;
+  width: 14px; height: 14px;
+  border: 1.6px solid var(--hud-caution-border);
+  border-top-color: var(--hud-caution);
+  border-radius: 50%;
+  animation: pb-spin 0.8s linear infinite;
+}
+#tocafichadr-hud .pb-record-btn.processing .pb-record-mic svg { display: none; }
+@keyframes pb-spin { to { transform: rotate(360deg); } }
+
+#tocafichadr-hud .pb-record-btn.done {
+  background: linear-gradient(135deg, var(--hud-vital), var(--hud-vital-dim));
+  color: #fff;
+  border: 1px solid var(--hud-vital);
+}
+
+/* SVG icon sizing inside the record button */
+#tocafichadr-hud .pb-record-btn .pb-record-mic { display: inline-flex; align-items: center; justify-content: center; }
+#tocafichadr-hud .pb-record-btn .pb-record-mic svg { width: 16px; height: 16px; }
+
+/* Ring + check are inert on the HUD pill — used by the popup's circular variant only */
+#tocafichadr-hud .pb-record-ring { display: none; }
+#tocafichadr-hud .pb-record-btn.done .pb-record-check { display: inline-flex; align-items: center; justify-content: center; margin-left: 4px; }
+#tocafichadr-hud .pb-record-btn.done .pb-record-check svg { width: 16px; height: 16px; stroke: #fff; }
+#tocafichadr-hud .pb-record-btn:not(.done) .pb-record-check { display: none; }
+#tocafichadr-hud .pb-record-btn.done .pb-record-mic { display: none; }
+
+#tocafichadr-hud .pb-timer {
+  text-align: center;
+  font-size: 14px;
+  color: var(--hud-text-muted);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 1px;
+}
+
+#tocafichadr-hud .pb-timer.active { color: var(--hud-alarm); font-weight: 600; }
+
+/* Usage counter */
+#tocafichadr-hud .pb-usage-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+}
+
+#tocafichadr-hud .pb-usage-counter {
+  font-size: 11px;
+  color: var(--hud-text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+#tocafichadr-hud .pb-usage-counter.limit-warning { color: var(--hud-caution); }
+#tocafichadr-hud .pb-usage-counter.limit-reached { color: var(--hud-alarm); font-weight: 600; }
+
+#tocafichadr-hud .pb-usage-upgrade {
+  background: linear-gradient(135deg, var(--hud-caution), var(--hud-caution-dim));
+  border: none;
+  border-radius: var(--hud-radius-xs);
+  padding: 6px 12px;
+  color: #000;
+  font-size: 10px;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.15s;
+}
+
+#tocafichadr-hud .pb-usage-upgrade:hover {
+  background: linear-gradient(135deg, var(--hud-caution-bright), var(--hud-caution));
+  box-shadow: 0 2px 10px rgba(var(--hud-caution-rgb), 0.4);
+}
+
+/* Status SOAP */
+#tocafichadr-hud .pb-soap-status {
+  padding: 7px 10px;
+  border-radius: var(--hud-radius-sm);
+  font-size: 11px;
+  text-align: center;
+  display: none;
+  font-weight: 500;
+}
+
+#tocafichadr-hud .pb-soap-status.visible { display: block; }
+#tocafichadr-hud .pb-soap-status.ok { background: var(--hud-vital-bg); color: var(--hud-vital); border: 1px solid var(--hud-vital-border); }
+#tocafichadr-hud .pb-soap-status.error { background: var(--hud-alarm-bg); color: var(--hud-alarm); border: 1px solid var(--hud-alarm-border); }
+#tocafichadr-hud .pb-soap-status.loading { background: #181830; color: var(--info); border: 1px solid #1f1f3a; }
+
+/* Section labels — slightly larger, with icon support */
+#tocafichadr-hud .pb-section-label {
+  font-size: 10px;
+  color: var(--hud-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 700;
+  margin-bottom: 2px;
+}
+
+/* CID section */
+#tocafichadr-hud .pb-cid-section {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+#tocafichadr-hud .pb-cid-suggestion {
+  background: var(--hud-vital-bg);
+  border: 1px solid var(--hud-vital);
+  border-radius: var(--hud-radius-md);
+  padding: 7px 10px;
+  cursor: pointer;
+  display: none;
+  align-items: center;
+  justify-content: space-between;
+  transition: all 0.15s;
+}
+
+#tocafichadr-hud .pb-cid-suggestion.visible { display: flex; }
+#tocafichadr-hud .pb-cid-suggestion:hover { background: var(--hud-vital); color: #000; box-shadow: 0 2px 8px rgba(var(--hud-vital-rgb), 0.3); }
+
+#tocafichadr-hud .pb-cid-code {
+  font-weight: 700;
+  font-size: 12px;
+  color: var(--hud-vital);
+  font-variant-numeric: tabular-nums;
+}
+
+#tocafichadr-hud .pb-cid-suggestion:hover .pb-cid-code { color: #000; }
+
+#tocafichadr-hud .pb-cid-name {
+  font-size: 10px;
+  color: var(--hud-text-secondary);
+  flex: 1;
+  padding: 0 8px;
+  line-height: 1.3;
+}
+
+#tocafichadr-hud .pb-cid-suggestion:hover .pb-cid-name { color: #1a1a1a; }
+
+#tocafichadr-hud .pb-cid-apply { font-size: 11px; color: var(--hud-text-muted); }
+#tocafichadr-hud .pb-cid-suggestion:hover .pb-cid-apply { color: #000; }
+
+#tocafichadr-hud .pb-cid-input {
+  background: var(--hud-surface-card);
+  border: 1px solid var(--hud-border-dim);
+  border-radius: var(--hud-radius-md);
+  padding: 8px 10px;
+  color: var(--hud-text);
+  font-size: 12px;
+  width: 100%;
+  box-sizing: border-box;
+  outline: none;
+  transition: all 0.15s;
+}
+
+#tocafichadr-hud .pb-cid-input:focus { border-color: var(--hud-vital); background: var(--hud-vital-bg); }
+#tocafichadr-hud .pb-cid-input::placeholder { color: var(--hud-text-dimmer); }
+
+#tocafichadr-hud .pb-cid-results {
+  background: var(--hud-surface-card);
+  border: 1px solid var(--hud-border);
+  border-radius: var(--hud-radius-md);
+  max-height: 140px;
+  overflow-y: auto;
+  display: none;
+}
+
+#tocafichadr-hud .pb-cid-results.visible { display: block; }
+
+#tocafichadr-hud .pb-cid-item {
+  padding: 8px 12px;
+  cursor: pointer;
+  border-bottom: 1px solid var(--hud-border-faint);
+  font-size: 11px;
+  color: var(--hud-text-bright);
+  display: flex;
+  gap: 8px;
+  align-items: baseline;
+}
+
+#tocafichadr-hud .pb-cid-item:last-child { border-bottom: none; }
+#tocafichadr-hud .pb-cid-item:hover { background: var(--hud-surface-mid); color: #fff; }
+#tocafichadr-hud .pb-cid-item-code { color: var(--hud-vital); font-weight: 600; white-space: nowrap; font-variant-numeric: tabular-nums; }
+
+/* Templates — keep 2-col grid but with refined buttons */
+#tocafichadr-hud .pb-templates {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5px;
+}
+
+#tocafichadr-hud .pb-template-btn {
+  background: var(--hud-surface-card);
+  border: 1px solid var(--hud-border);
+  border-radius: var(--hud-radius-md);
+  padding: 9px 10px;
+  color: var(--hud-text-secondary);
+  font-size: 11px;
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.15s;
+  line-height: 1.3;
+  font-weight: 500;
+}
+
+#tocafichadr-hud .pb-template-btn:hover {
+  background: var(--hud-surface-elevated);
+  border-color: var(--hud-vital);
+  color: var(--hud-vital);
+}
+
+#tocafichadr-hud .pb-template-btn.active {
+  background: var(--hud-vital-bg);
+  border-color: var(--hud-vital);
+  color: var(--hud-vital);
+  box-shadow: inset 0 0 0 1px rgba(var(--hud-vital-rgb), 0.3);
+}
+
+/* Action buttons — 2x2 grid, SVG icon stacked above label (option 6c — equal weight, modernized) */
+#tocafichadr-hud .pb-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+}
+
+#tocafichadr-hud .pb-action-btn {
+  width: 100%;
+  padding: 11px 8px;
+  border: 1px solid var(--hud-border-dim);
+  border-radius: var(--hud-radius-lg);
+  background: var(--hud-surface-elevated);
+  color: var(--hud-text);
+  font-size: 11px;
+  font-weight: 500;
+  cursor: pointer;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  line-height: 1.2;
+  letter-spacing: 0.2px;
+  transition: all 0.15s;
+}
+
+#tocafichadr-hud .pb-action-btn .pb-action-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 0;
+  color: #b8b8b8;
+  transition: color 0.15s;
+}
+#tocafichadr-hud .pb-action-btn .pb-action-icon svg {
+  width: 16px;
+  height: 16px;
+}
+
+#tocafichadr-hud .pb-action-btn:hover {
+  background: #1f2922;
+  border-color: var(--hud-vital);
+  color: var(--hud-vital);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(var(--hud-vital-rgb), 0.12);
+}
+#tocafichadr-hud .pb-action-btn:hover .pb-action-icon { color: var(--hud-vital); }
+
+#tocafichadr-hud .pb-action-btn:active {
+  transform: translateY(0);
+}
+
+/* Finalize bars (Rx + Atestado) — distinto dos action buttons */
+#tocafichadr-hud .pb-finalize-bar {
+  display: none;
+  margin-top: 2px;
+}
+
+#tocafichadr-hud .pb-finalize-bar.visible { display: block; }
+
+#tocafichadr-hud .pb-finalize-action {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-radius: var(--hud-radius-lg);
+  background: linear-gradient(135deg, var(--hud-vital-dim), var(--hud-vital-dark));
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  letter-spacing: 0.3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: all 0.15s;
+}
+
+#tocafichadr-hud .pb-finalize-action:hover {
+  background: linear-gradient(135deg, var(--hud-vital), var(--hud-vital-dim));
+  box-shadow: 0 4px 14px rgba(var(--hud-vital-rgb), 0.35);
+}
+
+#tocafichadr-hud .pb-finalize-action:disabled {
+  background: var(--hud-vital-bg);
+  color: var(--hud-vital);
+}
+
+/* Finalize Patient — botão grande, mantém o protagonismo verde */
+#tocafichadr-hud .pb-finalize-btn {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: var(--hud-radius-xl);
+  background: linear-gradient(135deg, var(--hud-vital-dim), var(--hud-vital-dark));
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  letter-spacing: 0.4px;
+  transition: all 0.15s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 2px;
+}
+
+#tocafichadr-hud .pb-finalize-btn:hover {
+  background: linear-gradient(135deg, var(--hud-vital), var(--hud-vital-dim));
+  box-shadow: 0 4px 16px rgba(var(--hud-vital-rgb), 0.35);
+}
+
+/* Danger / confirmation-pending states */
+#tocafichadr-hud .pb-finalize-btn--danger,
+#tocafichadr-hud .pb-finalize-btn--danger:hover {
+  background: linear-gradient(135deg, var(--hud-danger), var(--hud-danger-dim));
+  box-shadow: 0 4px 14px rgba(var(--hud-danger-rgb), 0.35);
+  animation: pb-pulse-danger 0.8s ease-in-out infinite alternate;
+}
+
+#tocafichadr-hud .pb-action-btn--danger,
+#tocafichadr-hud .pb-action-btn--danger:hover {
+  background: var(--hud-danger-bg);
+  color: var(--hud-danger-text);
+  border-color: var(--hud-danger-border);
+  animation: pb-pulse-danger 0.8s ease-in-out infinite alternate;
+}
+
+@keyframes pb-pulse-danger {
+  from { opacity: 1; }
+  to   { opacity: 0.75; }
+}
+
+/* Connection label — agora visível por padrão (sutil) */
+#tocafichadr-hud .pb-conn-label {
+  font-size: 9px;
+  color: var(--hud-text-muted);
+  margin-left: 2px;
+  margin-right: 4px;
+  white-space: nowrap;
+  opacity: 0.7;
+  transition: opacity 0.2s ease;
+  font-variant-numeric: tabular-nums;
+}
+
+#tocafichadr-hud .pb-title:hover .pb-conn-label {
+  opacity: 1;
+  color: var(--hud-text-secondary);
+}
+
+/* Wide mode — agora 440px (era 380) */
+#tocafichadr-hud.wide {
+  width: 440px;
+}
+
+/* SOAP preview (wide mode only) */
+#tocafichadr-hud .pb-soap-preview {
+  background: var(--hud-surface-card);
+  border: 1px solid var(--hud-border);
+  border-radius: var(--hud-radius-md);
+  padding: 9px 11px;
+  font-size: 11px;
+  color: var(--hud-text-secondary);
+  line-height: 1.55;
+  max-height: 140px;
+  overflow-y: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+/* Minimizado — state-aware chip (idle: 44px ball, recording: timer chip, processing: spinner chip) */
+#tocafichadr-hud.minimized { width: auto !important; transition: width 0.3s ease; }
+#tocafichadr-hud.minimized .pb-body { display: none !important; }
+#tocafichadr-hud.minimized .pb-panel {
+  min-width: 44px;
+  height: 44px;
+  border-radius: 22px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  overflow: visible;
+}
+#tocafichadr-hud.minimized .pb-panel:hover { background: var(--hud-surface-card); }
+#tocafichadr-hud.minimized .pb-header {
+  padding: 0 14px !important;
+  justify-content: center !important;
+  border-bottom: none !important;
+  cursor: pointer;
+  width: 100%;
+  height: 44px;
+  min-height: 44px !important;
+}
+#tocafichadr-hud.minimized .pb-title {
+  cursor: pointer;
+  flex: 0 0 auto !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px;
+}
+#tocafichadr-hud.minimized .pb-title .pb-label { display: none !important; }
+#tocafichadr-hud.minimized .pb-header-actions { display: none !important; }
+
+/* Show the status pill in minimized state — gives at-a-glance status */
+#tocafichadr-hud.minimized .pb-status-pill {
+  display: inline-flex !important;
+  margin: 0 !important;
+  background: transparent;
+  border: none;
+  padding: 0 4px;
+  font-size: 10px;
+}
+#tocafichadr-hud.minimized .pb-status-pill .pb-pill-state { display: none; }
+#tocafichadr-hud.minimized .pb-status-pill .pb-pill-sep { display: none; }
+
+/* Recording state: show timer prominently, hide usage */
+#tocafichadr-hud.recording.minimized .pb-status-pill {
+  background: var(--hud-alarm-bg-deep);
+  border: 1px solid rgba(var(--hud-alarm-rgb), 0.4);
+  color: var(--hud-alarm);
+  border-radius: var(--hud-radius-pill);
+  padding: 3px 10px;
+  font-size: 11px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+#tocafichadr-hud.recording.minimized .pb-status-pill .pb-pill-dot {
+  width: 8px; height: 8px;
+  background: var(--hud-alarm);
+  box-shadow: 0 0 0 0 rgba(var(--hud-alarm-rgb), 0.5);
+  animation: pb-rec-pulse 1.4s infinite;
+}
+@keyframes pb-rec-pulse {
+  0% { box-shadow: 0 0 0 0 rgba(var(--hud-alarm-rgb), 0.7); }
+  70% { box-shadow: 0 0 0 7px rgba(var(--hud-alarm-rgb), 0); }
+  100% { box-shadow: 0 0 0 0 rgba(var(--hud-alarm-rgb), 0); }
+}
+#tocafichadr-hud.recording.minimized .pb-status-pill .pb-pill-usage {
+  color: var(--hud-alarm);
+  font-size: 11px;
+  font-weight: 700;
+}
+#tocafichadr-hud.recording.minimized .pb-status-pill::after {
+  content: '';
+}
+
+/* Hover affordance — subtle nudge so user knows ball is clickable */
+#tocafichadr-hud.minimized .pb-panel:hover {
+  background: var(--hud-surface-card);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.7), 0 0 0 1px rgba(var(--hud-vital-rgb), 0.18);
+}
+
+/* Scrollbar */
+#tocafichadr-hud ::-webkit-scrollbar { width: 5px; }
+#tocafichadr-hud ::-webkit-scrollbar-track { background: #111; }
+#tocafichadr-hud ::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
+#tocafichadr-hud ::-webkit-scrollbar-thumb:hover { background: #444; }
+
+/* Divider — usado entre seções principais */
+#tocafichadr-hud .pb-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--hud-border), transparent);
+  margin: 2px -12px;
+}
+
+/* Focus-visible styles */
+#tocafichadr-hud .pb-icon-btn:focus-visible,
+#tocafichadr-hud .pb-btn:focus-visible,
+#tocafichadr-hud .pb-template-btn:focus-visible,
+#tocafichadr-hud .pb-record-btn:focus-visible,
+#tocafichadr-hud .pb-action-btn:focus-visible,
+#tocafichadr-hud .pb-finalize-btn:focus-visible,
+#tocafichadr-hud .pb-finalize-action:focus-visible,
+#tocafichadr-hud .pb-usage-upgrade:focus-visible,
+#tocafichadr-hud .pb-cid-suggestion:focus-visible,
+#tocafichadr-hud .pb-cid-item:focus-visible {
+  outline: 2px solid var(--hud-vital);
+  outline-offset: 2px;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  #tocafichadr-hud .pb-record-btn.recording { animation: none; }
+  #tocafichadr-hud .pb-action-btn:hover { transform: none; }
+  @keyframes pb-pulse { 0%, 100% { opacity: 1; } }
+  @keyframes pb-record-pulse { 0%, 100% { box-shadow: none; } }
+  @keyframes pb-pulse-danger { 0%, 100% { opacity: 1; } }
+}
+
+/* ---------------------------------------------------------------------------
+ * Dialog lock overlay (v2.6.5 / v3.0.x)
+ *   Injected by dom-engine._lockDialog() when an async G-Hosp form save is in
+ *   flight. Prevents mash-clicks during the 5-30s save window observed in
+ *   2026-05-01 logs (29.6s save + 5 redundant Gravar clicks during the wait).
+ *   The overlay sits inside the host #dialog_formularios so it disappears
+ *   automatically if G-Hosp removes the dialog.
+ * ------------------------------------------------------------------------- */
+.tfdr-dialog-lock {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 2147483647;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--tfdr-lock-bg-overlay);
+  pointer-events: auto;
+  animation: tfdr-dialog-lock-fade 0.15s ease-out;
+}
+.tfdr-dialog-lock__panel {
+  background: #ffffff;
+  color: var(--tfdr-lock-bg, #0d0d0d);
+  border: 1px solid var(--tfdr-lock-accent);
+  border-radius: var(--hud-radius-lg, 8px);
+  padding: 14px 22px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+}
+.tfdr-dialog-lock__spinner {
+  width: 18px;
+  height: 18px;
+  border: 3px solid var(--tfdr-lock-accent-track);
+  border-top-color: var(--tfdr-lock-accent);
+  border-radius: 50%;
+  animation: tfdr-dialog-lock-spin 0.7s linear infinite;
+}
+@keyframes tfdr-dialog-lock-spin {
+  to { transform: rotate(360deg); }
+}
+@keyframes tfdr-dialog-lock-fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .tfdr-dialog-lock { animation: none; }
+  .tfdr-dialog-lock__spinner { animation: none; border-top-color: var(--tfdr-lock-accent); }
+}
+
+/* -------------------------------------------------------------------------
+ * Test-mode banner (Gate B — read-only invariant reinforcement)
+ * ------------------------------------------------------------------------- */
+.tfdr-test-banner {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 2147483646;
+  background: var(--hud-caution-bg, #2e2410);
+  color: var(--hud-caution, #f59e0b);
+  border-bottom: 2px solid var(--hud-caution, #f59e0b);
+  text-align: center;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 6px;
+  letter-spacing: 0.5px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* Visual reinforcement: dim destructive actions when in test mode */
+body.tfdr-test-mode .pb-finalize-btn,
+body.tfdr-test-mode .pb-action-btn {
+  opacity: 0.85;
+}
+
+body.tfdr-test-mode .pb-record-btn.idle {
+  border: 2px dashed var(--hud-caution);
+}

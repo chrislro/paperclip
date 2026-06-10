@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Toca Ficha — 4 Templates Universais</title>
+<style>
+  :root {
+    --bg: #0a0a0a;
+    --surface: #111;
+    --surface-2: #1a1a1a;
+    --border: #222;
+    --text: #e5e5e5;
+    --text-dim: #888;
+    --accent: #10b981;
+    --accent-dim: #059669;
+    --danger: #ef4444;
+    --warning: #f59e0b;
+    --info: #3b82f6;
+    --radius: 10px;
+    --font: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font);
+    line-height: 1.5;
+    margin: 0;
+    padding: 28px 20px 80px;
+    max-width: 800px;
+    margin-inline: auto;
+  }
+  h1 { font-size: 22px; margin: 0 0 6px; }
+  .lead { color: var(--text-dim); margin: 0 0 10px; }
+  .subtitle { color: var(--text-dim); font-size: 13px; margin: 0 0 28px; }
+
+  h2 {
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-dim);
+    margin: 32px 0 12px;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 8px;
+  }
+
+  /* Chrome */
+  .chrome {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 16px;
+    margin-bottom: 24px;
+  }
+
+  /* Card B */
+  .rx-card-b {
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 12px;
+    display: flex;
+    gap: 12px;
+    margin-bottom: 10px;
+  }
+  .rx-b-preview-col {
+    flex: 0 0 150px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .rx-b-preview-label {
+    font-size: 10px;
+    color: #666;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .rx-b-preview-pill {
+    background: #0a0a0a;
+    border: 1px solid #2a2a2a;
+    border-radius: 8px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .rx-b-preview-name { font-size: 13px; font-weight: 600; color: #ddd; }
+  .rx-b-preview-sub { font-size: 11px; color: #888; }
+  .rx-b-preview-hint {
+    font-size: 10px;
+    color: var(--accent);
+    line-height: 1.4;
+  }
+  .rx-b-preview-hint.warn { color: var(--warning); }
+
+  .rx-b-editor-col {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .rx-b-name-row {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 6px;
+    align-items: center;
+  }
+  input {
+    background: #0d0d0d;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: var(--text);
+    padding: 8px 10px;
+    font: inherit;
+    font-size: 13px;
+    width: 100%;
+    outline: none;
+  }
+  input::placeholder { color: #555; }
+
+  .btn {
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    color: var(--text);
+    border-radius: 6px;
+    padding: 6px 10px;
+    font: inherit;
+    font-size: 13px;
+    cursor: pointer;
+  }
+  .btn-danger { color: var(--danger); }
+
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: #0d0d0d;
+    border: 1px solid #2a2a2a;
+    border-radius: 6px;
+    padding: 4px 10px;
+    font-size: 12px;
+  }
+  .pill .badge {
+    font-size: 10px;
+    color: var(--accent);
+    background: rgba(16,185,129,0.1);
+    border-radius: 4px;
+    padding: 1px 5px;
+  }
+  .pill .badge.warn { color: var(--warning); background: rgba(245,158,11,0.1); }
+  .pill .x { background: none; border: none; color: #555; font-size: 14px; cursor: pointer; padding: 0 2px; }
+  .pill .x:hover { color: var(--danger); }
+  .pill.removed { opacity: 0.4; text-decoration: line-through; border-style: dashed; }
+
+  .pills-wrap { display: flex; flex-wrap: wrap; gap: 6px; }
+
+  .search-box {
+    width: 100%;
+    font-size: 12px;
+    padding: 7px 10px;
+    margin-top: 4px;
+  }
+
+  details {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 8px;
+    margin-top: 4px;
+  }
+  summary { font-size: 11px; color: var(--text-dim); cursor: pointer; list-style: none; }
+  summary::-webkit-details-marker { display: none; }
+
+  .note {
+    font-size: 12px;
+    color: var(--text-dim);
+    margin-top: 6px;
+  }
+  .note.ok { color: var(--accent); }
+  .note.warn { color: var(--warning); }
+
+  /* Scenario box */
+  .scenario {
+    background: rgba(59,130,246,0.08);
+    border: 1px solid rgba(59,130,246,0.2);
+    border-radius: 8px;
+    padding: 12px;
+    margin: 16px 0;
+  }
+  .scenario-title { font-size: 12px; color: var(--info); font-weight: 600; margin-bottom: 6px; }
+  .scenario p { font-size: 12px; color: var(--text-dim); margin: 0; }
+
+  /* Comparison */
+  .compare {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 12px;
+  }
+  .compare-box {
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px;
+  }
+  .compare-box h4 { font-size: 12px; margin: 0 0 6px; color: var(--text); }
+  .compare-box p { font-size: 11px; color: var(--text-dim); margin: 0; }
+
+  hr { border: none; border-top: 1px solid var(--border); margin: 28px 0; }
+
+  /* Grid buttons */
+  .grid-btns {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-top: 10px;
+  }
+  .grid-btn {
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px;
+    text-align: left;
+    cursor: pointer;
+  }
+  .grid-btn .name { font-size: 13px; font-weight: 600; color: #ddd; }
+  .grid-btn .sub { font-size: 11px; color: #666; margin-top: 2px; }
+  .grid-btn:hover { border-color: #333; }
+</style>
+</head>
+<body>
+
+<h1>💊 4 Templates Universais</h1>
+<p class="lead">Proposta de templates padrão que englobam adultos e pediátricos.</p>
+<p class="subtitle">Cada template contém <b>ambas as apresentações</b> (ped + adulto). O médico remove a que não serve no momento.</p>
+
+<!-- ========================================================== -->
+<h2>Os 4 Templates na Aba Config</h2>
+
+<div class="chrome">
+  <div style="font-size:13px;font-weight:600;margin-bottom:4px;">Medicamentos da Receita</div>
+  <div class="note" style="margin-bottom:12px;">Crie os botões que aparecem em <b>Receita — Modelos</b>.</div>
+
+  <!-- TEMPLATE 1: Paracetamol -->
+  <div class="rx-card-b">
+    <div class="rx-b-preview-col">
+      <div class="rx-b-preview-label">Como aparece no grid</div>
+      <div class="rx-b-preview-pill">
+        <span class="rx-b-preview-name">Paracetamol</span>
+        <span class="rx-b-preview-sub">2 medicações · dose auto</span>
+      </div>
+      <div class="rx-b-preview-hint">💡 Criança → deixa gotas / Adulto → deixa comprimidos</div>
+    </div>
+    <div class="rx-b-editor-col">
+      <div class="rx-b-name-row">
+        <input value="Paracetamol" placeholder="Nome da receita">
+        <button class="btn btn-danger">×</button>
+      </div>
+      <div class="pills-wrap">
+        <div class="pill">💊 Paracetamol gotas <span class="badge">dose auto</span> <span class="x">×</span></div>
+        <div class="pill">💊 Paracetamol 500/750mg cp <span class="badge">dose auto</span> <span class="x">×</span></div>
+      </div>
+      <input class="search-box" placeholder="Buscar medicação no catálogo…">
+      <details>
+        <summary>Texto extra &amp; variáveis</summary>
+        <textarea style="width:100%;background:#0d0d0d;border:1px solid #222;border-radius:6px;color:#ddd;padding:8px;font:inherit;font-size:12px;min-height:50px;margin-top:6px;" placeholder="Texto adicional (use ${weight}, ${age}, ${patient_name})"></textarea>
+      </details>
+    </div>
+  </div>
+
+  <!-- TEMPLATE 2: Ibuprofeno -->
+  <div class="rx-card-b">
+    <div class="rx-b-preview-col">
+      <div class="rx-b-preview-label">Como aparece no grid</div>
+      <div class="rx-b-preview-pill">
+        <span class="rx-b-preview-name">Ibuprofeno</span>
+        <span class="rx-b-preview-sub">2 medicações · dose auto</span>
+      </div>
+      <div class="rx-b-preview-hint">💡 Anti-inflamatório + analgésico</div>
+    </div>
+    <div class="rx-b-editor-col">
+      <div class="rx-b-name-row">
+        <input value="Ibuprofeno" placeholder="Nome da receita">
+        <button class="btn btn-danger">×</button>
+      </div>
+      <div class="pills-wrap">
+        <div class="pill">💊 Ibuprofeno gotas <span class="badge">dose auto</span> <span class="x">×</span></div>
+        <div class="pill">💊 Ibuprofeno 400/600mg cp <span class="badge">dose auto</span> <span class="x">×</span></div>
+      </div>
+      <input class="search-box" placeholder="Buscar medicação no catálogo…">
+      <details>
+        <summary>Texto extra &amp; variáveis</summary>
+        <textarea style="width:100%;background:#0d0d0d;border:1px solid #222;border-radius:6px;color:#ddd;padding:8px;font:inherit;font-size:12px;min-height:50px;margin-top:6px;" placeholder="Texto adicional (use ${weight}, ${age}, ${patient_name})"></textarea>
+      </details>
+    </div>
+  </div>
+
+  <!-- TEMPLATE 3: Amoxicilina -->
+  <div class="rx-card-b">
+    <div class="rx-b-preview-col">
+      <div class="rx-b-preview-label">Como aparece no grid</div>
+      <div class="rx-b-preview-pill">
+        <span class="rx-b-preview-name">Amoxicilina</span>
+        <span class="rx-b-preview-sub">2 medicações · dose auto</span>
+      </div>
+      <div class="rx-b-preview-hint">💡 Antibiótico de primeira linha</div>
+    </div>
+    <div class="rx-b-editor-col">
+      <div class="rx-b-name-row">
+        <input value="Amoxicilina" placeholder="Nome da receita">
+        <button class="btn btn-danger">×</button>
+      </div>
+      <div class="pills-wrap">
+        <div class="pill">💊 Amoxicilina 250mg/5mL <span class="badge">dose auto</span> <span class="x">×</span></div>
+        <div class="pill">💊 Amoxicilina 500mg cp <span class="badge">dose auto</span> <span class="x">×</span></div>
+      </div>
+      <input class="search-box" placeholder="Buscar medicação no catálogo…">
+      <details>
+        <summary>Texto extra &amp; variáveis</summary>
+        <textarea style="width:100%;background:#0d0d0d;border:1px solid #222;border-radius:6px;color:#ddd;padding:8px;font:inherit;font-size:12px;min-height:50px;margin-top:6px;" placeholder="Texto adicional (use ${weight}, ${age}, ${patient_name})"></textarea>
+      </details>
+    </div>
+  </div>
+
+  <!-- TEMPLATE 4: Protocolo Dor de Garganta -->
+  <div class="rx-card-b">
+    <div class="rx-b-preview-col">
+      <div class="rx-b-preview-label">Como aparece no grid</div>
+      <div class="rx-b-preview-pill">
+        <span class="rx-b-preview-name">Dor de Garganta</span>
+        <span class="rx-b-preview-sub">4 medicações · 7 dias</span>
+      </div>
+      <div class="rx-b-preview-hint">💡 Protocolo completo OMA/faringite</div>
+    </div>
+    <div class="rx-b-editor-col">
+      <div class="rx-b-name-row">
+        <input value="Dor de Garganta" placeholder="Nome da receita">
+        <button class="btn btn-danger">×</button>
+      </div>
+      <div class="pills-wrap">
+        <div class="pill">💊 Amoxicilina susp/cp <span class="badge">dose auto</span> <span class="x">×</span></div>
+        <div class="pill">💊 Paracetamol gotas/cp <span class="badge">dose auto</span> <span class="x">×</span></div>
+        <div class="pill">💊 Desloratadina xarope <span class="badge">dose auto</span> <span class="x">×</span></div>
+        <div class="pill">💊 Ibuprofeno gotas/cp <span class="badge">dose auto</span> <span class="x">×</span></div>
+      </div>
+      <input class="search-box" placeholder="Buscar medicação no catálogo…">
+      <details>
+        <summary>Ajustes manuais (override do catálogo)</summary>
+        <div style="font-size:11px;color:var(--warning);margin-top:6px;">⚠ Só preencha se quiser ignorar a dose calculada automaticamente pelo peso.</div>
+      </details>
+      <details>
+        <summary>Texto extra &amp; variáveis</summary>
+        <textarea style="width:100%;background:#0d0d0d;border:1px solid #222;border-radius:6px;color:#ddd;padding:8px;font:inherit;font-size:12px;min-height:50px;margin-top:6px;" placeholder="Texto adicional (use ${weight}, ${age}, ${patient_name})">Retornar em 7 dias se não houver melhora.</textarea>
+      </details>
+    </div>
+  </div>
+
+  <div style="display:flex;gap:6px;margin-top:12px;">
+    <button class="btn" style="flex:1;">+ Adicionar modelo</button>
+    <button class="btn" style="flex:1;">↺ Restaurar padrões</button>
+  </div>
+</div>
+
+<hr>
+
+<!-- ========================================================== -->
+<h2>Como funciona na prática</h2>
+
+<div class="scenario">
+  <div class="scenario-title">🧒 Cenário: Criança de 12kg com faringite</div>
+  <p>O médico clica em <b>Dor de Garganta</b>. O preview mostra 4 medicações. Ele remove:</p>
+  <ul style="font-size:12px;color:var(--text-dim);margin:6px 0 0 16px;">
+    <li>❌ Amoxicilina 500mg cp (adulto)</li>
+    <li>❌ Paracetamol 500/750mg cp (adulto)</li>
+    <li>❌ Ibuprofeno 400/600mg cp (adulto)</li>
+  </ul>
+  <p style="margin-top:6px;">Sobram 3 medicações pediátricas. Ele clica <b>Aplicar</b>. O sistema calcula:</p>
+  <ul style="font-size:12px;color:var(--text-dim);margin:6px 0 0 16px;">
+    <li>✅ Amoxicilina 250mg/5mL → 10mL (500mg) 12/12h por 7 dias</li>
+    <li>✅ Paracetamol gotas → 12 gotas (1mL) 6/6h</li>
+    <li>✅ Ibuprofeno gotas → 7,5mL (150mg) 8/8h</li>
+    <li>✅ Desloratadina xarope → 5mL (2,5mg) 1x/dia</li>
+  </ul>
+</div>
+
+<div class="scenario">
+  <div class="scenario-title">🧑 Cenário: Adulto de 70kg com OMA</div>
+  <p>O médico clica em <b>Dor de Garganta</b>. Remove as versões pediátricas:</p>
+  <ul style="font-size:12px;color:var(--text-dim);margin:6px 0 0 16px;">
+    <li>❌ Amoxicilina 250mg/5mL (ped)</li>
+    <li>❌ Paracetamol gotas (ped)</li>
+    <li>❌ Ibuprofeno gotas (ped)</li>
+    <li>❌ Desloratadina xarope (ped)</li>
+  </ul>
+  <p style="margin-top:6px;">Sobram 3 medicações adultas. O sistema aplica doses fixas do catálogo adulto:</p>
+  <ul style="font-size:12px;color:var(--text-dim);margin:6px 0 0 16px;">
+    <li>✅ Amoxicilina 500mg cp → 1cp 8/8h por 7 dias</li>
+    <li>✅ Paracetamol 750mg cp → 1cp 6/6h</li>
+    <li>✅ Ibuprofeno 600mg cp → 1cp 8/8h</li>
+  </ul>
+</div>
+
+<div class="scenario">
+  <div class="scenario-title">💡 Cenário: Só quero Paracetamol isolado</div>
+  <p>O médico clica em <b>Paracetamol</b> (template 1). Se for criança, remove o comprimido. Se for adulto, remove as gotas. Aplica. Pronto.</p>
+</div>
+
+<hr>
+
+<!-- ========================================================== -->
+<h2>Como aparecem no grid principal (Receita — Modelos)</h2>
+
+<div class="chrome">
+  <div style="font-size:13px;font-weight:600;margin-bottom:10px;">Receita — Modelos</div>
+  <div class="grid-btns">
+    <div class="grid-btn">
+      <div class="name">Paracetamol</div>
+      <div class="sub">2 meds · dose auto</div>
+    </div>
+    <div class="grid-btn">
+      <div class="name">Ibuprofeno</div>
+      <div class="sub">2 meds · dose auto</div>
+    </div>
+    <div class="grid-btn">
+      <div class="name">Amoxicilina</div>
+      <div class="sub">2 meds · dose auto</div>
+    </div>
+    <div class="grid-btn">
+      <div class="name">Dor de Garganta</div>
+      <div class="sub">4 meds · 7 dias</div>
+    </div>
+  </div>
+</div>
+
+<hr>
+
+<h2>📋 Resumo da proposta</h2>
+
+<table style="width:100%;border-collapse:collapse;font-size:13px;margin-top:10px;">
+  <thead>
+    <tr style="border-bottom:1px solid var(--border);">
+      <th style="text-align:left;padding:8px;color:var(--text-dim);">Template</th>
+      <th style="text-align:left;padding:8px;color:var(--text-dim);">Medicações incluídas</th>
+      <th style="text-align:left;padding:8px;color:var(--text-dim);">Uso</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr style="border-bottom:1px solid var(--border);">
+      <td style="padding:8px;"><b>Paracetamol</b></td>
+      <td style="padding:8px;">Gotas (ped) + Cp 500/750mg (adulto)</td>
+      <td style="padding:8px;">Dor/febre universal</td>
+    </tr>
+    <tr style="border-bottom:1px solid var(--border);">
+      <td style="padding:8px;"><b>Ibuprofeno</b></td>
+      <td style="padding:8px;">Gotas (ped) + Cp 400/600mg (adulto)</td>
+      <td style="padding:8px;">Dor/febre/inflamação</td>
+    </tr>
+    <tr style="border-bottom:1px solid var(--border);">
+      <td style="padding:8px;"><b>Amoxicilina</b></td>
+      <td style="padding:8px;">Suspensão 250mg/5mL (ped) + Cp 500mg (adulto)</td>
+      <td style="padding:8px;">Antibiótico 1ª linha</td>
+    </tr>
+    <tr style="border-bottom:1px solid var(--border);">
+      <td style="padding:8px;"><b>Dor de Garganta</b></td>
+      <td style="padding:8px;">Amox + Paracetamol + Desloratadina + Ibuprofeno</td>
+      <td style="padding:8px;">Protocolo completo OMA/faringite</td>
+    </tr>
+  </tbody>
+</table>
+
+<p class="note" style="margin-top:18px;">
+  <b>Vantagem:</b> 4 botões cobrem 80% das prescrições. O médico nunca precisa lembrar "gotas ou comprimido?" — o template tem ambos, ele remove o que não serve.
+</p>
+
+</body>
+</html>

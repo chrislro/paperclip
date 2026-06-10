@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.tocafichadr.cloud-api</string>
+    <key>ProgramArguments</key>
+    <array>
+        <string>/bin/bash</string>
+        <string>/Users/christianoliveira/Dev/tocafichadr-extension/backend/scripts/run_cloud_api.sh</string>
+    </array>
+    <key>WorkingDirectory</key>
+    <string>/Users/christianoliveira/Dev/tocafichadr-extension/backend</string>
+    <key>RunAtLoad</key>
+    <true/>
+    <key>KeepAlive</key>
+    <true/>
+    <key>StandardOutPath</key>
+    <string>/Users/christianoliveira/Dev/tocafichadr-extension/backend/logs/cloud-api.log</string>
+    <key>StandardErrorPath</key>
+    <string>/Users/christianoliveira/Dev/tocafichadr-extension/backend/logs/cloud-api-error.log</string>
+    <key>EnvironmentVariables</key>
+    <dict>
+        <key>PATH</key>
+        <string>/usr/local/bin:/usr/bin:/bin:/opt/homebrew/bin</string>
+    </dict>
+</dict>
+</plist>

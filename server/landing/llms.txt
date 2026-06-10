@@ -1,0 +1,26 @@
+# Toca Ficha Dr.
+> Extensao Chrome para prontuario automatico em pediatria
+
+## Sobre
+Extensao que transcreve consultas, gera notas SOAP, sugere CID-10
+e automatiza o preenchimento do prontuario no G-Hosp.
+
+## URL
+https://tocafichadr.com.br
+
+## Funcionalidades
+- Gravacao de audio da consulta
+- Transcricao + nota SOAP automatica
+- 164 codigos CID-10 pediatricos com busca fuzzy
+- Automacao de prontuario no G-Hosp (6 campos SOAP)
+- Receituario e impressao automatizados
+- 10 templates de prescricao pediatrica
+- Modo local e modo cloud
+- Tema dark OLED
+
+## Planos
+- Free: 5 notas/dia
+- Pro: R$49/mes (ilimitado, 14 dias gratis)
+
+## Contato
+contato@tocafichadr.com.br

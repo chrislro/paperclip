@@ -1,0 +1,2875 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Sketch 001 — Toca Ficha Dr. Landing Redesign</title>
+<link rel="stylesheet" href="../themes/default.css" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fraunces:ital,opsz,wght@0,14..144,300;0,14..144,500;0,14..144,700;1,14..144,400&family=Space+Grotesk:wght@400;500;600;700&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,400&family=JetBrains+Mono:wght@400;500&family=Figtree:wght@300;400;500;600;700&family=Noto+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+<style>
+/* ─── Sketch chrome (toolbar + tabs) ─────────────────────────────── */
+html, body { background: #f0ece5; }
+body { font-family: 'Inter', system-ui, sans-serif; padding-top: 52px; color: #111; }
+
+#sk-bar {
+  position: fixed; inset: 0 0 auto 0; z-index: 9999;
+  height: 52px; background: #0b0d0e; color: #e8e6e1;
+  display: flex; align-items: center; gap: 8px; padding: 0 14px;
+  border-bottom: 1px solid #1c1e21;
+  font-family: var(--mono); font-size: 11px; letter-spacing: 0.06em;
+}
+#sk-bar .sk-title { text-transform: uppercase; color: #8a9499; margin-right: 12px; }
+#sk-bar .sk-tab {
+  padding: 6px 12px; border-radius: 4px; cursor: pointer;
+  color: #a6aeb1; border: 1px solid transparent;
+  text-transform: uppercase; font-weight: 500; letter-spacing: 0.08em;
+}
+#sk-bar .sk-tab:hover { color: #fff; border-color: #2a2d30; }
+#sk-bar .sk-tab.active { color: #fff; background: #1a1d1f; border-color: #2d3033; }
+#sk-bar .sk-star { color: #ffb454; margin-left: 4px; }
+#sk-bar .sk-right { margin-left: auto; color: #5d666a; }
+#sk-bar .sk-right b { color: #9aa4a8; font-weight: 500; }
+
+.variant { display: none; }
+.variant.active { display: block; }
+
+/* ════════════════════════════════════════════════════════════════════════
+   VARIANT A — CLINICAL SWISS  (white, navy, Inter, Swiss grid)
+   ════════════════════════════════════════════════════════════════════════ */
+.v-a {
+  --bg: #ffffff;
+  --bg-alt: #f7f8fa;
+  --ink: #0a1628;
+  --ink-2: #394760;
+  --muted: #6b7685;
+  --line: #e3e6ec;
+  --line-mid: #c9ceda;
+  --accent: #0a3b7a;
+  --accent-soft: #eaf0fa;
+  --red: #c0222b;
+  font-family: 'Inter', system-ui, sans-serif;
+  background: var(--bg); color: var(--ink);
+  font-weight: 400;
+}
+.v-a .container { max-width: 1200px; margin: 0 auto; padding: 0 32px; }
+
+/* Nav */
+.v-a .nav {
+  border-bottom: 1px solid var(--line);
+  padding: 18px 0; background: var(--bg);
+  position: sticky; top: 52px; z-index: 50;
+}
+.v-a .nav-inner { display: flex; align-items: center; justify-content: space-between; }
+.v-a .logo { display: flex; align-items: center; gap: 8px; font-weight: 600; font-size: 15px; letter-spacing: -0.01em; }
+.v-a .logo-mark {
+  width: 22px; height: 22px; background: var(--accent); color: #fff;
+  border-radius: 3px; display: grid; place-items: center;
+  font-family: var(--mono); font-size: 11px; font-weight: 700;
+}
+.v-a .nav-menu { display: flex; gap: 28px; font-size: 14px; color: var(--ink-2); }
+.v-a .nav-menu a { text-decoration: none; }
+.v-a .nav-menu a:hover { color: var(--ink); }
+.v-a .nav-right { display: flex; gap: 12px; align-items: center; }
+.v-a .btn { display: inline-flex; align-items: center; gap: 6px; padding: 9px 16px; border-radius: 4px; text-decoration: none; font-weight: 500; font-size: 13.5px; transition: all .15s var(--ease); }
+.v-a .btn-primary { background: var(--accent); color: #fff; }
+.v-a .btn-primary:hover { background: #082e5e; }
+.v-a .btn-ghost { color: var(--ink); }
+.v-a .btn-ghost:hover { background: var(--bg-alt); }
+.v-a .btn-line { border: 1px solid var(--line-mid); color: var(--ink); }
+.v-a .btn-line:hover { border-color: var(--ink); }
+
+/* Eyebrow */
+.v-a .eyebrow {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: var(--mono); font-size: 11px; letter-spacing: 0.16em;
+  text-transform: uppercase; color: var(--accent); font-weight: 500;
+}
+.v-a .eyebrow::before { content: ''; width: 18px; height: 1px; background: var(--accent); }
+
+/* Hero */
+.v-a .hero { padding: 88px 0 64px; border-bottom: 1px solid var(--line); }
+.v-a .hero-grid { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 64px; align-items: start; }
+.v-a .hero h1 {
+  font-size: clamp(40px, 5.2vw, 68px); line-height: 1.02; letter-spacing: -0.03em;
+  font-weight: 600; margin-top: 20px;
+}
+.v-a .hero h1 em { font-style: normal; color: var(--accent); }
+.v-a .hero-sub { font-size: 18px; color: var(--ink-2); line-height: 1.55; margin-top: 24px; max-width: 520px; }
+.v-a .hero-ctas { display: flex; gap: 10px; margin-top: 32px; }
+.v-a .hero-proof {
+  display: flex; gap: 20px; margin-top: 36px; padding-top: 24px;
+  border-top: 1px solid var(--line); font-size: 13px; color: var(--muted);
+}
+.v-a .hero-proof b { color: var(--ink); font-weight: 500; display: block; font-size: 14px; margin-bottom: 2px; }
+
+/* HUD panel (Swiss style) */
+.v-a .hud {
+  border: 1px solid var(--line); border-radius: 6px; background: var(--bg);
+  overflow: hidden; box-shadow: 0 1px 3px rgba(10,22,40,.04), 0 12px 36px rgba(10,22,40,.06);
+}
+.v-a .hud-bar { display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; border-bottom: 1px solid var(--line); background: var(--bg-alt); }
+.v-a .hud-bar b { font-family: var(--mono); font-size: 11px; color: var(--ink-2); letter-spacing: 0.1em; text-transform: uppercase; }
+.v-a .hud-bar .dots { display: flex; gap: 5px; }
+.v-a .hud-bar .dots span { width: 8px; height: 8px; border-radius: 50%; background: var(--line-mid); }
+.v-a .hud-row { padding: 16px 18px; border-bottom: 1px solid var(--line); }
+.v-a .hud-row:last-child { border-bottom: 0; }
+.v-a .hud-lbl { font-family: var(--mono); font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+.v-a .hud-rec { display: flex; align-items: center; gap: 10px; }
+.v-a .hud-rec-led { width: 10px; height: 10px; border-radius: 50%; background: var(--red); box-shadow: 0 0 0 3px #f6d5d8; animation: pulse 1.1s infinite; }
+.v-a .hud-rec-tag { font-family: var(--mono); font-size: 12px; color: var(--red); font-weight: 500; letter-spacing: 0.1em; }
+.v-a .hud-rec-t { margin-left: auto; font-family: var(--mono); font-size: 12px; color: var(--ink-2); }
+.v-a .wave { display: flex; gap: 3px; align-items: end; height: 36px; margin-top: 12px; }
+.v-a .wave i { flex: 1; background: var(--accent); opacity: 0.75; border-radius: 1px; animation: wv 1.2s infinite ease-in-out; }
+.v-a .wave i:nth-child(odd) { animation-delay: .2s; }
+.v-a .hud-soap-t { font-size: 13.5px; line-height: 1.55; color: var(--ink); }
+.v-a .hud-soap-t b { font-weight: 600; }
+.v-a .hud-cid { display: flex; align-items: center; gap: 10px; }
+.v-a .hud-cid .code {
+  background: var(--accent); color: #fff; font-family: var(--mono);
+  font-size: 12px; font-weight: 500; padding: 4px 8px; border-radius: 3px;
+}
+.v-a .hud-cid .nm { font-size: 13.5px; color: var(--ink); flex: 1; }
+.v-a .hud-cid .ok { width: 22px; height: 22px; border-radius: 3px; background: #e8f2e6; color: #1f7a1f; display: grid; place-items: center; font-weight: 700; font-size: 12px; }
+.v-a .hud-fin-btn {
+  display: block; width: 100%; padding: 12px; text-align: center;
+  background: var(--accent); color: #fff; border-radius: 4px;
+  font-weight: 500; font-size: 13.5px; letter-spacing: 0.01em;
+}
+
+@keyframes pulse { 0%,100% { transform: scale(1); opacity: 1 } 50% { transform: scale(1.15); opacity: .7 } }
+@keyframes wv { 0%,100% { height: 35% } 50% { height: 90% } }
+
+/* Stats */
+.v-a .stats { padding: 0; border-bottom: 1px solid var(--line); }
+.v-a .stats-grid { display: grid; grid-template-columns: repeat(3,1fr); }
+.v-a .stat { padding: 48px 32px; border-right: 1px solid var(--line); }
+.v-a .stat:last-child { border-right: 0; }
+.v-a .stat-kpi { font-size: 64px; font-weight: 300; letter-spacing: -0.04em; line-height: 1; color: var(--ink); }
+.v-a .stat-kpi em { font-style: normal; color: var(--accent); font-weight: 500; }
+.v-a .stat-kpi .small { font-size: 24px; color: var(--muted); font-weight: 300; }
+.v-a .stat-lbl { font-size: 13px; color: var(--muted); margin-top: 12px; text-transform: uppercase; letter-spacing: 0.1em; }
+.v-a .stat-note { font-size: 13px; color: var(--ink-2); margin-top: 4px; }
+
+/* How it works */
+.v-a .how { padding: 96px 0; border-bottom: 1px solid var(--line); background: var(--bg-alt); }
+.v-a .how-head { display: grid; grid-template-columns: 1fr 2fr; gap: 64px; margin-bottom: 56px; align-items: end; }
+.v-a .how-head h2 { font-size: clamp(32px, 3.6vw, 44px); line-height: 1.05; letter-spacing: -0.02em; font-weight: 600; }
+.v-a .how-head p { font-size: 16px; color: var(--ink-2); line-height: 1.55; }
+.v-a .steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; border-top: 1px solid var(--line); border-left: 1px solid var(--line); background: var(--bg); }
+.v-a .step { padding: 32px; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); background: var(--bg); }
+.v-a .step-n { font-family: var(--mono); font-size: 12px; color: var(--accent); margin-bottom: 24px; letter-spacing: 0.1em; }
+.v-a .step-t { font-size: 20px; font-weight: 600; letter-spacing: -0.01em; margin-bottom: 8px; }
+.v-a .step-d { font-size: 14px; color: var(--ink-2); line-height: 1.5; }
+
+/* Pricing */
+.v-a .pricing { padding: 96px 0; border-bottom: 1px solid var(--line); }
+.v-a .pricing-head { text-align: left; margin-bottom: 48px; max-width: 640px; }
+.v-a .pricing-head h2 { font-size: clamp(32px, 3.6vw, 44px); line-height: 1.05; letter-spacing: -0.02em; font-weight: 600; margin-top: 16px; }
+.v-a .pricing-head p { font-size: 16px; color: var(--ink-2); margin-top: 12px; }
+.v-a .plans { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+.v-a .plan { border: 1px solid var(--line); border-radius: 6px; padding: 36px; background: var(--bg); display: flex; flex-direction: column; }
+.v-a .plan.featured { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); position: relative; }
+.v-a .plan-tag { position: absolute; top: -11px; left: 36px; background: var(--accent); color: #fff; font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; padding: 3px 10px; border-radius: 3px; text-transform: uppercase; }
+.v-a .plan-n { font-size: 14px; font-weight: 500; color: var(--ink-2); text-transform: uppercase; letter-spacing: 0.1em; }
+.v-a .plan-p { display: flex; align-items: baseline; gap: 6px; margin: 16px 0 24px; }
+.v-a .plan-p .num { font-size: 54px; font-weight: 500; letter-spacing: -0.03em; color: var(--ink); }
+.v-a .plan-p .cur { font-family: var(--mono); font-size: 14px; color: var(--muted); }
+.v-a .plan-p .per { font-size: 14px; color: var(--muted); }
+.v-a .plan ul { list-style: none; margin-bottom: 28px; display: flex; flex-direction: column; gap: 10px; }
+.v-a .plan li { font-size: 14.5px; color: var(--ink-2); display: flex; gap: 10px; }
+.v-a .plan li::before { content: '✓'; color: var(--accent); font-weight: 600; }
+
+/* Footer */
+.v-a .foot { padding: 48px 0; font-size: 13px; color: var(--muted); }
+.v-a .foot-inner { display: flex; justify-content: space-between; align-items: center; }
+
+/* ════════════════════════════════════════════════════════════════════════
+   VARIANT B — DOSSIÊ MÉDICO  (cream, editorial serif, rules)
+   ════════════════════════════════════════════════════════════════════════ */
+.v-b {
+  --bg: #f8f4ea;
+  --bg-alt: #f1eadb;
+  --paper: #fbf9f2;
+  --ink: #1a1310;
+  --ink-2: #3d2f26;
+  --muted: #8a7868;
+  --rule: #d3c6b0;
+  --rule-dk: #1a1310;
+  --red: #8b2e2e;
+  --blue: #1e3a72;
+  font-family: 'Source Serif 4', Georgia, serif;
+  background: var(--bg); color: var(--ink);
+}
+.v-b .container { max-width: 1120px; margin: 0 auto; padding: 0 40px; }
+
+.v-b .masthead {
+  border-top: 3px double var(--rule-dk);
+  border-bottom: 1px solid var(--rule-dk);
+  background: var(--bg);
+  padding: 14px 0 10px;
+  position: sticky; top: 52px; z-index: 50;
+}
+.v-b .masthead-inner { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 24px; }
+.v-b .masthead-meta {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted);
+}
+.v-b .masthead-title {
+  font-family: 'Fraunces', serif; font-weight: 500;
+  font-size: 26px; letter-spacing: -0.02em; text-align: center;
+}
+.v-b .masthead-title i { font-style: italic; color: var(--red); font-weight: 400; }
+.v-b .masthead-nav {
+  display: flex; justify-content: flex-end; gap: 22px;
+  font-family: 'Inter', sans-serif; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase;
+}
+.v-b .masthead-nav a { text-decoration: none; color: var(--ink-2); }
+.v-b .masthead-nav a:hover { color: var(--red); }
+
+/* Hero — editorial */
+.v-b .hero { padding: 72px 0 48px; border-bottom: 1px solid var(--rule); }
+.v-b .kicker {
+  text-align: center; font-family: 'Inter', sans-serif; font-size: 11px;
+  letter-spacing: 0.24em; text-transform: uppercase; color: var(--red); font-weight: 600;
+  margin-bottom: 18px;
+}
+.v-b .kicker::before, .v-b .kicker::after { content: '—'; margin: 0 12px; color: var(--muted); }
+.v-b .hero h1 {
+  font-family: 'Fraunces', serif; font-weight: 400;
+  font-size: clamp(48px, 7vw, 92px); line-height: 0.98; letter-spacing: -0.035em;
+  text-align: center; max-width: 14ch; margin: 0 auto;
+}
+.v-b .hero h1 i { font-style: italic; color: var(--red); font-weight: 400; }
+.v-b .hero-lede {
+  font-size: 20px; line-height: 1.5; color: var(--ink-2);
+  max-width: 620px; margin: 28px auto 0; text-align: center;
+  font-family: 'Source Serif 4', Georgia, serif;
+}
+.v-b .hero-lede b { font-weight: 600; color: var(--ink); }
+.v-b .hero-ctas { display: flex; justify-content: center; gap: 12px; margin: 36px 0 28px; }
+.v-b .btn {
+  font-family: 'Inter', sans-serif; font-weight: 500; font-size: 14px;
+  padding: 12px 22px; text-decoration: none;
+  letter-spacing: 0.02em; transition: all .15s var(--ease);
+}
+.v-b .btn-primary { background: var(--ink); color: var(--bg); border: 1px solid var(--ink); }
+.v-b .btn-primary:hover { background: var(--red); border-color: var(--red); }
+.v-b .btn-line { background: transparent; color: var(--ink); border: 1px solid var(--ink); }
+.v-b .btn-line:hover { background: var(--ink); color: var(--bg); }
+
+.v-b .byline {
+  font-family: 'Inter', sans-serif; font-size: 12px; color: var(--muted);
+  text-align: center; letter-spacing: 0.04em;
+}
+.v-b .byline b { color: var(--ink); font-weight: 600; }
+
+/* Two-column feature teaser */
+.v-b .feature-row {
+  display: grid; grid-template-columns: 1.1fr 1px 0.9fr; gap: 40px;
+  padding: 56px 0; border-bottom: 1px solid var(--rule);
+}
+.v-b .feature-rule { background: var(--rule); width: 1px; }
+.v-b .pullquote {
+  font-family: 'Fraunces', serif; font-weight: 300; font-size: 34px;
+  line-height: 1.15; letter-spacing: -0.015em; color: var(--ink);
+}
+.v-b .pullquote::before { content: '"'; font-size: 80px; line-height: 0; vertical-align: -0.45em; color: var(--red); margin-right: 6px; }
+.v-b .pullquote-attr { margin-top: 24px; font-family: 'Inter', sans-serif; font-size: 13px; color: var(--muted); letter-spacing: 0.04em; }
+.v-b .pullquote-attr b { color: var(--ink); display: block; }
+
+.v-b .doc-panel {
+  background: var(--paper); padding: 28px;
+  border: 1px solid var(--rule); border-radius: 2px;
+  font-family: 'Source Serif 4', Georgia, serif; font-size: 15px; line-height: 1.6;
+  box-shadow: 2px 2px 0 var(--rule);
+  position: relative;
+}
+.v-b .doc-panel::before {
+  content: 'PRONTUÁRIO'; position: absolute; top: -10px; left: 20px;
+  background: var(--paper); padding: 0 8px;
+  font-family: 'Inter', sans-serif; font-size: 10px; letter-spacing: 0.22em; color: var(--muted); font-weight: 600;
+}
+.v-b .doc-panel h4 { font-family: 'Inter', sans-serif; font-size: 11px; letter-spacing: 0.12em; color: var(--red); margin-top: 16px; margin-bottom: 4px; text-transform: uppercase; font-weight: 700; }
+.v-b .doc-panel h4:first-child { margin-top: 0; }
+.v-b .doc-panel .line { display: flex; justify-content: space-between; border-bottom: 1px dotted var(--rule); padding: 4px 0; font-size: 14px; }
+.v-b .doc-panel .line b { font-family: 'Inter', sans-serif; font-size: 12px; color: var(--muted); font-weight: 500; }
+.v-b .cid-chip {
+  display: inline-flex; align-items: center; gap: 8px; padding: 4px 10px;
+  background: var(--ink); color: var(--bg);
+  font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 500; letter-spacing: 0.02em;
+  border-radius: 2px;
+}
+
+/* Numbers section */
+.v-b .figures { padding: 72px 0; background: var(--bg-alt); border-bottom: 1px solid var(--rule); }
+.v-b .figures-head { text-align: center; margin-bottom: 48px; }
+.v-b .figures-head .label { font-family: 'Inter', sans-serif; font-size: 11px; letter-spacing: 0.24em; text-transform: uppercase; color: var(--red); font-weight: 600; margin-bottom: 12px; }
+.v-b .figures-head h3 { font-family: 'Fraunces', serif; font-weight: 400; font-size: 40px; letter-spacing: -0.02em; }
+.v-b .figures-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 48px; max-width: 920px; margin: 0 auto; }
+.v-b .fig { text-align: center; }
+.v-b .fig-n { font-family: 'Fraunces', serif; font-weight: 300; font-size: 96px; letter-spacing: -0.04em; line-height: 1; color: var(--ink); }
+.v-b .fig-n i { font-style: italic; color: var(--red); }
+.v-b .fig-n .small { font-size: 40px; color: var(--muted); font-weight: 300; }
+.v-b .fig-lbl { font-family: 'Inter', sans-serif; font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-top: 12px; }
+.v-b .fig-note { font-size: 14px; color: var(--ink-2); font-style: italic; margin-top: 4px; }
+
+/* Chapters / How it works */
+.v-b .chapters { padding: 80px 0; border-bottom: 1px solid var(--rule); }
+.v-b .chapters-head { text-align: center; margin-bottom: 56px; }
+.v-b .chapters-head .label { font-family: 'Inter', sans-serif; font-size: 11px; letter-spacing: 0.24em; text-transform: uppercase; color: var(--red); font-weight: 600; margin-bottom: 12px; }
+.v-b .chapters-head h3 { font-family: 'Fraunces', serif; font-weight: 400; font-size: 44px; letter-spacing: -0.025em; }
+.v-b .chapters-list { display: grid; grid-template-columns: 1fr; gap: 0; max-width: 720px; margin: 0 auto; border-top: 1px solid var(--rule-dk); }
+.v-b .chapter { display: grid; grid-template-columns: 80px 1fr auto; gap: 32px; padding: 28px 0; border-bottom: 1px solid var(--rule); align-items: baseline; }
+.v-b .chapter-n { font-family: 'Fraunces', serif; font-style: italic; font-size: 44px; font-weight: 300; color: var(--red); line-height: 1; }
+.v-b .chapter-t { font-family: 'Fraunces', serif; font-size: 22px; font-weight: 500; letter-spacing: -0.01em; margin-bottom: 4px; }
+.v-b .chapter-d { font-size: 15px; color: var(--ink-2); line-height: 1.55; max-width: 440px; }
+.v-b .chapter-meta { font-family: 'Inter', sans-serif; font-size: 12px; color: var(--muted); letter-spacing: 0.06em; text-transform: uppercase; white-space: nowrap; }
+
+/* Subscription block */
+.v-b .subscribe { padding: 72px 0; background: var(--ink); color: var(--bg); border-bottom: 1px solid var(--rule); }
+.v-b .subscribe .container { text-align: center; }
+.v-b .subscribe .label { font-family: 'Inter', sans-serif; font-size: 11px; letter-spacing: 0.24em; text-transform: uppercase; color: #d4b896; font-weight: 600; margin-bottom: 12px; }
+.v-b .subscribe h3 { font-family: 'Fraunces', serif; font-weight: 400; font-size: 44px; letter-spacing: -0.025em; max-width: 18ch; margin: 0 auto 20px; line-height: 1.08; }
+.v-b .subscribe h3 i { font-style: italic; color: #d4b896; }
+.v-b .sub-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; max-width: 720px; margin: 40px auto 0; }
+.v-b .sub-card { background: #251c17; border: 1px solid #3a2c24; padding: 32px; border-radius: 2px; text-align: left; }
+.v-b .sub-card.featured { background: #d4b896; color: var(--ink); border-color: #d4b896; }
+.v-b .sub-n { font-family: 'Inter', sans-serif; font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; }
+.v-b .sub-p { font-family: 'Fraunces', serif; font-weight: 400; font-size: 54px; letter-spacing: -0.03em; line-height: 1; margin: 18px 0; }
+.v-b .sub-p .cur { font-size: 18px; color: inherit; opacity: 0.6; }
+.v-b .sub-p .per { font-size: 15px; opacity: 0.6; font-family: 'Inter', sans-serif; font-weight: 400; }
+.v-b .sub-card ul { list-style: none; padding: 16px 0; border-top: 1px solid currentColor; opacity: 0.95; }
+.v-b .sub-card li { font-family: 'Source Serif 4', serif; font-size: 15px; padding: 6px 0; }
+.v-b .sub-card li::before { content: '·'; margin-right: 10px; }
+.v-b .sub-btn { display: block; margin-top: 12px; padding: 12px; text-align: center; font-family: 'Inter', sans-serif; font-weight: 500; font-size: 13.5px; letter-spacing: 0.02em; text-decoration: none; }
+.v-b .sub-card:not(.featured) .sub-btn { background: var(--bg); color: var(--ink); }
+.v-b .sub-card.featured .sub-btn { background: var(--ink); color: var(--bg); }
+
+/* Colophon (footer) */
+.v-b .colophon { padding: 36px 0 48px; background: var(--bg); }
+.v-b .colophon-inner { display: flex; justify-content: space-between; gap: 24px; font-family: 'Inter', sans-serif; font-size: 12px; color: var(--muted); letter-spacing: 0.04em; }
+.v-b .colophon b { color: var(--ink); font-weight: 600; }
+
+/* ════════════════════════════════════════════════════════════════════════
+   VARIANT C — PLANTÃO TERMINAL  (warm beige + ink + coral, bold sans)
+   ════════════════════════════════════════════════════════════════════════ */
+.v-c {
+  --bg: #f2ede2;
+  --bg-alt: #e9e2d2;
+  --ink: #12100d;
+  --ink-soft: #2f2a24;
+  --muted: #6d665a;
+  --line: #cbc3b0;
+  --accent: #ff5a3c;
+  --accent-ink: #c2391f;
+  --yellow: #ffcc00;
+  font-family: 'Space Grotesk', 'Inter', sans-serif;
+  background: var(--bg); color: var(--ink);
+  font-weight: 400;
+}
+.v-c .container { max-width: 1280px; margin: 0 auto; padding: 0 32px; }
+
+/* Nav — industrial bar */
+.v-c .bar {
+  position: sticky; top: 52px; z-index: 50;
+  display: flex; align-items: center; gap: 16px;
+  padding: 14px 32px; background: var(--ink); color: var(--bg);
+  font-family: var(--mono); font-size: 12px; letter-spacing: 0.06em;
+}
+.v-c .bar .logo { display: flex; align-items: center; gap: 10px; font-weight: 600; font-family: 'Space Grotesk', sans-serif; font-size: 15px; text-transform: uppercase; letter-spacing: 0.04em; }
+.v-c .bar .logo-sq { width: 10px; height: 10px; background: var(--accent); }
+.v-c .bar .status { color: var(--accent); display: flex; align-items: center; gap: 8px; margin-left: 12px; }
+.v-c .bar .status::before { content: ''; width: 6px; height: 6px; background: var(--accent); border-radius: 50%; animation: pulse 1.2s infinite; }
+.v-c .bar .spacer { flex: 1; }
+.v-c .bar nav { display: flex; gap: 18px; text-transform: uppercase; }
+.v-c .bar nav a { color: #b4ab97; text-decoration: none; }
+.v-c .bar nav a:hover { color: var(--bg); }
+.v-c .bar .cta { background: var(--accent); color: var(--ink); padding: 6px 14px; font-weight: 600; text-transform: uppercase; text-decoration: none; letter-spacing: 0.06em; }
+.v-c .bar .cta:hover { background: var(--bg); }
+
+/* Hero */
+.v-c .hero { padding: 56px 0 0; }
+.v-c .hero-meta {
+  display: grid; grid-template-columns: auto 1fr auto auto; gap: 18px;
+  font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--muted); border-bottom: 1px solid var(--line); padding-bottom: 14px; margin-bottom: 36px;
+}
+.v-c .hero-meta b { color: var(--ink); font-weight: 600; }
+.v-c .hero h1 {
+  font-family: 'Space Grotesk', sans-serif; font-weight: 600;
+  font-size: clamp(62px, 10vw, 170px); line-height: 0.88; letter-spacing: -0.045em;
+  text-transform: uppercase;
+}
+.v-c .hero h1 .acc { color: var(--accent); }
+.v-c .hero h1 .arrow { color: var(--muted); font-weight: 300; }
+.v-c .hero-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 40px; margin-top: 32px; align-items: start; }
+.v-c .hero-lede { font-size: 20px; line-height: 1.4; max-width: 540px; color: var(--ink-soft); font-weight: 400; }
+.v-c .hero-lede b { font-weight: 600; background: var(--yellow); padding: 0 4px; color: var(--ink); }
+.v-c .hero-ctas { display: flex; gap: 12px; margin-top: 28px; flex-wrap: wrap; }
+.v-c .btn { font-family: 'Space Grotesk', sans-serif; font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; padding: 14px 24px; border-radius: 0; font-size: 14px; letter-spacing: 0.04em; text-transform: uppercase; transition: all .12s var(--ease); }
+.v-c .btn-primary { background: var(--accent); color: var(--ink); }
+.v-c .btn-primary:hover { background: var(--ink); color: var(--accent); }
+.v-c .btn-line { background: transparent; color: var(--ink); border: 2px solid var(--ink); }
+.v-c .btn-line:hover { background: var(--ink); color: var(--bg); }
+
+.v-c .ticker {
+  background: var(--ink); color: var(--bg);
+  padding: 14px 0; margin-top: 64px;
+  font-family: var(--mono); font-size: 13px; letter-spacing: 0.08em;
+  overflow: hidden; white-space: nowrap;
+  border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
+}
+.v-c .ticker-row { display: flex; gap: 56px; animation: tkr 26s linear infinite; }
+.v-c .ticker-row span { display: inline-flex; align-items: center; gap: 10px; }
+.v-c .ticker-row b { color: var(--accent); font-weight: 600; }
+.v-c .ticker-row em { color: var(--yellow); font-style: normal; }
+@keyframes tkr { from { transform: translateX(0) } to { transform: translateX(-50%) } }
+
+/* Stat slabs */
+.v-c .slabs { padding: 72px 0; }
+.v-c .slabs-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.v-c .slab {
+  background: var(--ink); color: var(--bg); padding: 36px;
+  position: relative; overflow: hidden;
+}
+.v-c .slab.alt { background: var(--accent); color: var(--ink); }
+.v-c .slab.open { background: transparent; color: var(--ink); border: 2px solid var(--ink); }
+.v-c .slab-tag { font-family: var(--mono); font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; opacity: 0.6; margin-bottom: 12px; }
+.v-c .slab-n { font-family: 'Space Grotesk', sans-serif; font-size: 96px; font-weight: 600; letter-spacing: -0.05em; line-height: 0.95; }
+.v-c .slab-n .small { font-size: 44px; opacity: 0.7; }
+.v-c .slab-d { font-size: 15px; margin-top: 16px; line-height: 1.4; }
+
+/* Workflow terminal */
+.v-c .workflow { padding: 80px 0; background: var(--bg-alt); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.v-c .wf-head { display: flex; justify-content: space-between; align-items: end; border-bottom: 2px solid var(--ink); padding-bottom: 20px; margin-bottom: 32px; }
+.v-c .wf-head h2 { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 56px; letter-spacing: -0.03em; text-transform: uppercase; line-height: 0.95; }
+.v-c .wf-head .meta { font-family: var(--mono); font-size: 12px; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; text-align: right; }
+
+.v-c .wf-grid { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 32px; align-items: start; }
+
+.v-c .wf-steps { display: flex; flex-direction: column; gap: 2px; background: var(--ink); padding: 2px; }
+.v-c .wf-step { background: var(--bg); padding: 24px 28px; display: grid; grid-template-columns: 60px 1fr auto; gap: 20px; align-items: center; }
+.v-c .wf-step-n { font-family: var(--mono); font-size: 14px; font-weight: 600; color: var(--accent-ink); letter-spacing: 0.08em; }
+.v-c .wf-step-body h4 { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 20px; text-transform: uppercase; letter-spacing: -0.01em; margin-bottom: 4px; }
+.v-c .wf-step-body p { font-size: 14px; color: var(--ink-soft); line-height: 1.45; }
+.v-c .wf-step-t { font-family: var(--mono); font-size: 12px; color: var(--muted); letter-spacing: 0.06em; text-align: right; }
+.v-c .wf-step-t b { color: var(--accent-ink); font-weight: 600; display: block; font-size: 18px; font-family: 'Space Grotesk', sans-serif; }
+
+/* Terminal panel (code-like) */
+.v-c .terminal {
+  background: var(--ink); color: #d4ccb6; border-radius: 2px;
+  font-family: var(--mono); font-size: 13px; line-height: 1.7;
+  overflow: hidden;
+}
+.v-c .terminal-bar { background: #211d18; padding: 10px 14px; display: flex; gap: 8px; align-items: center; border-bottom: 1px solid #2d2821; }
+.v-c .terminal-bar .dot { width: 10px; height: 10px; border-radius: 50%; background: #5a4f40; }
+.v-c .terminal-bar .t { margin-left: 12px; color: #7a6f5e; font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; }
+.v-c .terminal-body { padding: 20px 22px; }
+.v-c .terminal-body .ln { display: flex; gap: 14px; }
+.v-c .terminal-body .ln .n { color: #5a4f40; min-width: 20px; text-align: right; user-select: none; }
+.v-c .terminal-body .ln .tag { color: var(--accent); font-weight: 600; }
+.v-c .terminal-body .ln .ok { color: #6fcf76; font-weight: 600; }
+.v-c .terminal-body .ln .ts { color: #7a6f5e; margin-left: auto; }
+.v-c .terminal-body .ln .cid { color: var(--yellow); font-weight: 600; }
+.v-c .terminal-body .ln.emph { background: rgba(255,90,60,.08); padding: 2px 6px; margin: 0 -6px; }
+
+/* Pricing */
+.v-c .pricing { padding: 80px 0; }
+.v-c .pricing .container { display: grid; grid-template-columns: 1fr 1.3fr; gap: 56px; align-items: start; }
+.v-c .pricing h3 { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 72px; letter-spacing: -0.04em; text-transform: uppercase; line-height: 0.9; }
+.v-c .pricing h3 .acc { color: var(--accent); }
+.v-c .pricing-intro { font-size: 17px; color: var(--ink-soft); line-height: 1.5; margin-top: 18px; max-width: 360px; }
+.v-c .plans { display: grid; grid-template-columns: 1fr 1fr; gap: 0; border: 2px solid var(--ink); }
+.v-c .plan { padding: 32px; border-right: 2px solid var(--ink); display: flex; flex-direction: column; }
+.v-c .plan:last-child { border-right: 0; background: var(--ink); color: var(--bg); }
+.v-c .plan-n { font-family: var(--mono); font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; opacity: 0.75; }
+.v-c .plan-p { display: flex; align-items: baseline; gap: 6px; margin: 20px 0 6px; }
+.v-c .plan-p .num { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 72px; letter-spacing: -0.04em; line-height: 1; }
+.v-c .plan-p .cur { font-family: var(--mono); font-size: 14px; opacity: 0.6; }
+.v-c .plan-p .per { font-family: var(--mono); font-size: 12px; opacity: 0.6; }
+.v-c .plan .hint { font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.6; margin-bottom: 20px; }
+.v-c .plan ul { list-style: none; border-top: 1px solid currentColor; padding: 16px 0; margin-top: auto; display: flex; flex-direction: column; gap: 8px; }
+.v-c .plan li { font-size: 14px; display: flex; gap: 10px; }
+.v-c .plan li::before { content: '→'; font-family: var(--mono); opacity: 0.6; }
+.v-c .plan .btn { width: 100%; justify-content: center; margin-top: 16px; }
+.v-c .plan:last-child .btn-primary { background: var(--accent); color: var(--ink); }
+.v-c .plan:last-child .btn-primary:hover { background: var(--bg); }
+
+/* Footer */
+.v-c .foot { background: var(--ink); color: var(--bg); padding: 48px 0 24px; }
+.v-c .foot-top { display: grid; grid-template-columns: 1.3fr 1fr 1fr 1fr; gap: 32px; padding-bottom: 36px; border-bottom: 1px solid #2d2821; }
+.v-c .foot h5 { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 52px; letter-spacing: -0.03em; text-transform: uppercase; line-height: 0.9; }
+.v-c .foot h5 .acc { color: var(--accent); }
+.v-c .foot-col h6 { font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: #7a6f5e; margin-bottom: 16px; }
+.v-c .foot-col a { display: block; color: #b4ab97; text-decoration: none; font-size: 14px; padding: 4px 0; }
+.v-c .foot-col a:hover { color: var(--accent); }
+.v-c .foot-bot { margin-top: 20px; display: flex; justify-content: space-between; font-family: var(--mono); font-size: 11px; color: #7a6f5e; letter-spacing: 0.08em; text-transform: uppercase; }
+
+/* ════════════════════════════════════════════════════════════════════════
+   VARIANT D — KINETIC BRUTAL  (dark motion: flipping type, counting, ticker)
+   ════════════════════════════════════════════════════════════════════════ */
+.v-d {
+  --bg: #0a0a0b; --surface: #111115; --ink: #f5f3ed; --ink-2: #9a958c;
+  --muted: #5a554c; --line: #242428; --accent: #c6f24d; --hot: #ff3c3c;
+  font-family: 'Space Grotesk', sans-serif;
+  background: var(--bg); color: var(--ink); overflow-x: hidden;
+}
+.v-d .container { max-width: 1280px; margin: 0 auto; padding: 0 32px; }
+.v-d::before {
+  content: ''; position: fixed; top: 52px; left: 0; right: 0; bottom: 0;
+  pointer-events: none; z-index: 1;
+  background-image: radial-gradient(rgba(198,242,77,0.06) 1px, transparent 1px);
+  background-size: 3px 3px; opacity: 0.6;
+}
+.v-d .nav {
+  position: sticky; top: 52px; z-index: 50;
+  padding: 16px 32px; display: flex; align-items: center; gap: 14px;
+  border-bottom: 1px solid var(--line); background: var(--bg);
+}
+.v-d .nav .logo { display: flex; gap: 12px; align-items: center; font-weight: 700; font-size: 17px; text-transform: uppercase; letter-spacing: -0.02em; }
+.v-d .nav .logo b { color: var(--accent); }
+.v-d .nav .logo .mark {
+  width: 30px; height: 30px; background: var(--accent); color: var(--bg);
+  display: grid; place-items: center; font-family: var(--mono); font-weight: 700; font-size: 13px;
+  animation: spinSq 10s linear infinite;
+}
+@keyframes spinSq { to { transform: rotate(360deg); } }
+.v-d .nav nav { display: flex; gap: 20px; margin-left: 32px; font-family: var(--mono); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; }
+.v-d .nav nav a { color: var(--ink-2); text-decoration: none; position: relative; padding-bottom: 2px; }
+.v-d .nav nav a:hover { color: var(--accent); }
+.v-d .nav nav a:hover::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 2px; background: var(--accent); }
+.v-d .nav .spacer { flex: 1; }
+.v-d .nav .status { font-family: var(--mono); font-size: 11px; color: var(--ink-2); display: flex; align-items: center; gap: 8px; letter-spacing: 0.1em; text-transform: uppercase; }
+.v-d .nav .status::before { content: ''; width: 8px; height: 8px; border-radius: 50%; background: var(--accent); animation: pulseRing 1.6s ease-in-out infinite; }
+@keyframes pulseRing {
+  0%,100% { box-shadow: 0 0 0 0 rgba(198,242,77,.8); }
+  50% { box-shadow: 0 0 0 6px rgba(198,242,77,0); }
+}
+.v-d .btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 14px 24px; font-family: 'Space Grotesk', sans-serif; font-weight: 700;
+  font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none;
+  border: 2px solid transparent; transition: all .18s var(--ease);
+}
+.v-d .btn-primary { background: var(--accent); color: var(--bg); }
+.v-d .btn-primary:hover { background: transparent; color: var(--accent); border-color: var(--accent); transform: translate(-2px,-2px); box-shadow: 4px 4px 0 var(--accent); }
+.v-d .btn-line { color: var(--ink); border-color: var(--line); }
+.v-d .btn-line:hover { border-color: var(--accent); color: var(--accent); }
+
+.v-d .hero { padding: 80px 0 60px; position: relative; z-index: 2; }
+.v-d .hero-eyebrow { display: inline-flex; align-items: center; gap: 10px; font-family: var(--mono); font-size: 11px; color: var(--accent); letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 28px; animation: slideR 0.8s ease both; }
+.v-d .hero-eyebrow::before { content: ''; width: 36px; height: 2px; background: var(--accent); }
+@keyframes slideR { from { opacity: 0; transform: translateX(-22px) } to { opacity: 1; transform: translateX(0) } }
+
+.v-d .hero h1 { font-weight: 700; letter-spacing: -0.05em; line-height: 0.88; font-size: clamp(66px, 10.5vw, 180px); text-transform: uppercase; }
+.v-d .hero h1 .line { display: block; overflow: hidden; }
+.v-d .hero h1 .line .inner { display: inline-block; animation: slideUp 0.9s cubic-bezier(.2,.7,.1,1) both; }
+.v-d .hero h1 .line:nth-child(1) .inner { animation-delay: 0.1s; }
+.v-d .hero h1 .line:nth-child(2) .inner { animation-delay: 0.28s; }
+.v-d .hero h1 .line:nth-child(3) .inner { animation-delay: 0.44s; }
+@keyframes slideUp { from { transform: translateY(110%) } to { transform: translateY(0) } }
+.v-d .hero h1 .acc { color: var(--accent); }
+.v-d .hero h1 .flipbox {
+  display: inline-flex; flex-direction: column; overflow: hidden;
+  vertical-align: text-bottom; height: 0.88em; color: var(--accent);
+}
+.v-d .hero h1 .flipbox b { font-weight: 700; line-height: 0.88; animation: flipRot 7s infinite; }
+@keyframes flipRot {
+  0%,18% { transform: translateY(0); }
+  25%,43% { transform: translateY(-100%); }
+  50%,68% { transform: translateY(-200%); }
+  75%,93% { transform: translateY(-300%); }
+  100% { transform: translateY(0); }
+}
+
+.v-d .hero-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 48px; margin-top: 56px; align-items: end; }
+.v-d .hero-lede { font-size: 20px; line-height: 1.5; color: var(--ink-2); max-width: 540px; animation: fadeInD 1s 0.7s ease both; }
+.v-d .hero-lede b { color: var(--ink); font-weight: 600; }
+.v-d .hero-lede mark { background: var(--accent); color: var(--bg); padding: 0 6px; font-weight: 600; }
+.v-d .hero-ctas { display: flex; gap: 12px; margin-top: 30px; animation: fadeInD 1s 0.9s ease both; flex-wrap: wrap; }
+@keyframes fadeInD { from { opacity: 0; transform: translateY(14px) } to { opacity: 1; transform: translateY(0) } }
+.v-d .hero-data { border-left: 2px solid var(--accent); padding: 0 0 0 22px; font-family: var(--mono); font-size: 12px; line-height: 1.9; color: var(--ink-2); letter-spacing: 0.06em; text-transform: uppercase; animation: fadeInD 1s 1.1s ease both; }
+.v-d .hero-data b { color: var(--ink); }
+.v-d .hero-data em { color: var(--accent); font-style: normal; }
+
+.v-d .bigticker {
+  padding: 28px 0; margin-top: 72px;
+  border-top: 2px solid var(--accent); border-bottom: 2px solid var(--accent);
+  overflow: hidden; white-space: nowrap;
+  font-family: 'Space Grotesk', sans-serif; font-size: 70px; font-weight: 700;
+  letter-spacing: -0.035em; line-height: 1; text-transform: uppercase;
+  background: var(--bg); position: relative; z-index: 2;
+}
+.v-d .bigticker-row { display: inline-flex; animation: tickerD 28s linear infinite; }
+.v-d .bigticker-row span { display: inline-flex; align-items: center; gap: 40px; padding-right: 40px; }
+.v-d .bigticker-row .acc { color: var(--accent); }
+.v-d .bigticker-row .dot { width: 14px; height: 14px; background: var(--accent); border-radius: 50%; display: inline-block; }
+@keyframes tickerD { from { transform: translateX(0) } to { transform: translateX(-50%) } }
+
+.v-d .morph { padding: 80px 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; border-bottom: 1px solid var(--line); position: relative; z-index: 2; }
+.v-d .morph-col { padding: 36px 32px; border-right: 1px solid var(--line); }
+.v-d .morph-col:last-child { border-right: 0; }
+.v-d .morph-col .tag { font-family: var(--mono); font-size: 11px; color: var(--accent); letter-spacing: 0.16em; text-transform: uppercase; margin-bottom: 16px; font-weight: 600; }
+.v-d .morph-col .n { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 120px; letter-spacing: -0.06em; line-height: 0.92; color: var(--ink); }
+.v-d .morph-col .n .small { font-size: 54px; opacity: 0.5; }
+.v-d .morph-col .n .arrow { color: var(--accent); display: inline-block; animation: bounceX 1.6s ease infinite; }
+@keyframes bounceX { 0%,100% { transform: translateX(0) } 50% { transform: translateX(14px) } }
+.v-d .morph-col .d { margin-top: 18px; color: var(--ink-2); font-size: 15px; max-width: 280px; line-height: 1.5; }
+
+.v-d .flow { padding: 90px 0; border-bottom: 1px solid var(--line); position: relative; z-index: 2; }
+.v-d .flow-head { display: flex; justify-content: space-between; align-items: end; margin-bottom: 48px; padding-bottom: 24px; border-bottom: 2px solid var(--accent); }
+.v-d .flow-head h2 { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 72px; letter-spacing: -0.04em; text-transform: uppercase; line-height: 0.9; }
+.v-d .flow-head h2 .acc { color: var(--accent); }
+.v-d .flow-meta { font-family: var(--mono); font-size: 12px; color: var(--ink-2); letter-spacing: 0.1em; text-transform: uppercase; text-align: right; }
+
+.v-d .flow-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px; background: var(--line); padding: 2px; }
+.v-d .flow-item { background: var(--bg); padding: 28px 24px; transition: all .25s; cursor: pointer; }
+.v-d .flow-item:hover { background: var(--accent); color: var(--bg); transform: translate(-3px,-3px); box-shadow: 3px 3px 0 var(--ink); }
+.v-d .flow-item:hover .flow-item-n, .v-d .flow-item:hover p { color: var(--bg); }
+.v-d .flow-item-n { font-family: var(--mono); font-size: 14px; color: var(--accent); margin-bottom: 28px; font-weight: 600; letter-spacing: 0.08em; }
+.v-d .flow-item h4 { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 22px; letter-spacing: -0.01em; margin-bottom: 10px; text-transform: uppercase; }
+.v-d .flow-item p { font-size: 13.5px; line-height: 1.5; color: var(--ink-2); }
+
+.v-d .pricing { padding: 90px 0; border-bottom: 1px solid var(--line); position: relative; z-index: 2; }
+.v-d .pricing h3 { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 84px; letter-spacing: -0.045em; text-transform: uppercase; line-height: 0.9; margin-bottom: 8px; }
+.v-d .pricing h3 .acc { color: var(--accent); }
+.v-d .pricing p.intro { font-size: 18px; color: var(--ink-2); max-width: 480px; margin-bottom: 48px; }
+.v-d .plans-d { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; background: var(--accent); padding: 2px; }
+.v-d .plan-d { background: var(--bg); padding: 36px; display: flex; flex-direction: column; }
+.v-d .plan-d.hot { background: var(--accent); color: var(--bg); }
+.v-d .plan-d .n { font-family: var(--mono); font-size: 13px; letter-spacing: 0.16em; text-transform: uppercase; }
+.v-d .plan-d .p { display: flex; align-items: baseline; gap: 6px; margin: 20px 0 8px; }
+.v-d .plan-d .p .num { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 78px; letter-spacing: -0.05em; line-height: 1; }
+.v-d .plan-d .p .cur { font-family: var(--mono); font-size: 14px; opacity: 0.5; }
+.v-d .plan-d .p .per { font-family: var(--mono); font-size: 12px; opacity: 0.5; text-transform: uppercase; letter-spacing: 0.08em; }
+.v-d .plan-d .hint { font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.6; margin-bottom: 24px; }
+.v-d .plan-d ul { list-style: none; border-top: 1px solid currentColor; padding: 18px 0; margin-top: auto; display: flex; flex-direction: column; gap: 10px; }
+.v-d .plan-d li { font-size: 14px; display: flex; gap: 10px; }
+.v-d .plan-d li::before { content: '▸'; opacity: 0.7; }
+.v-d .plan-d .btn { width: 100%; justify-content: center; margin-top: 18px; }
+.v-d .plan-d.hot .btn-primary { background: var(--bg); color: var(--accent); }
+.v-d .plan-d.hot .btn-primary:hover { background: var(--ink); color: var(--accent); border-color: var(--ink); box-shadow: 4px 4px 0 var(--bg); }
+
+.v-d .foot { padding: 48px 0 24px; position: relative; z-index: 2; }
+.v-d .foot h5 { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: clamp(64px, 10vw, 140px); letter-spacing: -0.06em; text-transform: uppercase; line-height: 0.85; margin-bottom: 28px; }
+.v-d .foot h5 .acc { color: var(--accent); }
+.v-d .foot .row { display: flex; justify-content: space-between; font-family: var(--mono); font-size: 11px; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; padding-top: 24px; border-top: 1px solid var(--line); }
+
+/* ════════════════════════════════════════════════════════════════════════
+   VARIANT E — AURORA CALM  (animated gradient mesh + glass morphism)
+   ════════════════════════════════════════════════════════════════════════ */
+.v-e {
+  --bg: #fafaf8; --surface: #ffffff; --ink: #1a1a1a; --ink-2: #525252;
+  --muted: #a3a3a3; --line: rgba(0,0,0,0.08);
+  --a1: #f97316; --a2: #a78bfa; --a3: #60a5fa; --a4: #f472b6;
+  font-family: 'Inter', sans-serif;
+  background: var(--bg); color: var(--ink); position: relative; overflow-x: hidden;
+}
+.v-e .container { max-width: 1200px; margin: 0 auto; padding: 0 32px; position: relative; z-index: 2; }
+.v-e .aurora { position: fixed; top: 52px; left: 0; right: 0; bottom: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+.v-e .aurora .blob { position: absolute; width: 720px; height: 720px; border-radius: 50%; filter: blur(100px); opacity: 0.35; }
+.v-e .aurora .b1 { background: var(--a1); top: -18%; left: -8%; animation: blob1 24s ease-in-out infinite; }
+.v-e .aurora .b2 { background: var(--a2); top: 22%; right: -12%; animation: blob2 30s ease-in-out infinite; }
+.v-e .aurora .b3 { background: var(--a3); bottom: -16%; left: 24%; animation: blob3 22s ease-in-out infinite; }
+.v-e .aurora .b4 { background: var(--a4); top: 50%; left: 40%; width: 460px; height: 460px; animation: blob4 32s ease-in-out infinite; opacity: 0.22; }
+@keyframes blob1 { 0%,100% { transform: translate(0,0) scale(1) } 33% { transform: translate(180px,120px) scale(1.1) } 66% { transform: translate(-80px,220px) scale(0.9) } }
+@keyframes blob2 { 0%,100% { transform: translate(0,0) scale(1) } 50% { transform: translate(-200px,180px) scale(1.15) } }
+@keyframes blob3 { 0%,100% { transform: translate(0,0) } 50% { transform: translate(140px,-110px) } }
+@keyframes blob4 { 0%,100% { transform: translate(0,0) scale(1); opacity: 0.2 } 50% { transform: translate(-90px,-180px) scale(1.2); opacity: 0.4 } }
+
+.v-e .nav {
+  position: sticky; top: 52px; z-index: 50;
+  background: rgba(250,250,248,0.72); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+  border-bottom: 1px solid var(--line); padding: 14px 32px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.v-e .logo { display: flex; align-items: center; gap: 10px; font-weight: 600; font-size: 17px; letter-spacing: -0.02em; }
+.v-e .logo-gem { width: 26px; height: 26px; border-radius: 50%; background: conic-gradient(from 0deg, var(--a1), var(--a2), var(--a3), var(--a4), var(--a1)); animation: gemSpin 10s linear infinite; }
+@keyframes gemSpin { to { transform: rotate(360deg); } }
+.v-e .nav-menu { display: flex; gap: 28px; font-size: 14px; }
+.v-e .nav-menu a { text-decoration: none; color: var(--ink-2); transition: color .2s; }
+.v-e .nav-menu a:hover { color: var(--ink); }
+.v-e .btn { padding: 11px 22px; border-radius: 999px; font-weight: 500; font-size: 14px; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; transition: all .3s var(--ease); }
+.v-e .btn-primary { background: var(--ink); color: var(--surface); box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
+.v-e .btn-primary:hover { background: var(--a1); transform: translateY(-2px); box-shadow: 0 10px 30px rgba(249,115,22,0.4); }
+.v-e .btn-glass { background: rgba(255,255,255,0.5); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.9); color: var(--ink); }
+.v-e .btn-glass:hover { background: rgba(255,255,255,0.95); }
+
+.v-e .hero { padding: 100px 0 72px; text-align: center; position: relative; z-index: 2; }
+.v-e .hero-badge { display: inline-flex; align-items: center; gap: 8px; padding: 6px 14px; border-radius: 999px; background: rgba(255,255,255,0.6); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.9); font-size: 12px; letter-spacing: 0.02em; margin-bottom: 28px; animation: floatInE 1s ease both; }
+.v-e .hero-badge .dot { width: 7px; height: 7px; background: var(--a3); border-radius: 50%; animation: pulseE 2s infinite; }
+@keyframes pulseE { 0%,100% { box-shadow: 0 0 0 0 rgba(96,165,250,0.6) } 50% { box-shadow: 0 0 0 6px rgba(96,165,250,0) } }
+@keyframes floatInE { from { opacity: 0; transform: translateY(20px) } to { opacity: 1; transform: translateY(0) } }
+
+.v-e .hero h1 { font-family: 'Inter', sans-serif; font-weight: 300; font-size: clamp(54px, 7vw, 96px); line-height: 1.02; letter-spacing: -0.035em; max-width: 16ch; margin: 0 auto; animation: floatInE 1s .2s ease both; }
+.v-e .hero h1 .grad { background: linear-gradient(135deg, var(--a1), var(--a2), var(--a3)); -webkit-background-clip: text; background-clip: text; color: transparent; background-size: 200% 200%; animation: gradShift 7s ease infinite; font-weight: 500; }
+@keyframes gradShift { 0%,100% { background-position: 0% 50% } 50% { background-position: 100% 50% } }
+.v-e .hero-sub { font-size: 20px; color: var(--ink-2); line-height: 1.5; max-width: 620px; margin: 32px auto; animation: floatInE 1s .4s ease both; }
+.v-e .hero-ctas { display: flex; gap: 12px; justify-content: center; animation: floatInE 1s .6s ease both; }
+.v-e .hero-pills { display: flex; gap: 10px; justify-content: center; margin-top: 40px; flex-wrap: wrap; animation: floatInE 1s .8s ease both; }
+.v-e .pill { padding: 8px 16px; border-radius: 999px; background: rgba(255,255,255,0.55); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.9); font-size: 12.5px; color: var(--ink-2); font-weight: 500; }
+.v-e .pill b { color: var(--ink); font-weight: 600; }
+
+.v-e .hero-visual { margin: 80px auto 0; max-width: 840px; position: relative; z-index: 2; }
+.v-e .glass-card { background: rgba(255,255,255,0.55); backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px); border: 1px solid rgba(255,255,255,0.9); border-radius: 24px; padding: 32px; box-shadow: 0 8px 32px rgba(0,0,0,0.04), 0 32px 80px rgba(0,0,0,0.08); animation: floatSlow 6s ease-in-out infinite alternate; }
+@keyframes floatSlow { from { transform: translateY(0) } to { transform: translateY(-12px) } }
+.v-e .glass-card .gc-row { display: grid; grid-template-columns: 120px 1fr; gap: 24px; align-items: center; padding: 18px 0; border-bottom: 1px solid rgba(0,0,0,0.06); }
+.v-e .glass-card .gc-row:last-child { border-bottom: 0; }
+.v-e .glass-card .lbl { font-size: 12px; color: var(--muted); font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; }
+.v-e .glass-card .val { font-size: 15px; color: var(--ink); line-height: 1.55; }
+.v-e .glass-card .val b { font-weight: 600; }
+.v-e .glass-card .cid-chip { display: inline-flex; align-items: center; gap: 10px; padding: 7px 14px; border-radius: 999px; background: linear-gradient(135deg, var(--a3), var(--a2)); color: white; font-size: 13px; font-weight: 600; }
+.v-e .glass-card .recline { display: flex; align-items: center; gap: 10px; }
+.v-e .glass-card .recline::before { content: ''; width: 10px; height: 10px; border-radius: 50%; background: #ef4444; animation: pulseE 1.2s infinite; box-shadow: 0 0 0 0 rgba(239,68,68,0.6); }
+.v-e .glass-card .recline b { font-size: 13px; color: #ef4444; font-weight: 600; letter-spacing: 0.1em; }
+.v-e .glass-card .gc-cta { display: block; margin-top: 12px; padding: 12px; border-radius: 12px; text-align: center; background: linear-gradient(135deg, var(--a1), var(--a4)); color: white; font-weight: 500; font-size: 14px; text-decoration: none; }
+
+.v-e .stats { padding: 100px 0; position: relative; z-index: 2; }
+.v-e .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.v-e .stat-card { padding: 36px 30px; border-radius: 20px; background: rgba(255,255,255,0.6); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.9); transition: all .4s var(--ease); }
+.v-e .stat-card:hover { transform: translateY(-8px); box-shadow: 0 20px 50px rgba(0,0,0,0.08); }
+.v-e .stat-card .n { font-family: 'Inter', sans-serif; font-weight: 300; font-size: 80px; line-height: 1; letter-spacing: -0.04em; background: linear-gradient(135deg, var(--ink), var(--a1)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.v-e .stat-card .n .small { font-size: 34px; opacity: 0.6; -webkit-text-fill-color: var(--muted); background: none; color: var(--muted); }
+.v-e .stat-card .lbl { margin-top: 14px; font-size: 14px; color: var(--ink-2); font-weight: 500; }
+.v-e .stat-card .note { margin-top: 4px; font-size: 13px; color: var(--muted); }
+
+.v-e .flow { padding: 100px 0; position: relative; z-index: 2; }
+.v-e .flow h2 { font-size: clamp(38px, 4vw, 56px); font-weight: 300; letter-spacing: -0.03em; text-align: center; margin-bottom: 14px; }
+.v-e .flow h2 b { font-weight: 500; }
+.v-e .flow .intro { font-size: 17px; color: var(--ink-2); text-align: center; max-width: 540px; margin: 0 auto 48px; line-height: 1.55; }
+.v-e .flow-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+.v-e .flow-step { padding: 28px; border-radius: 20px; background: rgba(255,255,255,0.55); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.9); transition: all .4s var(--ease); }
+.v-e .flow-step:hover { transform: translateY(-6px); box-shadow: 0 16px 40px rgba(0,0,0,0.06); }
+.v-e .flow-step .n { width: 40px; height: 40px; border-radius: 12px; display: grid; place-items: center; color: white; font-weight: 600; font-size: 15px; margin-bottom: 18px; }
+.v-e .flow-step:nth-child(1) .n { background: linear-gradient(135deg, var(--a1), var(--a4)); }
+.v-e .flow-step:nth-child(2) .n { background: linear-gradient(135deg, var(--a2), var(--a3)); }
+.v-e .flow-step:nth-child(3) .n { background: linear-gradient(135deg, var(--a3), var(--a4)); }
+.v-e .flow-step:nth-child(4) .n { background: linear-gradient(135deg, var(--a4), var(--a1)); }
+.v-e .flow-step h4 { font-size: 18px; font-weight: 600; letter-spacing: -0.01em; margin-bottom: 6px; }
+.v-e .flow-step p { font-size: 14px; color: var(--ink-2); line-height: 1.5; }
+
+.v-e .pricing { padding: 100px 0; position: relative; z-index: 2; }
+.v-e .pricing .head { text-align: center; margin-bottom: 48px; }
+.v-e .pricing h3 { font-size: clamp(38px, 4.5vw, 60px); font-weight: 300; letter-spacing: -0.03em; }
+.v-e .pricing h3 b { font-weight: 500; }
+.v-e .pricing .head p { font-size: 17px; color: var(--ink-2); margin-top: 12px; }
+.v-e .plans-e { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; max-width: 840px; margin: 0 auto; }
+.v-e .plan-e { padding: 36px; border-radius: 24px; background: rgba(255,255,255,0.6); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.9); transition: all .4s var(--ease); display: flex; flex-direction: column; }
+.v-e .plan-e.featured { background: linear-gradient(135deg, rgba(249,115,22,0.14), rgba(167,139,250,0.14), rgba(96,165,250,0.14)); border: 1px solid rgba(255,255,255,1); box-shadow: 0 20px 60px rgba(249,115,22,0.15); }
+.v-e .plan-e:hover { transform: translateY(-6px); }
+.v-e .plan-e .pn { font-size: 13px; font-weight: 600; color: var(--ink-2); letter-spacing: 0.08em; text-transform: uppercase; }
+.v-e .plan-e .p { display: flex; align-items: baseline; gap: 6px; margin: 20px 0 8px; }
+.v-e .plan-e .p .num { font-family: 'Inter', sans-serif; font-weight: 300; font-size: 64px; line-height: 1; letter-spacing: -0.04em; background: linear-gradient(135deg, var(--ink), var(--a1)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.v-e .plan-e .p .cur { font-size: 14px; color: var(--muted); }
+.v-e .plan-e .p .per { font-size: 14px; color: var(--muted); }
+.v-e .plan-e .hint { font-size: 13px; color: var(--muted); margin-bottom: 22px; }
+.v-e .plan-e ul { list-style: none; margin-top: auto; display: flex; flex-direction: column; gap: 11px; padding-top: 20px; border-top: 1px solid rgba(0,0,0,0.08); margin-bottom: 20px; }
+.v-e .plan-e li { font-size: 14.5px; color: var(--ink-2); display: flex; gap: 10px; }
+.v-e .plan-e li::before { content: '✓'; color: var(--a1); font-weight: 600; }
+.v-e .plan-e .btn { width: 100%; justify-content: center; }
+
+.v-e .foot { padding: 48px 0; text-align: center; font-size: 13px; color: var(--muted); position: relative; z-index: 2; }
+
+/* ════════════════════════════════════════════════════════════════════════
+   VARIANT F — LIVE DEMO  (self-playing product, counting stats, flowing dots)
+   ════════════════════════════════════════════════════════════════════════ */
+.v-f {
+  --bg: #fafbfc; --surface: #ffffff; --ink: #0f172a; --ink-2: #475569;
+  --muted: #94a3b8; --line: #e2e8f0; --accent: #0891b2; --accent-soft: #e0f2fe;
+  --rec: #dc2626; --ok: #059669; --ok-soft: #d1fae5;
+  font-family: 'Inter', sans-serif;
+  background: var(--bg); color: var(--ink);
+}
+.v-f .container { max-width: 1200px; margin: 0 auto; padding: 0 32px; }
+
+.v-f .nav { position: sticky; top: 52px; z-index: 50; background: var(--bg); border-bottom: 1px solid var(--line); padding: 14px 32px; display: flex; align-items: center; gap: 18px; }
+.v-f .logo { display: flex; align-items: center; gap: 10px; font-weight: 600; font-size: 15px; letter-spacing: -0.01em; }
+.v-f .logo-wave { width: 28px; height: 28px; border-radius: 8px; background: var(--accent); display: grid; place-items: center; color: white; font-weight: 600; font-size: 13px; position: relative; }
+.v-f .logo-wave::after { content: ''; position: absolute; inset: -5px; border-radius: 12px; border: 2px solid var(--accent); opacity: 0; animation: sonar 2s infinite; }
+@keyframes sonar { 0% { opacity: 1; transform: scale(0.95) } 100% { opacity: 0; transform: scale(1.4) } }
+.v-f .status-pill { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--ok); font-weight: 500; }
+.v-f .status-pill::before { content: ''; width: 8px; height: 8px; background: var(--ok); border-radius: 50%; animation: pulseF 1.5s infinite; }
+@keyframes pulseF { 0%,100% { box-shadow: 0 0 0 0 rgba(5,150,105,0.6) } 50% { box-shadow: 0 0 0 6px rgba(5,150,105,0) } }
+.v-f .nav-menu { margin-left: auto; display: flex; gap: 24px; font-size: 14px; }
+.v-f .nav-menu a { text-decoration: none; color: var(--ink-2); }
+.v-f .btn { padding: 10px 20px; border-radius: 8px; font-weight: 500; font-size: 13.5px; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; transition: all .2s; }
+.v-f .btn-primary { background: var(--accent); color: white; }
+.v-f .btn-primary:hover { background: #0e7490; transform: translateY(-1px); box-shadow: 0 6px 20px rgba(8,145,178,0.3); }
+.v-f .btn-line { border: 1px solid var(--line); color: var(--ink); }
+.v-f .btn-line:hover { border-color: var(--accent); color: var(--accent); }
+
+.v-f .hero { padding: 72px 0 56px; }
+.v-f .hero-grid { display: grid; grid-template-columns: 1fr 1.1fr; gap: 56px; align-items: center; }
+.v-f .hero-eyebrow { display: inline-flex; align-items: center; gap: 8px; padding: 5px 12px; border-radius: 999px; background: var(--accent-soft); color: var(--accent); font-size: 12px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 22px; }
+.v-f .hero-eyebrow::before { content: '●'; font-size: 9px; animation: pulseF 1.5s infinite; color: var(--accent); }
+.v-f .hero h1 { font-size: clamp(42px, 5vw, 66px); font-weight: 600; line-height: 1.04; letter-spacing: -0.03em; }
+.v-f .hero h1 em { font-style: normal; color: var(--accent); }
+.v-f .hero-sub { font-size: 18px; color: var(--ink-2); line-height: 1.55; margin-top: 22px; max-width: 480px; }
+.v-f .hero-ctas { display: flex; gap: 12px; margin-top: 28px; }
+.v-f .hero-meta { display: flex; gap: 28px; margin-top: 36px; padding-top: 24px; border-top: 1px solid var(--line); font-size: 12px; color: var(--muted); letter-spacing: 0.06em; text-transform: uppercase; font-weight: 500; }
+.v-f .hero-meta b { display: block; color: var(--ink); font-size: 20px; font-weight: 600; margin-bottom: 4px; letter-spacing: -0.01em; text-transform: none; }
+.v-f .hero-meta b em { color: var(--accent); font-style: normal; }
+
+.v-f .live-hud { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; box-shadow: 0 1px 2px rgba(15,23,42,0.04), 0 20px 60px rgba(15,23,42,0.08); overflow: hidden; }
+.v-f .live-bar { background: #f1f5f9; padding: 12px 16px; display: flex; align-items: center; gap: 10px; border-bottom: 1px solid var(--line); }
+.v-f .live-bar .dots { display: flex; gap: 6px; }
+.v-f .live-bar .dots i { width: 10px; height: 10px; border-radius: 50%; background: #cbd5e1; display: block; }
+.v-f .live-bar .title { font-family: var(--mono); font-size: 12px; color: var(--ink-2); letter-spacing: 0.06em; }
+.v-f .live-bar .timer { margin-left: auto; font-family: var(--mono); font-size: 12px; color: var(--muted); }
+
+.v-f .live-section { padding: 18px 20px; border-bottom: 1px solid var(--line); transition: opacity .4s, background .4s; opacity: 0.3; }
+.v-f .live-section:last-child { border-bottom: 0; }
+.v-f .live-section.active { opacity: 1; background: #fefefe; }
+.v-f .live-section.done { opacity: 1; }
+.v-f .live-label { font-family: var(--mono); font-size: 10.5px; color: var(--muted); letter-spacing: 0.16em; text-transform: uppercase; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; transition: color .3s; }
+.v-f .live-section.active .live-label { color: var(--accent); }
+.v-f .live-section.done .live-label { color: var(--ok); }
+.v-f .live-section.done .live-check { margin-left: auto; color: var(--ok); font-weight: 700; }
+
+.v-f .live-rec { display: flex; align-items: center; gap: 12px; }
+.v-f .live-rec-led { width: 12px; height: 12px; border-radius: 50%; background: var(--rec); animation: recLive 1.1s infinite; }
+@keyframes recLive { 0%,100% { box-shadow: 0 0 0 0 rgba(220,38,38,0.5) } 50% { box-shadow: 0 0 0 8px rgba(220,38,38,0) } }
+.v-f .live-rec-tag { font-family: var(--mono); font-size: 12px; color: var(--rec); font-weight: 600; letter-spacing: 0.1em; }
+.v-f .live-rec-t { margin-left: auto; font-family: var(--mono); font-size: 13px; color: var(--ink); font-weight: 500; }
+.v-f .live-wave { display: flex; gap: 3px; align-items: center; height: 40px; margin-top: 12px; }
+.v-f .live-wave i { flex: 1; background: var(--accent); border-radius: 2px; animation: waveBounce 1s infinite ease-in-out; }
+.v-f .live-wave i:nth-child(2) { animation-delay: 0.08s }
+.v-f .live-wave i:nth-child(3) { animation-delay: 0.16s }
+.v-f .live-wave i:nth-child(4) { animation-delay: 0.24s }
+.v-f .live-wave i:nth-child(5) { animation-delay: 0.32s }
+.v-f .live-wave i:nth-child(6) { animation-delay: 0.4s }
+.v-f .live-wave i:nth-child(7) { animation-delay: 0.48s }
+.v-f .live-wave i:nth-child(8) { animation-delay: 0.36s }
+.v-f .live-wave i:nth-child(9) { animation-delay: 0.24s }
+.v-f .live-wave i:nth-child(10) { animation-delay: 0.12s }
+.v-f .live-wave i:nth-child(11) { animation-delay: 0.3s }
+.v-f .live-wave i:nth-child(12) { animation-delay: 0.18s }
+.v-f .live-wave i:nth-child(13) { animation-delay: 0.42s }
+.v-f .live-wave i:nth-child(14) { animation-delay: 0.14s }
+.v-f .live-wave i:nth-child(15) { animation-delay: 0.22s }
+@keyframes waveBounce { 0%,100% { height: 20%; opacity: 0.5 } 50% { height: 85%; opacity: 1 } }
+
+.v-f .live-soap { font-size: 14px; color: var(--ink); line-height: 1.55; min-height: 72px; font-family: 'Inter', sans-serif; }
+.v-f .live-soap b { font-weight: 600; }
+.v-f .live-caret { display: inline-block; width: 2px; height: 16px; background: var(--accent); vertical-align: text-bottom; animation: blink 0.8s infinite step-end; }
+@keyframes blink { 50% { opacity: 0 } }
+.v-f .live-cid-row { display: flex; align-items: center; gap: 10px; }
+.v-f .live-cid-code { background: var(--accent); color: white; padding: 5px 10px; border-radius: 4px; font-family: var(--mono); font-size: 13px; font-weight: 600; }
+.v-f .live-cid-nm { font-size: 14px; color: var(--ink); flex: 1; }
+.v-f .live-cid-status { width: 24px; height: 24px; border-radius: 50%; background: var(--ok-soft); color: var(--ok); display: grid; place-items: center; font-weight: 700; font-size: 13px; }
+.v-f .live-fin { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 12px; border-radius: 8px; background: var(--accent); color: white; font-weight: 600; font-size: 14.5px; text-decoration: none; }
+.v-f .live-section.active .live-fin { animation: btnGlow 2s infinite; }
+@keyframes btnGlow { 0%,100% { box-shadow: 0 0 0 0 rgba(8,145,178,0.45) } 50% { box-shadow: 0 0 0 12px rgba(8,145,178,0) } }
+
+.v-f .stats { padding: 72px 0; background: var(--surface); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.v-f .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); }
+.v-f .stat-cell { padding: 24px 32px; border-right: 1px solid var(--line); text-align: center; }
+.v-f .stat-cell:last-child { border-right: 0; }
+.v-f .stat-cell .tag { font-family: var(--mono); font-size: 11px; color: var(--accent); font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 12px; }
+.v-f .stat-cell .n { font-size: 84px; font-weight: 300; letter-spacing: -0.05em; line-height: 1; color: var(--ink); }
+.v-f .stat-cell .n em { color: var(--accent); font-style: normal; font-weight: 500; }
+.v-f .stat-cell .n .small { font-size: 32px; color: var(--muted); font-weight: 300; }
+.v-f .stat-cell .lbl { margin-top: 12px; font-size: 14px; color: var(--ink-2); font-weight: 500; }
+.v-f .stat-cell .note { margin-top: 4px; font-size: 13px; color: var(--muted); }
+
+.v-f .workflow { padding: 80px 0; }
+.v-f .workflow h2 { font-size: clamp(32px, 3.5vw, 44px); font-weight: 600; letter-spacing: -0.025em; text-align: center; margin-bottom: 8px; }
+.v-f .workflow .intro { font-size: 16px; color: var(--ink-2); text-align: center; margin-bottom: 48px; }
+.v-f .flow-diagram { position: relative; display: grid; grid-template-columns: repeat(4, 1fr); padding: 48px 0 24px; max-width: 960px; margin: 0 auto; }
+.v-f .flow-node { text-align: center; position: relative; z-index: 2; }
+.v-f .flow-node-bullet { width: 52px; height: 52px; border-radius: 50%; background: var(--surface); border: 2px solid var(--line); display: grid; place-items: center; margin: 0 auto 16px; color: var(--ink); font-weight: 600; font-size: 16px; transition: all .4s; }
+.v-f .flow-node h4 { font-size: 15px; font-weight: 600; letter-spacing: -0.01em; }
+.v-f .flow-node p { font-size: 13px; color: var(--ink-2); margin-top: 4px; }
+.v-f .flow-track { position: absolute; top: 24px; left: 12.5%; right: 12.5%; height: 2px; background: var(--line); z-index: 1; }
+.v-f .flow-track .dot { position: absolute; top: -5px; left: 0; width: 12px; height: 12px; background: var(--accent); border-radius: 50%; box-shadow: 0 0 0 4px rgba(8,145,178,0.2); animation: dotMove 8s infinite ease-in-out; }
+@keyframes dotMove { 0% { left: 0%; opacity: 0 } 6% { opacity: 1 } 25% { left: 33.33% } 50% { left: 66.66% } 75% { left: 100%; opacity: 1 } 82% { opacity: 0 } 100% { left: 0%; opacity: 0 } }
+
+.v-f .pricing { padding: 80px 0; background: var(--surface); border-top: 1px solid var(--line); }
+.v-f .pricing .head { text-align: center; margin-bottom: 48px; }
+.v-f .pricing h3 { font-size: clamp(32px, 3.5vw, 44px); font-weight: 600; letter-spacing: -0.025em; }
+.v-f .pricing .head p { font-size: 16px; color: var(--ink-2); margin-top: 12px; }
+.v-f .plans-f { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; max-width: 820px; margin: 0 auto; }
+.v-f .plan-f { background: var(--bg); border: 1px solid var(--line); border-radius: 12px; padding: 32px; display: flex; flex-direction: column; transition: all .3s; }
+.v-f .plan-f:hover { transform: translateY(-4px); box-shadow: 0 20px 50px rgba(15,23,42,0.06); }
+.v-f .plan-f.featured { border: 2px solid var(--accent); position: relative; }
+.v-f .plan-f.featured::before { content: 'RECOMENDADO'; position: absolute; top: -10px; left: 24px; background: var(--accent); color: white; font-size: 11px; letter-spacing: 0.1em; padding: 3px 10px; border-radius: 4px; font-weight: 600; }
+.v-f .plan-f .n { font-size: 13px; font-weight: 600; color: var(--ink-2); letter-spacing: 0.08em; text-transform: uppercase; }
+.v-f .plan-f .p { display: flex; align-items: baseline; gap: 4px; margin: 18px 0 4px; }
+.v-f .plan-f .p .num { font-size: 54px; font-weight: 600; letter-spacing: -0.03em; line-height: 1; }
+.v-f .plan-f .p .cur { font-size: 14px; color: var(--muted); }
+.v-f .plan-f .p .per { font-size: 14px; color: var(--muted); }
+.v-f .plan-f .hint { font-size: 13px; color: var(--muted); margin-bottom: 22px; }
+.v-f .plan-f ul { list-style: none; padding-top: 18px; border-top: 1px solid var(--line); margin-top: auto; margin-bottom: 20px; display: flex; flex-direction: column; gap: 10px; }
+.v-f .plan-f li { font-size: 14px; color: var(--ink-2); display: flex; gap: 10px; }
+.v-f .plan-f li::before { content: '✓'; color: var(--accent); font-weight: 600; }
+.v-f .plan-f .btn { width: 100%; justify-content: center; }
+
+.v-f .foot { padding: 40px 0; border-top: 1px solid var(--line); }
+.v-f .foot-inner { display: flex; justify-content: space-between; font-size: 13px; color: var(--muted); }
+
+/* ════════════════════════════════════════════════════════════════════════
+   VARIANT F+ — CLINICAL TRUST (F refined to Option A tokens from the report)
+     • Primary: #0891B2 medical teal  • CTA: #22C55E clinical green ("safe action")
+     • Headings: Figtree  • Body: Noto Sans  • Text: #134E4A deep teal-slate
+     • WCAG AAA intent: 3px focus rings, 44×44 touch targets, 16px base, ARIA
+   ════════════════════════════════════════════════════════════════════════ */
+.v-fp {
+  --bg: #f0fdfa; --surface: #ffffff; --ink: #134e4a; --ink-2: #3d6b67;
+  --muted: #7a9591; --line: #cbe5e0; --line-mid: #a4cfc8;
+  --accent: #0891b2; --accent-dk: #0e7490; --accent-soft: #e0f2fe;
+  --cyan: #22d3ee; --cta: #22c55e; --cta-dk: #16a34a;
+  --rec: #dc2626; --ok: #059669; --ok-soft: #d1fae5;
+  font-family: 'Noto Sans', system-ui, sans-serif; font-size: 16px;
+  background: var(--bg); color: var(--ink);
+}
+.v-fp h1, .v-fp h2, .v-fp h3, .v-fp h4, .v-fp h5 { font-family: 'Figtree', 'Inter', sans-serif; letter-spacing: -0.02em; color: var(--ink); }
+.v-fp *:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
+.v-fp .container { max-width: 1200px; margin: 0 auto; padding: 0 32px; }
+
+.v-fp .skip { position: absolute; left: -9999px; top: 0; background: var(--ink); color: var(--surface); padding: 12px 20px; z-index: 100; font-weight: 600; text-decoration: none; border-radius: 4px; }
+.v-fp .skip:focus { left: 12px; top: 62px; }
+
+.v-fp .nav { position: sticky; top: 52px; z-index: 50; background: rgba(240,253,250,0.92); backdrop-filter: blur(16px); border-bottom: 1px solid var(--line); padding: 14px 32px; display: flex; align-items: center; gap: 18px; }
+.v-fp .logo { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 16px; letter-spacing: -0.01em; font-family: 'Figtree', sans-serif; color: var(--ink); text-decoration: none; min-height: 44px; }
+.v-fp .logo-wave { width: 32px; height: 32px; border-radius: 8px; background: var(--accent); display: grid; place-items: center; color: white; font-weight: 700; font-size: 13px; position: relative; font-family: 'Figtree', sans-serif; }
+.v-fp .logo-wave::after { content: ''; position: absolute; inset: -5px; border-radius: 12px; border: 2px solid var(--accent); opacity: 0; animation: sonar 2s infinite; }
+.v-fp .status-pill { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--ok); font-weight: 600; padding: 6px 12px; border-radius: 999px; background: var(--ok-soft); }
+.v-fp .status-pill::before { content: ''; width: 8px; height: 8px; background: var(--ok); border-radius: 50%; animation: pulseF 1.5s infinite; }
+.v-fp .nav-menu { margin-left: auto; display: flex; gap: 22px; font-size: 14.5px; }
+.v-fp .nav-menu a { text-decoration: none; color: var(--ink-2); font-weight: 500; padding: 10px 4px; min-height: 44px; display: inline-flex; align-items: center; }
+.v-fp .nav-menu a:hover { color: var(--accent); }
+.v-fp .btn { padding: 12px 22px; border-radius: 8px; font-weight: 600; font-size: 14px; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; transition: all .2s; font-family: 'Figtree', sans-serif; min-height: 44px; border: 2px solid transparent; }
+.v-fp .btn-primary { background: var(--accent); color: white; }
+.v-fp .btn-primary:hover { background: var(--accent-dk); transform: translateY(-1px); box-shadow: 0 6px 20px rgba(8,145,178,0.28); }
+.v-fp .btn-cta { background: var(--cta); color: white; font-weight: 700; }
+.v-fp .btn-cta:hover { background: var(--cta-dk); transform: translateY(-1px); box-shadow: 0 6px 20px rgba(34,197,94,0.32); }
+.v-fp .btn-line { border: 2px solid var(--line-mid); color: var(--ink); background: var(--surface); }
+.v-fp .btn-line:hover { border-color: var(--accent); color: var(--accent); }
+
+.v-fp .hero { padding: 72px 0 56px; }
+.v-fp .hero-grid { display: grid; grid-template-columns: 1fr 1.1fr; gap: 56px; align-items: center; }
+.v-fp .hero-eyebrow { display: inline-flex; align-items: center; gap: 8px; padding: 6px 14px; border-radius: 999px; background: var(--accent-soft); color: var(--accent-dk); font-size: 13px; font-weight: 600; letter-spacing: 0.03em; margin-bottom: 22px; border: 1px solid rgba(8,145,178,0.22); }
+.v-fp .hero-eyebrow::before { content: '●'; font-size: 10px; animation: pulseF 1.5s infinite; color: var(--accent); }
+.v-fp .hero h1 { font-size: clamp(44px, 5vw, 68px); font-weight: 700; line-height: 1.04; }
+.v-fp .hero h1 em { font-style: normal; color: var(--accent); }
+.v-fp .hero-sub { font-size: 18px; color: var(--ink-2); line-height: 1.6; margin-top: 22px; max-width: 500px; }
+.v-fp .hero-ctas { display: flex; gap: 12px; margin-top: 30px; flex-wrap: wrap; }
+.v-fp .hero-trust { display: flex; gap: 22px; margin-top: 36px; padding-top: 24px; border-top: 1px solid var(--line); font-size: 13px; color: var(--muted); font-weight: 500; flex-wrap: wrap; }
+.v-fp .hero-trust b { display: block; color: var(--ink); font-size: 15px; font-weight: 700; margin-bottom: 2px; font-family: 'Figtree', sans-serif; }
+
+.v-fp .live-hud { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; box-shadow: 0 1px 2px rgba(19,78,74,0.05), 0 24px 60px rgba(19,78,74,0.1); overflow: hidden; }
+.v-fp .live-bar { background: #e6f7f4; padding: 12px 16px; display: flex; align-items: center; gap: 10px; border-bottom: 1px solid var(--line); }
+.v-fp .live-bar .dots { display: flex; gap: 6px; }
+.v-fp .live-bar .dots i { width: 10px; height: 10px; border-radius: 50%; background: var(--line-mid); display: block; }
+.v-fp .live-bar .title { font-family: var(--mono); font-size: 12px; color: var(--ink-2); letter-spacing: 0.06em; font-weight: 500; }
+.v-fp .live-bar .timer { margin-left: auto; font-family: var(--mono); font-size: 13px; color: var(--accent-dk); font-weight: 700; }
+
+.v-fp .live-section { padding: 18px 20px; border-bottom: 1px solid var(--line); transition: opacity .4s, background .4s; opacity: 0.35; }
+.v-fp .live-section:last-child { border-bottom: 0; }
+.v-fp .live-section.active { opacity: 1; background: #f6fffd; }
+.v-fp .live-section.done { opacity: 1; }
+.v-fp .live-label { font-family: var(--mono); font-size: 11px; color: var(--muted); letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; font-weight: 700; transition: color .3s; }
+.v-fp .live-section.active .live-label { color: var(--accent-dk); }
+.v-fp .live-section.done .live-label { color: var(--ok); }
+.v-fp .live-section.done .live-check { margin-left: auto; color: var(--ok); font-weight: 700; }
+
+.v-fp .live-rec { display: flex; align-items: center; gap: 12px; }
+.v-fp .live-rec-led { width: 12px; height: 12px; border-radius: 50%; background: var(--rec); animation: recLive 1.1s infinite; }
+.v-fp .live-rec-tag { font-family: var(--mono); font-size: 12px; color: var(--rec); font-weight: 700; letter-spacing: 0.12em; }
+.v-fp .live-rec-t { margin-left: auto; font-family: var(--mono); font-size: 13px; color: var(--ink); font-weight: 600; }
+.v-fp .live-wave { display: flex; gap: 3px; align-items: center; height: 42px; margin-top: 12px; }
+.v-fp .live-wave i { flex: 1; background: var(--accent); border-radius: 2px; animation: waveBounce 1s infinite ease-in-out; }
+.v-fp .live-wave i:nth-child(2) { animation-delay: 0.08s }
+.v-fp .live-wave i:nth-child(3) { animation-delay: 0.16s }
+.v-fp .live-wave i:nth-child(4) { animation-delay: 0.24s }
+.v-fp .live-wave i:nth-child(5) { animation-delay: 0.32s }
+.v-fp .live-wave i:nth-child(6) { animation-delay: 0.40s }
+.v-fp .live-wave i:nth-child(7) { animation-delay: 0.48s }
+.v-fp .live-wave i:nth-child(8) { animation-delay: 0.36s }
+.v-fp .live-wave i:nth-child(9) { animation-delay: 0.24s }
+.v-fp .live-wave i:nth-child(10) { animation-delay: 0.12s }
+.v-fp .live-wave i:nth-child(11) { animation-delay: 0.30s }
+.v-fp .live-wave i:nth-child(12) { animation-delay: 0.18s }
+.v-fp .live-wave i:nth-child(13) { animation-delay: 0.42s }
+.v-fp .live-wave i:nth-child(14) { animation-delay: 0.14s }
+.v-fp .live-wave i:nth-child(15) { animation-delay: 0.22s }
+
+.v-fp .live-soap { font-size: 14.5px; color: var(--ink); line-height: 1.6; min-height: 72px; font-family: 'Noto Sans', sans-serif; }
+.v-fp .live-soap b { font-weight: 600; }
+.v-fp .live-caret { display: inline-block; width: 2px; height: 16px; background: var(--accent); vertical-align: text-bottom; animation: blink 0.8s infinite step-end; }
+
+.v-fp .live-cid-row { display: flex; align-items: center; gap: 10px; }
+.v-fp .live-cid-code { background: var(--accent); color: white; padding: 6px 10px; border-radius: 5px; font-family: var(--mono); font-size: 13px; font-weight: 700; }
+.v-fp .live-cid-nm { font-size: 14.5px; color: var(--ink); flex: 1; }
+.v-fp .live-cid-status { width: 26px; height: 26px; border-radius: 50%; background: var(--ok-soft); color: var(--ok); display: grid; place-items: center; font-weight: 700; font-size: 14px; }
+
+/* Clinical-green CTA — the report's "safe action" signal */
+.v-fp .live-fin { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 14px; min-height: 48px; border-radius: 8px; background: var(--cta); color: white; font-weight: 700; font-size: 15px; text-decoration: none; font-family: 'Figtree', sans-serif; transition: all .2s; }
+.v-fp .live-fin:hover { background: var(--cta-dk); }
+.v-fp .live-section.active .live-fin { animation: btnGlowCta 2s infinite; }
+@keyframes btnGlowCta { 0%,100% { box-shadow: 0 0 0 0 rgba(34,197,94,0.45) } 50% { box-shadow: 0 0 0 12px rgba(34,197,94,0) } }
+
+.v-fp .stats { padding: 80px 0; background: var(--surface); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.v-fp .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); }
+.v-fp .stat-cell { padding: 28px 32px; border-right: 1px solid var(--line); text-align: center; }
+.v-fp .stat-cell:last-child { border-right: 0; }
+.v-fp .stat-cell .tag { font-family: var(--mono); font-size: 11px; color: var(--accent-dk); font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 14px; }
+.v-fp .stat-cell .n { font-family: 'Figtree', sans-serif; font-size: 88px; font-weight: 300; letter-spacing: -0.04em; line-height: 1; color: var(--ink); }
+.v-fp .stat-cell .n em { color: var(--accent); font-style: normal; font-weight: 600; }
+.v-fp .stat-cell .n .small { font-size: 34px; color: var(--muted); font-weight: 400; }
+.v-fp .stat-cell .lbl { margin-top: 14px; font-size: 15px; color: var(--ink); font-weight: 700; font-family: 'Figtree', sans-serif; }
+.v-fp .stat-cell .note { margin-top: 4px; font-size: 13.5px; color: var(--muted); }
+
+.v-fp .workflow { padding: 80px 0; }
+.v-fp .workflow h2 { font-size: clamp(32px, 3.5vw, 44px); font-weight: 700; text-align: center; margin-bottom: 10px; }
+.v-fp .workflow .intro { font-size: 16.5px; color: var(--ink-2); text-align: center; margin-bottom: 48px; }
+.v-fp .flow-diagram { position: relative; display: grid; grid-template-columns: repeat(4, 1fr); padding: 48px 0 24px; max-width: 960px; margin: 0 auto; }
+.v-fp .flow-node { text-align: center; position: relative; z-index: 2; }
+.v-fp .flow-node-bullet { width: 56px; height: 56px; border-radius: 50%; background: var(--surface); border: 2px solid var(--line-mid); display: grid; place-items: center; margin: 0 auto 16px; color: var(--ink); font-weight: 700; font-size: 16px; transition: all .4s; font-family: 'Figtree', sans-serif; }
+.v-fp .flow-node.lit .flow-node-bullet { background: var(--accent); color: white; border-color: var(--accent); box-shadow: 0 0 0 8px rgba(8,145,178,0.18); }
+.v-fp .flow-node h4 { font-size: 16px; font-weight: 600; }
+.v-fp .flow-node p { font-size: 13.5px; color: var(--ink-2); margin-top: 4px; font-family: 'Noto Sans', sans-serif; }
+.v-fp .flow-track { position: absolute; top: 26px; left: 12.5%; right: 12.5%; height: 2px; background: var(--line-mid); z-index: 1; }
+.v-fp .flow-track .dot { position: absolute; top: -5px; left: 0; width: 12px; height: 12px; background: var(--accent); border-radius: 50%; box-shadow: 0 0 0 4px rgba(8,145,178,0.2); animation: dotMove 8s infinite ease-in-out; }
+
+.v-fp .pricing { padding: 80px 0; background: var(--surface); border-top: 1px solid var(--line); }
+.v-fp .pricing .head { text-align: center; margin-bottom: 48px; }
+.v-fp .pricing h3 { font-size: clamp(32px, 3.5vw, 44px); font-weight: 700; }
+.v-fp .pricing .head p { font-size: 16.5px; color: var(--ink-2); margin-top: 12px; max-width: 560px; margin-left: auto; margin-right: auto; }
+.v-fp .plans-fp { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; max-width: 820px; margin: 0 auto; }
+.v-fp .plan-fp { background: var(--bg); border: 2px solid var(--line); border-radius: 12px; padding: 32px; display: flex; flex-direction: column; transition: all .3s; }
+.v-fp .plan-fp:hover { transform: translateY(-4px); box-shadow: 0 20px 50px rgba(19,78,74,0.08); }
+.v-fp .plan-fp.featured { border-color: var(--accent); background: var(--surface); position: relative; }
+.v-fp .plan-fp.featured::before { content: 'RECOMENDADO'; position: absolute; top: -12px; left: 24px; background: var(--cta); color: white; font-size: 11px; letter-spacing: 0.12em; padding: 4px 10px; border-radius: 4px; font-weight: 700; font-family: 'Figtree', sans-serif; }
+.v-fp .plan-fp .n { font-size: 13px; font-weight: 700; color: var(--accent-dk); letter-spacing: 0.1em; text-transform: uppercase; font-family: 'Figtree', sans-serif; }
+.v-fp .plan-fp .p { display: flex; align-items: baseline; gap: 4px; margin: 18px 0 4px; font-family: 'Figtree', sans-serif; }
+.v-fp .plan-fp .p .num { font-size: 58px; font-weight: 700; letter-spacing: -0.03em; line-height: 1; color: var(--ink); }
+.v-fp .plan-fp .p .cur { font-size: 14px; color: var(--muted); }
+.v-fp .plan-fp .p .per { font-size: 14px; color: var(--muted); }
+.v-fp .plan-fp .hint { font-size: 13.5px; color: var(--muted); margin-bottom: 24px; }
+.v-fp .plan-fp ul { list-style: none; padding-top: 20px; border-top: 1px solid var(--line); margin-top: auto; margin-bottom: 24px; display: flex; flex-direction: column; gap: 12px; }
+.v-fp .plan-fp li { font-size: 14.5px; color: var(--ink); display: flex; gap: 10px; }
+.v-fp .plan-fp li::before { content: '✓'; color: var(--ok); font-weight: 700; }
+.v-fp .plan-fp .btn { width: 100%; justify-content: center; }
+
+.v-fp .foot { padding: 40px 0; border-top: 1px solid var(--line); }
+.v-fp .foot-inner { display: flex; justify-content: space-between; font-size: 13.5px; color: var(--muted); font-weight: 500; flex-wrap: wrap; gap: 16px; }
+.v-fp .foot-inner a { color: inherit; text-decoration: none; }
+.v-fp .foot-inner a:hover { color: var(--accent); }
+
+/* ════════════════════════════════════════════════════════════════════════
+   VARIANT G — F + PERSUASION (same palette; adds before/after, objection,
+   real-shift timeline, sticky CTA, scroll-reveal)
+   .v-g inherits .v-f styles (it has both classes), only new sections styled.
+   ════════════════════════════════════════════════════════════════════════ */
+
+/* Hero center layout */
+.v-g .hero-top { text-align: center; margin-bottom: 40px; }
+.v-g .hero-top h1 { font-size: clamp(38px, 4.5vw, 60px); font-weight: 600; letter-spacing: -0.03em; line-height: 1.04; max-width: 18ch; margin: 0 auto; }
+.v-g .hero-top h1 em { font-style: normal; color: var(--accent); }
+.v-g .hero-top p { font-size: 17px; color: var(--ink-2); margin-top: 18px; max-width: 560px; margin-left: auto; margin-right: auto; line-height: 1.55; }
+.v-g .hero-ctas-center { display: flex; gap: 12px; justify-content: center; margin-top: 28px; }
+.v-g .hud-caption { text-align: center; font-family: var(--mono); font-size: 11px; color: var(--muted); letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 18px; }
+
+/* Before/After comparison */
+.v-g .hero-compare-inner { display: grid; grid-template-columns: 1fr 1.1fr; border: 1px solid var(--line); border-radius: 16px; overflow: hidden; box-shadow: 0 1px 3px rgba(15,23,42,0.04), 0 20px 40px rgba(15,23,42,0.06); background: var(--surface); }
+.v-g .before { padding: 36px 32px; background: #f8fafc; border-right: 1px solid var(--line); position: relative; }
+.v-g .after { padding: 36px 32px; background: var(--surface); position: relative; }
+.v-g .before::before { content: 'HOJE'; position: absolute; top: 18px; right: 20px; font-family: var(--mono); font-size: 10.5px; color: #94a3b8; letter-spacing: 0.16em; font-weight: 600; }
+.v-g .after::before { content: 'COM TOCA FICHA DR.'; position: absolute; top: 18px; right: 20px; font-family: var(--mono); font-size: 10.5px; color: var(--accent); letter-spacing: 0.16em; font-weight: 600; }
+.v-g .compare-h { font-size: 24px; font-weight: 600; letter-spacing: -0.02em; margin-bottom: 6px; color: var(--ink); }
+.v-g .compare-sub { font-size: 13.5px; color: var(--ink-2); margin-bottom: 22px; line-height: 1.5; }
+.v-g .action-list { list-style: none; display: flex; flex-direction: column; gap: 4px; }
+.v-g .action-list li { display: flex; gap: 10px; align-items: center; font-size: 13.5px; color: var(--ink-2); padding: 4px 0; }
+.v-g .before .action-list li::before { content: '×'; color: #ef4444; font-weight: 700; font-size: 16px; width: 18px; text-align: center; }
+.v-g .before .action-list li.faded { opacity: 0.45; }
+.v-g .after .action-list li::before { content: '✓'; color: var(--ok); font-weight: 700; font-size: 13px; width: 18px; text-align: center; }
+.v-g .before-count, .v-g .after-count { margin-top: 22px; padding-top: 18px; border-top: 1px dashed #cbd5e1; display: flex; gap: 18px; align-items: baseline; }
+.v-g .after-count { border-top-color: var(--line); }
+.v-g .before-count .n, .v-g .after-count .n { font-size: 56px; font-weight: 300; line-height: 1; letter-spacing: -0.03em; }
+.v-g .before-count .n { color: #dc2626; }
+.v-g .after-count .n { color: var(--accent); font-weight: 500; }
+.v-g .before-count .lbl, .v-g .after-count .lbl { font-size: 13px; color: var(--ink-2); line-height: 1.4; }
+
+/* Objection section */
+.v-g .objection { padding: 88px 0; background: var(--surface); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.v-g .obj-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: center; }
+.v-g .obj-head .tag { font-family: var(--mono); font-size: 11px; color: var(--accent); letter-spacing: 0.16em; text-transform: uppercase; font-weight: 600; margin-bottom: 14px; }
+.v-g .obj-head h2 { font-size: clamp(32px, 3.6vw, 48px); font-weight: 600; letter-spacing: -0.025em; line-height: 1.04; color: var(--ink); }
+.v-g .obj-head p.lede { font-size: 17px; color: var(--ink-2); line-height: 1.55; margin-top: 18px; }
+.v-g .obj-guards { display: flex; flex-direction: column; gap: 20px; margin-top: 32px; }
+.v-g .guard { display: grid; grid-template-columns: 28px 1fr; gap: 14px; align-items: start; }
+.v-g .guard .mark { width: 26px; height: 26px; border-radius: 50%; background: var(--accent-soft); color: var(--accent); display: grid; place-items: center; font-weight: 700; font-size: 13px; margin-top: 1px; }
+.v-g .guard h5 { font-size: 15px; font-weight: 600; letter-spacing: -0.01em; margin-bottom: 3px; color: var(--ink); }
+.v-g .guard p { font-size: 14px; color: var(--ink-2); line-height: 1.5; margin: 0; }
+
+/* Review mockup */
+.v-g .review-card { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; overflow: hidden; box-shadow: 0 20px 44px rgba(15,23,42,0.1); }
+.v-g .review-bar { background: #fff7e6; padding: 10px 14px; border-bottom: 1px solid #fde68a; display: flex; align-items: center; gap: 10px; font-family: var(--mono); font-size: 11px; color: #92400e; letter-spacing: 0.06em; }
+.v-g .review-bar i { width: 8px; height: 8px; border-radius: 50%; background: #f59e0b; }
+.v-g .review-bar .lbl { font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; }
+.v-g .review-body { padding: 22px; }
+.v-g .review-body p { font-size: 14px; color: var(--ink); line-height: 1.6; margin-bottom: 12px; }
+.v-g .review-body p:last-of-type { margin-bottom: 0; }
+.v-g .review-body p strong { color: var(--accent); font-weight: 600; margin-right: 6px; }
+.v-g .review-body .edit { background: #fef3c7; padding: 1px 4px; border-radius: 2px; border-bottom: 1.5px dashed #d97706; cursor: text; }
+.v-g .review-ann { margin-top: 16px; padding-left: 28px; position: relative; font-size: 12.5px; color: var(--accent); font-weight: 600; }
+.v-g .review-ann::before { content: '↑'; position: absolute; left: 8px; font-weight: 700; font-size: 14px; }
+.v-g .review-actions { display: flex; gap: 10px; padding: 14px 22px; border-top: 1px solid var(--line); background: var(--bg); }
+.v-g .review-actions .act { flex: 1; padding: 11px; text-align: center; font-size: 13.5px; font-weight: 600; border-radius: 7px; text-decoration: none; }
+.v-g .review-actions .act-discard { background: var(--surface); border: 1px solid var(--line); color: var(--ink-2); }
+.v-g .review-actions .act-save { background: var(--ok); color: white; }
+
+/* Real shift */
+.v-g .shift { padding: 88px 0; }
+.v-g .shift-head { display: flex; justify-content: space-between; align-items: end; margin-bottom: 32px; gap: 32px; flex-wrap: wrap; }
+.v-g .shift-head .tag { font-family: var(--mono); font-size: 11px; color: var(--accent); letter-spacing: 0.16em; text-transform: uppercase; font-weight: 600; margin-bottom: 10px; }
+.v-g .shift-head h2 { font-size: clamp(28px, 3.2vw, 40px); font-weight: 600; letter-spacing: -0.02em; line-height: 1.08; color: var(--ink); max-width: 20ch; }
+.v-g .shift-meta { display: flex; gap: 24px; font-size: 12px; color: var(--muted); font-family: var(--mono); letter-spacing: 0.04em; text-transform: uppercase; font-weight: 500; }
+.v-g .shift-meta b { color: var(--ink); font-weight: 600; display: block; font-family: 'Inter', sans-serif; font-size: 18px; letter-spacing: -0.01em; text-transform: none; margin-top: 4px; }
+
+.v-g .timeline { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 28px; }
+.v-g .tl-caption { font-family: var(--mono); font-size: 11px; color: var(--muted); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 16px; }
+.v-g .timeline-bar { position: relative; height: 48px; background: linear-gradient(90deg, #f0f9ff 0%, var(--accent-soft) 100%); border-radius: 8px; overflow: visible; margin: 20px 0; border: 1px solid var(--line); }
+.v-g .timeline-bar .tick { position: absolute; top: 8px; bottom: 8px; width: 2.5px; background: var(--accent); border-radius: 1px; opacity: 0.85; }
+.v-g .timeline-bar .tick::after { content: ''; position: absolute; top: -3px; left: 50%; transform: translateX(-50%); width: 7px; height: 7px; border-radius: 50%; background: var(--accent); }
+.v-g .timeline-hours { display: flex; justify-content: space-between; font-family: var(--mono); font-size: 11px; color: var(--muted); letter-spacing: 0.06em; padding: 0 2px; }
+.v-g .timeline-stats { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0; margin-top: 24px; padding-top: 22px; border-top: 1px solid var(--line); }
+.v-g .timeline-stats .cell { padding: 0 18px; border-right: 1px solid var(--line); }
+.v-g .timeline-stats .cell:last-child { border-right: 0; }
+.v-g .timeline-stats .n { font-size: 32px; font-weight: 500; letter-spacing: -0.02em; color: var(--ink); line-height: 1; }
+.v-g .timeline-stats .n em { color: var(--ok); font-style: normal; font-weight: 600; }
+.v-g .timeline-stats .lbl { font-size: 11px; color: var(--muted); margin-top: 6px; font-family: var(--mono); letter-spacing: 0.06em; text-transform: uppercase; font-weight: 500; }
+
+/* Sticky CTA */
+.v-g .sticky-cta { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%) translateY(140%); background: var(--ink); color: white; padding: 12px 14px 12px 20px; border-radius: 14px; display: flex; align-items: center; gap: 16px; font-size: 13.5px; box-shadow: 0 12px 40px rgba(15,23,42,0.25); z-index: 90; transition: transform 0.45s cubic-bezier(.2,.9,.3,1); font-weight: 500; }
+.v-g .sticky-cta.show { transform: translateX(-50%) translateY(0); }
+.v-g .sticky-cta b { font-weight: 700; color: #5eead4; }
+.v-g .sticky-cta .cta-btn { background: var(--accent); color: white; padding: 8px 16px; border-radius: 8px; font-weight: 600; text-decoration: none; font-size: 13px; transition: background .2s; }
+.v-g .sticky-cta .cta-btn:hover { background: #0e7490; }
+.v-g .sticky-cta .close { background: none; color: rgba(255,255,255,0.45); font-size: 20px; padding: 2px 6px; cursor: pointer; line-height: 1; border-radius: 4px; }
+.v-g .sticky-cta .close:hover { color: white; background: rgba(255,255,255,0.08); }
+
+/* Reveal on scroll */
+.v-g .reveal { opacity: 0; transform: translateY(26px); transition: opacity .7s cubic-bezier(.2,.7,.1,1), transform .7s cubic-bezier(.2,.7,.1,1); will-change: opacity, transform; }
+.v-g .reveal.in { opacity: 1; transform: translateY(0); }
+
+@media (prefers-reduced-motion: reduce) {
+  .v-g .reveal { opacity: 1; transform: none; transition: none; }
+  .v-g .sticky-cta { transition: none; }
+  .v-g .hud-mini, .v-g .live-wave i, .v-g .live-rec-led { animation: none !important; }
+}
+
+@media (max-width: 900px) {
+  .v-g .hero-compare-inner, .v-g .obj-inner { grid-template-columns: 1fr; }
+  .v-g .before { border-right: 0; border-bottom: 1px solid var(--line); }
+}
+
+</style>
+</head>
+<body>
+
+<!-- SKETCH TOOLBAR ─────────────────────────────────────────────── -->
+<div id="sk-bar">
+  <span class="sk-title">SKETCH 001 · Landing Redesign</span>
+  <button class="sk-tab active" data-v="a">A · Clinical Swiss</button>
+  <button class="sk-tab" data-v="b">B · Dossiê Médico</button>
+  <button class="sk-tab" data-v="c">C · Plantão Terminal</button>
+  <span style="width:1px;height:22px;background:#2a2d30;margin:0 4px"></span>
+  <button class="sk-tab" data-v="d">D · Kinetic Brutal ⚡</button>
+  <button class="sk-tab" data-v="e">E · Aurora Calm ✦</button>
+  <button class="sk-tab" data-v="f">F · Live Demo ▶</button>
+  <span style="width:1px;height:22px;background:#2a2d30;margin:0 4px"></span>
+  <button class="sk-tab" data-v="fp" style="background:#0891b2;color:white;border-color:#22d3ee">F+ · Clinical Trust ✓</button>
+  <button class="sk-tab" data-v="g" style="background:#14532d;color:white;border-color:#22c55e">G · F + Persuasion ★</button>
+  <span class="sk-right"><b>→</b> G = F's aesthetic + before/after hero + objection + real-shift + sticky CTA</span>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     VARIANT A — CLINICAL SWISS
+     ═══════════════════════════════════════════════════════════════════════ -->
+<div class="variant v-a active" id="v-a">
+
+  <header class="nav">
+    <div class="container nav-inner">
+      <a class="logo" href="#"><span class="logo-mark">TD</span> Toca Ficha Dr.</a>
+      <nav class="nav-menu">
+        <a href="#">Como funciona</a>
+        <a href="#">Para pediatras</a>
+        <a href="#">Preços</a>
+        <a href="#">Segurança</a>
+      </nav>
+      <div class="nav-right">
+        <a href="#" class="btn btn-ghost">Entrar</a>
+        <a href="#" class="btn btn-primary">Instalar grátis →</a>
+      </div>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="container hero-grid">
+      <div>
+        <div class="eyebrow">Para pediatras no G-Hosp</div>
+        <h1>Da consulta à alta — <em>em quatro cliques.</em></h1>
+        <p class="hero-sub">Ditado por voz, SOAP gerado, CID sugerido e receita impressa sem sair do G-Hosp. De 35 ações por paciente para 4. Feito por um pediatra que trabalha plantão noturno.</p>
+        <div class="hero-ctas">
+          <a href="#" class="btn btn-primary">Instalar no Chrome</a>
+          <a href="#" class="btn btn-line">Ver demo de 45s</a>
+        </div>
+        <div class="hero-proof">
+          <div><b>R$ 0</b>para começar</div>
+          <div><b>CFM 2.454/2026</b>conforme</div>
+          <div><b>100% LGPD</b>dados ficam locais</div>
+        </div>
+      </div>
+      <div>
+        <div class="hud">
+          <div class="hud-bar">
+            <b>TOCA FICHA DR. · v2.4.1</b>
+            <div class="dots"><span></span><span></span><span></span></div>
+          </div>
+          <div class="hud-row">
+            <div class="hud-rec">
+              <div class="hud-rec-led"></div>
+              <span class="hud-rec-tag">GRAVANDO</span>
+              <span class="hud-rec-t">00:02:14</span>
+            </div>
+            <div class="wave">
+              <i style="height:30%"></i><i style="height:65%"></i><i style="height:45%"></i><i style="height:85%"></i><i style="height:35%"></i><i style="height:75%"></i><i style="height:55%"></i><i style="height:28%"></i><i style="height:70%"></i><i style="height:42%"></i><i style="height:60%"></i><i style="height:32%"></i><i style="height:48%"></i>
+            </div>
+          </div>
+          <div class="hud-row">
+            <div class="hud-lbl">SOAP · Objetivo</div>
+            <p class="hud-soap-t"><b>Lactente de 14 meses</b>, febre há 48h (38.5°C), tosse seca, coriza hialina. Sem sinais de desconforto respiratório. AR: MVP + RA, sem ruídos adventícios.</p>
+          </div>
+          <div class="hud-row">
+            <div class="hud-lbl">CID-10 sugerido</div>
+            <div class="hud-cid">
+              <span class="code">J06.9</span>
+              <span class="nm">Infecção aguda das VAS, não especificada</span>
+              <span class="ok">✓</span>
+            </div>
+          </div>
+          <div class="hud-row">
+            <a href="#" class="hud-fin-btn">Finalizar paciente</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="stats">
+    <div class="container">
+      <div class="stats-grid">
+        <div class="stat">
+          <div class="stat-kpi">35<em>→4</em></div>
+          <div class="stat-lbl">Ações por paciente</div>
+          <div class="stat-note">Medido no fluxo completo do G-Hosp.</div>
+        </div>
+        <div class="stat">
+          <div class="stat-kpi">40<span class="small">min</span></div>
+          <div class="stat-lbl">Economizados por plantão</div>
+          <div class="stat-note">Com 30 atendimentos em 12h.</div>
+        </div>
+        <div class="stat">
+          <div class="stat-kpi">100<span class="small">%</span></div>
+          <div class="stat-lbl">Dados do paciente</div>
+          <div class="stat-note">Permanecem no seu navegador.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="how">
+    <div class="container">
+      <div class="how-head">
+        <div>
+          <div class="eyebrow">Quatro etapas</div>
+          <h2>Fala. Revisa. Finaliza. Próximo.</h2>
+        </div>
+        <p>O HUD flutua na página do G-Hosp sem alterar o prontuário. Você controla cada passo: a IA gera, você aprova. Nada é salvo sem seu clique.</p>
+      </div>
+      <div class="steps">
+        <div class="step">
+          <div class="step-n">01 · FALA</div>
+          <div class="step-t">Ditado por voz</div>
+          <div class="step-d">Aperte F2 e descreva o atendimento. Whisper transcreve em tempo real.</div>
+        </div>
+        <div class="step">
+          <div class="step-n">02 · REVISA</div>
+          <div class="step-t">SOAP + CID gerado</div>
+          <div class="step-d">GPT-4o-mini formata em SOAP pediátrico e sugere o CID-10 mais provável.</div>
+        </div>
+        <div class="step">
+          <div class="step-n">03 · PRESCREVE</div>
+          <div class="step-t">Receita com um clique</div>
+          <div class="step-d">Modelos editáveis para antibióticos, antitérmicos, broncodilatador. Imprime direto.</div>
+        </div>
+        <div class="step">
+          <div class="step-n">04 · FINALIZA</div>
+          <div class="step-t">Alta + próxima</div>
+          <div class="step-d">Assina a alta, volta para a lista. Sem cliques extras.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="pricing">
+    <div class="container">
+      <div class="pricing-head">
+        <div class="eyebrow">Preços</div>
+        <h2>Feito para plantão. Precificado para plantonista.</h2>
+        <p>Experimente no próximo plantão. Se economizar menos de 20 minutos, pedimos que cancele.</p>
+      </div>
+      <div class="plans">
+        <div class="plan">
+          <div class="plan-n">Free</div>
+          <div class="plan-p"><span class="cur">R$</span><span class="num">0</span><span class="per">/ sempre</span></div>
+          <ul>
+            <li>5 atendimentos por dia</li>
+            <li>Use sua própria chave OpenAI</li>
+            <li>Flask local (roda no seu Mac)</li>
+            <li>Todos os recursos, sem trava</li>
+          </ul>
+          <a href="#" class="btn btn-line" style="width:100%;justify-content:center">Começar grátis</a>
+        </div>
+        <div class="plan featured">
+          <span class="plan-tag">Recomendado</span>
+          <div class="plan-n">Pro</div>
+          <div class="plan-p"><span class="cur">R$</span><span class="num">49</span><span class="per">/ mês</span></div>
+          <ul>
+            <li>Atendimentos ilimitados</li>
+            <li>Backend na nuvem (sem setup)</li>
+            <li>Atualizações de seletores automáticas</li>
+            <li>14 dias grátis — sem cartão</li>
+            <li>Suporte WhatsApp prioritário</li>
+          </ul>
+          <a href="#" class="btn btn-primary" style="width:100%;justify-content:center">Começar teste grátis</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="foot">
+    <div class="container foot-inner">
+      <span>© 2026 Toca Ficha Dr. · CNPJ 00.000.000/0001-00</span>
+      <span>Porto Alegre, RS · Brasil</span>
+      <span><a href="#">Privacidade</a> · <a href="#">Termos</a> · <a href="#">Status</a></span>
+    </div>
+  </footer>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     VARIANT B — DOSSIÊ MÉDICO
+     ═══════════════════════════════════════════════════════════════════════ -->
+<div class="variant v-b" id="v-b">
+
+  <header class="masthead">
+    <div class="container masthead-inner">
+      <div class="masthead-meta">Vol. II · Nº 04 · Porto Alegre</div>
+      <div class="masthead-title">Toca <i>Ficha</i> Dr.</div>
+      <nav class="masthead-nav">
+        <a href="#">Método</a>
+        <a href="#">Assinatura</a>
+        <a href="#">Instalar</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="container">
+      <div class="kicker">Edição Especial — Redução de carga burocrática</div>
+      <h1>A consulta <i>re·documentada</i> em quatro atos.</h1>
+      <p class="hero-lede">
+        Uma extensão discreta que ouve, estrutura e arquiva o atendimento pediátrico no G-Hosp — sem comprometer o tempo que pertence ao paciente. <b>De trinta e cinco cliques, restam quatro.</b>
+      </p>
+      <div class="hero-ctas">
+        <a href="#" class="btn btn-primary">Instalar no Chrome</a>
+        <a href="#" class="btn btn-line">Assistir apresentação — 45 seg</a>
+      </div>
+      <p class="byline">Escrito, testado e mantido por <b>Dr. Paulo R.</b> — pediatra · Bento Gonçalves, RS</p>
+    </div>
+  </section>
+
+  <section class="feature-row">
+    <div class="container" style="display:contents;">
+      <div>
+        <blockquote class="pullquote">
+          Economiza quarenta minutos por plantão. Já não reconheço meu turno sem ela — e o prontuário, confesso, ficou mais legível.
+        </blockquote>
+        <div class="pullquote-attr">
+          <b>Relato de plantão — 15 de abril, 17h43</b>
+          Hospital prbento · 23 pacientes · 5h23 de turno
+        </div>
+      </div>
+      <div class="feature-rule"></div>
+      <div>
+        <div class="doc-panel">
+          <h4>Paciente</h4>
+          <div class="line"><b>Nome</b><span>Lactente, 14 meses</span></div>
+          <div class="line"><b>Queixa</b><span>Febre há 48h · tosse</span></div>
+          <h4>Subjetivo · Objetivo</h4>
+          <p style="font-size:14px;line-height:1.55;color:var(--ink-2);margin:4px 0 8px">
+            Lactente em bom estado geral, febre máx. 38.5°C, tosse seca, coriza hialina. Sem sinais de desconforto. AR: MVP + RA, sem ruídos adventícios.
+          </p>
+          <h4>Avaliação</h4>
+          <div style="margin:4px 0 8px"><span class="cid-chip">J06.9 · IVAS não especificada</span></div>
+          <h4>Conduta</h4>
+          <div class="line"><b>Rx</b><span>Dipirona 15mg/kg/dose 6/6h se febre</span></div>
+          <div class="line"><b>Alta</b><span>Sem encaminhamento · retorno se piora</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="figures">
+    <div class="container">
+      <div class="figures-head">
+        <div class="label">Em números</div>
+        <h3>O que trinta plantões mostraram.</h3>
+      </div>
+      <div class="figures-grid">
+        <div class="fig">
+          <div class="fig-n">35<i>→4</i></div>
+          <div class="fig-lbl">Cliques por atendimento</div>
+          <div class="fig-note">medidos no fluxo real do G-Hosp</div>
+        </div>
+        <div class="fig">
+          <div class="fig-n">40<span class="small">min</span></div>
+          <div class="fig-lbl">Tempo devolvido ao plantão</div>
+          <div class="fig-note">com 30 pacientes em 12h</div>
+        </div>
+        <div class="fig">
+          <div class="fig-n">100<span class="small">%</span></div>
+          <div class="fig-lbl">Dados permanecem locais</div>
+          <div class="fig-note">conformidade LGPD · CFM 2.454</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapters">
+    <div class="container">
+      <div class="chapters-head">
+        <div class="label">Método — Quatro atos</div>
+        <h3>Fala. Revisa. Prescreve. Finaliza.</h3>
+      </div>
+      <div class="chapters-list">
+        <div class="chapter">
+          <div class="chapter-n">I.</div>
+          <div>
+            <div class="chapter-t">Da voz ao texto</div>
+            <div class="chapter-d">Aperta-se F2 e descreve-se o atendimento naturalmente. Whisper transcreve em tempo real, com vocabulário pediátrico aprimorado.</div>
+          </div>
+          <div class="chapter-meta">~6 seg</div>
+        </div>
+        <div class="chapter">
+          <div class="chapter-n">II.</div>
+          <div>
+            <div class="chapter-t">Da fala ao SOAP</div>
+            <div class="chapter-d">GPT-4o-mini estrutura em formato SOAP conforme padrão pediátrico brasileiro. CID-10 é sugerido com base na queixa principal.</div>
+          </div>
+          <div class="chapter-meta">~2 seg</div>
+        </div>
+        <div class="chapter">
+          <div class="chapter-n">III.</div>
+          <div>
+            <div class="chapter-t">Da avaliação à prescrição</div>
+            <div class="chapter-d">Modelos editáveis para as prescrições mais comuns — amoxicilina, ibuprofeno, dipirona, salbutamol — preenchem o formulário e imprimem.</div>
+          </div>
+          <div class="chapter-meta">1 clique</div>
+        </div>
+        <div class="chapter">
+          <div class="chapter-n">IV.</div>
+          <div>
+            <div class="chapter-t">Do atendimento à alta</div>
+            <div class="chapter-d">Finalizar Paciente fecha a consulta, registra a alta e retorna à lista. Tudo conferido e assinado pelo médico.</div>
+          </div>
+          <div class="chapter-meta">1 clique</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="subscribe">
+    <div class="container">
+      <div class="label">Assinatura</div>
+      <h3>Para plantonistas que contam <i>cada minuto.</i></h3>
+      <div class="sub-grid">
+        <div class="sub-card">
+          <div class="sub-n">Edição · Free</div>
+          <div class="sub-p">R$ 0<span class="cur">/</span><span class="per">sempre</span></div>
+          <ul>
+            <li>Cinco atendimentos por dia</li>
+            <li>Chave OpenAI própria</li>
+            <li>Backend local (Flask)</li>
+            <li>Todos os recursos disponíveis</li>
+          </ul>
+          <a href="#" class="sub-btn">Instalar grátis</a>
+        </div>
+        <div class="sub-card featured">
+          <div class="sub-n">Edição · Pro</div>
+          <div class="sub-p">R$ 49<span class="cur">/</span><span class="per">mês</span></div>
+          <ul>
+            <li>Atendimentos sem limite</li>
+            <li>Nuvem dedicada — sem configuração</li>
+            <li>Atualizações automáticas de seletores</li>
+            <li>Suporte pelo WhatsApp</li>
+            <li>14 dias de teste, sem cartão</li>
+          </ul>
+          <a href="#" class="sub-btn">Começar teste</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="colophon">
+    <div class="container colophon-inner">
+      <span>© MMXXVI · <b>Toca Ficha Dr.</b></span>
+      <span>Porto Alegre · Rio Grande do Sul</span>
+      <span><a href="#">Privacidade</a> · <a href="#">Termos</a> · <a href="#">Expediente</a></span>
+    </div>
+  </footer>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     VARIANT C — PLANTÃO TERMINAL
+     ═══════════════════════════════════════════════════════════════════════ -->
+<div class="variant v-c" id="v-c">
+
+  <div class="bar">
+    <span class="logo"><span class="logo-sq"></span> TOCA FICHA DR.</span>
+    <span class="status">SISTEMA ONLINE</span>
+    <span class="spacer"></span>
+    <nav>
+      <a href="#">FLUXO</a>
+      <a href="#">PREÇO</a>
+      <a href="#">DOCS</a>
+      <a href="#">CONTATO</a>
+    </nav>
+    <a href="#" class="cta">Instalar →</a>
+  </div>
+
+  <section class="hero">
+    <div class="container">
+      <div class="hero-meta">
+        <span>PT-BR · <b>G-HOSP</b></span>
+        <span></span>
+        <span>PLANTÃO <b>#2.847</b></span>
+        <span>v2.4.1 · <b>EM PRODUÇÃO</b></span>
+      </div>
+      <h1>DE<br><span class="arrow">↳</span> 35 AÇÕES.<br>PRA <span class="acc">4.</span></h1>
+      <div class="hero-grid">
+        <div>
+          <p class="hero-lede">A extensão Chrome que ouve a consulta, gera SOAP, sugere CID, imprime receita e fecha a alta. <b>40 minutos de volta</b> a cada plantão de 30 pacientes.</p>
+          <div class="hero-ctas">
+            <a href="#" class="btn btn-primary">INSTALAR GRÁTIS →</a>
+            <a href="#" class="btn btn-line">VER DEMO · 45s</a>
+          </div>
+        </div>
+        <div style="font-family:var(--mono);font-size:12px;color:var(--muted);letter-spacing:0.08em;line-height:1.7;text-transform:uppercase;border-left:2px solid var(--ink);padding-left:20px;">
+          <div>STATUS: <b style="color:var(--accent-ink)">MVP LIVE</b></div>
+          <div>BACKEND: <b style="color:var(--ink)">CLOUDFLARE · POA01</b></div>
+          <div>TRANSCRIÇÃO: <b style="color:var(--ink)">WHISPER · 5-7s</b></div>
+          <div>SOAP: <b style="color:var(--ink)">GPT-4o-mini · 1.6s</b></div>
+          <div>HOSPITAIS: <b style="color:var(--ink)">1 ATIVO</b></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="ticker">
+      <div class="ticker-row">
+        <span><b>35→4</b> cliques</span><span>·</span>
+        <span><b>40 min</b> economizados</span><span>·</span>
+        <span><em>R$ 49/mês</em></span><span>·</span>
+        <span>14 dias grátis</span><span>·</span>
+        <span><b>LGPD</b> compliant</span><span>·</span>
+        <span>CFM 2.454/26</span><span>·</span>
+        <span><b>100%</b> local</span><span>·</span>
+        <span>164 CIDs pediátricos</span><span>·</span>
+        <span><em>G-HOSP ready</em></span><span>·</span>
+        <span><b>35→4</b> cliques</span><span>·</span>
+        <span><b>40 min</b> economizados</span><span>·</span>
+        <span><em>R$ 49/mês</em></span><span>·</span>
+        <span>14 dias grátis</span><span>·</span>
+        <span><b>LGPD</b> compliant</span><span>·</span>
+        <span>CFM 2.454/26</span><span>·</span>
+        <span><b>100%</b> local</span><span>·</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="slabs">
+    <div class="container">
+      <div class="slabs-grid">
+        <div class="slab">
+          <div class="slab-tag">// TEMPO</div>
+          <div class="slab-n">40<span class="small">min</span></div>
+          <div class="slab-d">devolvidos a cada plantão de 12 horas com 30 atendimentos.</div>
+        </div>
+        <div class="slab alt">
+          <div class="slab-tag">// EFICIÊNCIA</div>
+          <div class="slab-n">35<span class="small">→4</span></div>
+          <div class="slab-d">ações no G-Hosp para abrir, documentar, prescrever e dar alta.</div>
+        </div>
+        <div class="slab open">
+          <div class="slab-tag">// SEGURANÇA</div>
+          <div class="slab-n">0<span class="small"></span></div>
+          <div class="slab-d">dados do paciente deixam o navegador. LGPD total, CFM 2.454/26.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="workflow">
+    <div class="container">
+      <div class="wf-head">
+        <h2>Fluxo<br>por paciente</h2>
+        <div class="meta">Medido · 156KB audio<br>Fluxo end-to-end · 8s</div>
+      </div>
+      <div class="wf-grid">
+        <div class="wf-steps">
+          <div class="wf-step">
+            <div class="wf-step-n">[01]</div>
+            <div class="wf-step-body">
+              <h4>Ditado por voz</h4>
+              <p>F2 grava. Whisper transcreve com vocabulário pediátrico.</p>
+            </div>
+            <div class="wf-step-t">Tempo<br><b>~6s</b></div>
+          </div>
+          <div class="wf-step">
+            <div class="wf-step-n">[02]</div>
+            <div class="wf-step-body">
+              <h4>SOAP + CID</h4>
+              <p>GPT-4o-mini gera SOAP pediátrico e sugere CID-10 em paralelo.</p>
+            </div>
+            <div class="wf-step-t">Tempo<br><b>~2s</b></div>
+          </div>
+          <div class="wf-step">
+            <div class="wf-step-n">[03]</div>
+            <div class="wf-step-body">
+              <h4>Receita impressa</h4>
+              <p>Modelos editáveis de antibióticos, antitérmicos. Um clique imprime.</p>
+            </div>
+            <div class="wf-step-t">Tempo<br><b>2s</b></div>
+          </div>
+          <div class="wf-step">
+            <div class="wf-step-n">[04]</div>
+            <div class="wf-step-body">
+              <h4>Finalizar paciente</h4>
+              <p>Assina alta, fecha consulta, retorna à lista. Próximo.</p>
+            </div>
+            <div class="wf-step-t">Tempo<br><b>1s</b></div>
+          </div>
+        </div>
+
+        <div class="terminal">
+          <div class="terminal-bar">
+            <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+            <span class="t">~/plantão/paciente_847.log</span>
+          </div>
+          <div class="terminal-body">
+            <div class="ln"><span class="n">01</span><span><span class="tag">▸ REC</span> audio 156KB captured</span><span class="ts">00:00</span></div>
+            <div class="ln"><span class="n">02</span><span><span class="tag">▸ STT</span> whisper-1 processing…</span><span class="ts">+0.8s</span></div>
+            <div class="ln"><span class="n">03</span><span><span class="ok">✓ STT</span> "Lactente 14m, febre 48h, tosse seca…"</span><span class="ts">+6.1s</span></div>
+            <div class="ln emph"><span class="n">04</span><span><span class="ok">✓ SOAP</span> gerado · pediátrico · 4 sentenças</span><span class="ts">+7.7s</span></div>
+            <div class="ln emph"><span class="n">05</span><span><span class="ok">✓ CID</span> <span class="cid">J06.9</span> IVAS não especificada</span><span class="ts">+7.7s</span></div>
+            <div class="ln"><span class="n">06</span><span><span class="tag">▸ RX</span> modelo: dipirona_febre · imprimir</span><span class="ts">+9.2s</span></div>
+            <div class="ln"><span class="n">07</span><span><span class="ok">✓ ALTA</span> sem_encaminhamento · assinada</span><span class="ts">+10.5s</span></div>
+            <div class="ln"><span class="n">08</span><span><span class="ok">✓ DONE</span> → próximo paciente</span><span class="ts">+11.0s</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="pricing">
+    <div class="container">
+      <div>
+        <h3>Preço de <span class="acc">plantonista.</span></h3>
+        <p class="pricing-intro">Se no próximo plantão a extensão não te devolver 20 minutos, cancela. Sem pergunta.</p>
+      </div>
+      <div class="plans">
+        <div class="plan">
+          <div class="plan-n">// FREE</div>
+          <div class="plan-p"><span class="cur">R$</span><span class="num">0</span></div>
+          <div class="hint">para sempre</div>
+          <ul>
+            <li>5 atendimentos / dia</li>
+            <li>Sua chave OpenAI</li>
+            <li>Backend local (Flask)</li>
+            <li>Todos os recursos</li>
+          </ul>
+          <a href="#" class="btn btn-line">INSTALAR GRÁTIS</a>
+        </div>
+        <div class="plan">
+          <div class="plan-n">// PRO</div>
+          <div class="plan-p"><span class="cur">R$</span><span class="num">49</span><span class="per">/MÊS</span></div>
+          <div class="hint">14 dias grátis · sem cartão</div>
+          <ul>
+            <li>Atendimentos ilimitados</li>
+            <li>Nuvem dedicada</li>
+            <li>Updates automáticos</li>
+            <li>Suporte WhatsApp</li>
+          </ul>
+          <a href="#" class="btn btn-primary">COMEÇAR TESTE →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="foot">
+    <div class="container">
+      <div class="foot-top">
+        <div>
+          <h5>TOCA<br>FICHA <span class="acc">DR.</span></h5>
+        </div>
+        <div class="foot-col">
+          <h6>// PRODUTO</h6>
+          <a href="#">Como funciona</a>
+          <a href="#">Preços</a>
+          <a href="#">Changelog</a>
+          <a href="#">Roadmap</a>
+        </div>
+        <div class="foot-col">
+          <h6>// MÉDICO</h6>
+          <a href="#">G-Hosp</a>
+          <a href="#">Pediatria</a>
+          <a href="#">CFM 2.454</a>
+          <a href="#">LGPD</a>
+        </div>
+        <div class="foot-col">
+          <h6>// CONTATO</h6>
+          <a href="#">WhatsApp</a>
+          <a href="#">Email</a>
+          <a href="#">Status</a>
+          <a href="#">GitHub</a>
+        </div>
+      </div>
+      <div class="foot-bot">
+        <span>© 2026 · Porto Alegre/RS</span>
+        <span>v2.4.1 · Cloudflare POA01</span>
+      </div>
+    </div>
+  </footer>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     VARIANT D — KINETIC BRUTAL
+     ═══════════════════════════════════════════════════════════════════════ -->
+<div class="variant v-d" id="v-d">
+
+  <header class="nav">
+    <span class="logo"><span class="mark">TD</span> TOCA<b>.</b>FICHA<b>.</b>DR</span>
+    <nav>
+      <a href="#">FLUXO</a>
+      <a href="#">PREÇO</a>
+      <a href="#">DOCS</a>
+    </nav>
+    <span class="spacer"></span>
+    <span class="status">SISTEMA EM PRODUÇÃO</span>
+    <a href="#" class="btn btn-primary">INSTALAR →</a>
+  </header>
+
+  <section class="hero">
+    <div class="container">
+      <div class="hero-eyebrow">EXTENSÃO G-HOSP · PEDIATRIA · V2.4.1</div>
+      <h1>
+        <span class="line"><span class="inner">DE 35 CLIQUES</span></span>
+        <span class="line"><span class="inner">PRA <span class="flipbox"><b>4.</b><b>3.</b><b>2.</b><b>1.</b></span></span></span>
+        <span class="line"><span class="inner">POR <span class="acc">PACIENTE.</span></span></span>
+      </h1>
+      <div class="hero-grid">
+        <div>
+          <p class="hero-lede">
+            A extensão Chrome que ouve a consulta, gera SOAP, sugere CID, imprime receita e fecha a alta. <mark>40 minutos</mark> de volta a cada plantão.
+          </p>
+          <div class="hero-ctas">
+            <a href="#" class="btn btn-primary">INSTALAR GRÁTIS →</a>
+            <a href="#" class="btn btn-line">VER DEMO · 45s</a>
+          </div>
+        </div>
+        <div class="hero-data">
+          <div>STATUS › <b>MVP LIVE</b></div>
+          <div>BACKEND › <em>CLOUDFLARE POA01</em></div>
+          <div>WHISPER › <em>5–7s</em></div>
+          <div>SOAP › <em>1.6s</em></div>
+          <div>FLUXO › <em>8s END-TO-END</em></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="bigticker">
+    <div class="bigticker-row">
+      <span>35 <span class="acc">→</span> 4 <span class="dot"></span> 40 MIN DE VOLTA <span class="dot"></span> <span class="acc">R$ 49/MÊS</span> <span class="dot"></span> LGPD <span class="dot"></span> CFM 2.454/26 <span class="dot"></span> 164 CIDs <span class="dot"></span> <span class="acc">G-HOSP</span> <span class="dot"></span></span>
+      <span>35 <span class="acc">→</span> 4 <span class="dot"></span> 40 MIN DE VOLTA <span class="dot"></span> <span class="acc">R$ 49/MÊS</span> <span class="dot"></span> LGPD <span class="dot"></span> CFM 2.454/26 <span class="dot"></span> 164 CIDs <span class="dot"></span> <span class="acc">G-HOSP</span> <span class="dot"></span></span>
+    </div>
+  </div>
+
+  <section class="morph">
+    <div class="morph-col">
+      <div class="tag">// AÇÕES</div>
+      <div class="n">35<span class="arrow">→</span><span class="small">4</span></div>
+      <div class="d">Cliques para abrir, documentar, prescrever, imprimir e dar alta. Medidos no fluxo real do G-Hosp.</div>
+    </div>
+    <div class="morph-col">
+      <div class="tag">// TEMPO</div>
+      <div class="n">40<span class="small">min</span></div>
+      <div class="d">Devolvidos a cada plantão de 12h com 30 atendimentos. Medido em turno real — 15 de abril, 5h23.</div>
+    </div>
+    <div class="morph-col">
+      <div class="tag">// SEGURANÇA</div>
+      <div class="n">0</div>
+      <div class="d">Dados do paciente deixam o navegador. LGPD total. CFM 2.454/26. Você mantém o controle.</div>
+    </div>
+  </section>
+
+  <section class="flow">
+    <div class="container">
+      <div class="flow-head">
+        <h2>FLUXO<br><span class="acc">POR PACIENTE</span></h2>
+        <div class="flow-meta">F2 GRAVA<br>FIM 7S DEPOIS<br>PRÓXIMO PACIENTE</div>
+      </div>
+      <div class="flow-grid">
+        <div class="flow-item">
+          <div class="flow-item-n">[01] · 6S</div>
+          <h4>FALA</h4>
+          <p>F2 grava. Whisper transcreve com vocabulário pediátrico.</p>
+        </div>
+        <div class="flow-item">
+          <div class="flow-item-n">[02] · 2S</div>
+          <h4>SOAP + CID</h4>
+          <p>GPT-4o-mini estrutura SOAP e sugere CID-10 em paralelo.</p>
+        </div>
+        <div class="flow-item">
+          <div class="flow-item-n">[03] · 1 CLICK</div>
+          <h4>RECEITA</h4>
+          <p>Modelos editáveis. Um clique imprime a receita pronta.</p>
+        </div>
+        <div class="flow-item">
+          <div class="flow-item-n">[04] · 1 CLICK</div>
+          <h4>ALTA</h4>
+          <p>Fecha a consulta, assina alta, volta à lista. Próximo.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="pricing">
+    <div class="container">
+      <h3>PREÇO DE<br><span class="acc">PLANTONISTA.</span></h3>
+      <p class="intro">Se no próximo plantão a extensão não te devolver 20 minutos, cancela. Sem pergunta.</p>
+      <div class="plans-d">
+        <div class="plan-d">
+          <div class="n">// FREE</div>
+          <div class="p"><span class="cur">R$</span><span class="num">0</span></div>
+          <div class="hint">para sempre · sem cartão</div>
+          <ul>
+            <li>5 atendimentos / dia</li>
+            <li>Sua chave OpenAI</li>
+            <li>Backend local (Flask)</li>
+            <li>Todos os recursos</li>
+          </ul>
+          <a href="#" class="btn btn-line">INSTALAR GRÁTIS</a>
+        </div>
+        <div class="plan-d hot">
+          <div class="n">// PRO</div>
+          <div class="p"><span class="cur">R$</span><span class="num">49</span><span class="per">/MÊS</span></div>
+          <div class="hint">14 DIAS GRÁTIS · SEM CARTÃO</div>
+          <ul>
+            <li>Atendimentos ilimitados</li>
+            <li>Nuvem dedicada</li>
+            <li>Updates automáticos</li>
+            <li>Suporte WhatsApp</li>
+          </ul>
+          <a href="#" class="btn btn-primary">COMEÇAR TESTE →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="foot">
+    <div class="container">
+      <h5>TOCA<br>FICHA <span class="acc">DR.</span></h5>
+      <div class="row">
+        <span>© 2026 · PORTO ALEGRE/RS</span>
+        <span>V2.4.1 · CLOUDFLARE POA01</span>
+        <span>PRIVACIDADE · TERMOS · STATUS</span>
+      </div>
+    </div>
+  </footer>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     VARIANT E — AURORA CALM
+     ═══════════════════════════════════════════════════════════════════════ -->
+<div class="variant v-e" id="v-e">
+
+  <div class="aurora" aria-hidden="true">
+    <div class="blob b1"></div>
+    <div class="blob b2"></div>
+    <div class="blob b3"></div>
+    <div class="blob b4"></div>
+  </div>
+
+  <header class="nav">
+    <a class="logo" href="#"><span class="logo-gem"></span> Toca Ficha Dr.</a>
+    <nav class="nav-menu">
+      <a href="#">Como funciona</a>
+      <a href="#">Preços</a>
+      <a href="#">Segurança</a>
+    </nav>
+    <div style="display:flex;gap:10px">
+      <a href="#" class="btn btn-glass">Entrar</a>
+      <a href="#" class="btn btn-primary">Instalar grátis</a>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="container">
+      <div class="hero-badge">
+        <span class="dot"></span>
+        <span>Feito por um pediatra · para pediatras</span>
+      </div>
+      <h1>Da consulta à alta, em <span class="grad">quatro cliques.</span></h1>
+      <p class="hero-sub">Ditado por voz, SOAP gerado, CID sugerido e receita impressa — sem sair do G-Hosp. De 35 ações por paciente para 4.</p>
+      <div class="hero-ctas">
+        <a href="#" class="btn btn-primary">Instalar no Chrome</a>
+        <a href="#" class="btn btn-glass">Ver demo de 45s</a>
+      </div>
+      <div class="hero-pills">
+        <div class="pill"><b>R$ 0</b> para começar</div>
+        <div class="pill"><b>100%</b> LGPD</div>
+        <div class="pill"><b>14 dias</b> Pro grátis</div>
+        <div class="pill"><b>Sem</b> cartão</div>
+      </div>
+
+      <div class="hero-visual">
+        <div class="glass-card">
+          <div class="gc-row">
+            <div class="lbl">Paciente</div>
+            <div class="val"><b>Lactente · 14 meses</b> · febre há 48h · tosse seca</div>
+          </div>
+          <div class="gc-row">
+            <div class="lbl">Gravação</div>
+            <div class="val recline"><b>GRAVANDO</b> · 00:02:14</div>
+          </div>
+          <div class="gc-row">
+            <div class="lbl">SOAP · Objetivo</div>
+            <div class="val">Lactente em bom estado geral, febre máx. 38.5°C, tosse seca, coriza hialina. Sem desconforto. AR: MVP + RA, sem ruídos adventícios.</div>
+          </div>
+          <div class="gc-row">
+            <div class="lbl">CID-10</div>
+            <div class="val"><span class="cid-chip">J06.9 — IVAS não especificada</span></div>
+          </div>
+          <div class="gc-row">
+            <div class="lbl">Conduta</div>
+            <div class="val">Dipirona 15mg/kg 6/6h febre · Alta sem encaminhamento</div>
+          </div>
+          <a href="#" class="gc-cta">Finalizar paciente →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="stats">
+    <div class="container stats-grid">
+      <div class="stat-card">
+        <div class="n">35<span class="small">→4</span></div>
+        <div class="lbl">Ações por paciente</div>
+        <div class="note">Medido no fluxo completo do G-Hosp.</div>
+      </div>
+      <div class="stat-card">
+        <div class="n">40<span class="small">min</span></div>
+        <div class="lbl">Devolvidos ao plantão</div>
+        <div class="note">Com 30 atendimentos em 12h.</div>
+      </div>
+      <div class="stat-card">
+        <div class="n">100<span class="small">%</span></div>
+        <div class="lbl">Dados locais</div>
+        <div class="note">LGPD · CFM 2.454/2026.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="flow">
+    <div class="container">
+      <h2>Fala. <b>Revisa.</b> Prescreve. Finaliza.</h2>
+      <p class="intro">O HUD flutua na página do G-Hosp sem alterar o prontuário. Você controla cada passo — a IA gera, você aprova.</p>
+      <div class="flow-grid">
+        <div class="flow-step">
+          <div class="n">01</div>
+          <h4>Ditado por voz</h4>
+          <p>Aperte F2 e descreva o atendimento. Whisper transcreve em tempo real.</p>
+        </div>
+        <div class="flow-step">
+          <div class="n">02</div>
+          <h4>SOAP + CID</h4>
+          <p>GPT-4o-mini formata em SOAP pediátrico e sugere o CID-10 mais provável.</p>
+        </div>
+        <div class="flow-step">
+          <div class="n">03</div>
+          <h4>Receita</h4>
+          <p>Modelos editáveis para antibióticos, antitérmicos e broncodilatador.</p>
+        </div>
+        <div class="flow-step">
+          <div class="n">04</div>
+          <h4>Finalizar</h4>
+          <p>Assina a alta, fecha a consulta, volta à lista. Sem cliques extras.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="pricing">
+    <div class="container">
+      <div class="head">
+        <h3>Preço feito para <b>plantão.</b></h3>
+        <p>Experimente no próximo plantão. Se economizar menos de 20 minutos, cancele.</p>
+      </div>
+      <div class="plans-e">
+        <div class="plan-e">
+          <div class="pn">Free</div>
+          <div class="p"><span class="cur">R$</span><span class="num">0</span><span class="per">/ sempre</span></div>
+          <div class="hint">Sem cartão de crédito</div>
+          <ul>
+            <li>5 atendimentos por dia</li>
+            <li>Use sua chave OpenAI</li>
+            <li>Flask local (roda no seu Mac)</li>
+            <li>Todos os recursos desbloqueados</li>
+          </ul>
+          <a href="#" class="btn btn-glass">Começar grátis</a>
+        </div>
+        <div class="plan-e featured">
+          <div class="pn">Pro</div>
+          <div class="p"><span class="cur">R$</span><span class="num">49</span><span class="per">/ mês</span></div>
+          <div class="hint">14 dias grátis · sem cartão</div>
+          <ul>
+            <li>Atendimentos ilimitados</li>
+            <li>Backend na nuvem (sem setup)</li>
+            <li>Atualizações automáticas</li>
+            <li>Suporte prioritário WhatsApp</li>
+          </ul>
+          <a href="#" class="btn btn-primary">Começar teste grátis</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="foot">
+    <div class="container">© 2026 Toca Ficha Dr. · Porto Alegre/RS · <a href="#">Privacidade</a> · <a href="#">Termos</a></div>
+  </footer>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     VARIANT F — LIVE DEMO
+     ═══════════════════════════════════════════════════════════════════════ -->
+<div class="variant v-f" id="v-f">
+
+  <header class="nav">
+    <a class="logo" href="#"><span class="logo-wave">TD</span> Toca Ficha Dr.</a>
+    <span class="status-pill">Demo ao vivo · rodando agora</span>
+    <nav class="nav-menu">
+      <a href="#">Produto</a>
+      <a href="#">Preços</a>
+      <a href="#">Segurança</a>
+    </nav>
+    <a href="#" class="btn btn-line">Entrar</a>
+    <a href="#" class="btn btn-primary">Instalar grátis →</a>
+  </header>
+
+  <section class="hero">
+    <div class="container hero-grid">
+      <div>
+        <div class="hero-eyebrow">Veja rodando ao lado →</div>
+        <h1>O prontuário pediátrico <em>se escrevendo sozinho.</em></h1>
+        <p class="hero-sub">O HUD à direita é uma simulação real do que aparece na sua tela no G-Hosp. O ciclo completo (gravação → SOAP → CID → finalizar) roda em loop.</p>
+        <div class="hero-ctas">
+          <a href="#" class="btn btn-primary">Instalar no Chrome</a>
+          <a href="#" class="btn btn-line">Ver demo completa</a>
+        </div>
+        <div class="hero-meta">
+          <div>Tempo médio<br><b><em>~8s</em> / paciente</b></div>
+          <div>Transcrição<br><b>Whisper</b></div>
+          <div>SOAP<br><b>GPT-4o-mini</b></div>
+        </div>
+      </div>
+
+      <div class="live-hud" id="liveHud">
+        <div class="live-bar">
+          <span class="dots"><i></i><i></i><i></i></span>
+          <span class="title">tocafichadr · paciente_847</span>
+          <span class="timer" id="liveTimer">+00:00.0</span>
+        </div>
+
+        <div class="live-section" id="s-rec">
+          <div class="live-label">01 · Gravando <span class="live-check"></span></div>
+          <div class="live-rec">
+            <span class="live-rec-led"></span>
+            <span class="live-rec-tag">REC</span>
+            <span class="live-rec-t" id="recTimer">00:00</span>
+          </div>
+          <div class="live-wave">
+            <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+          </div>
+        </div>
+
+        <div class="live-section" id="s-soap">
+          <div class="live-label">02 · SOAP gerado <span class="live-check"></span></div>
+          <div class="live-soap"><span class="soap-txt" id="soapText"></span><span class="live-caret" id="soapCaret"></span></div>
+        </div>
+
+        <div class="live-section" id="s-cid">
+          <div class="live-label">03 · CID-10 sugerido <span class="live-check"></span></div>
+          <div class="live-cid-row">
+            <span class="live-cid-code">J06.9</span>
+            <span class="live-cid-nm">Infecção aguda das VAS, não especificada</span>
+            <span class="live-cid-status">✓</span>
+          </div>
+        </div>
+
+        <div class="live-section" id="s-fin">
+          <div class="live-label">04 · Finalizar <span class="live-check"></span></div>
+          <a href="#" class="live-fin">Finalizar paciente →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="stats">
+    <div class="container stats-grid">
+      <div class="stat-cell">
+        <div class="tag">// AÇÕES</div>
+        <div class="n"><span data-count="35">35</span><em>→</em><span data-count="4">4</span></div>
+        <div class="lbl">Por paciente</div>
+        <div class="note">Medido no fluxo real do G-Hosp.</div>
+      </div>
+      <div class="stat-cell">
+        <div class="tag">// TEMPO</div>
+        <div class="n"><span data-count="40">40</span><span class="small">min</span></div>
+        <div class="lbl">Devolvidos ao plantão</div>
+        <div class="note">30 pacientes em 12h.</div>
+      </div>
+      <div class="stat-cell">
+        <div class="tag">// DADOS</div>
+        <div class="n"><span data-count="100">100</span><span class="small">%</span></div>
+        <div class="lbl">Locais</div>
+        <div class="note">LGPD · CFM 2.454/2026.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="workflow">
+    <div class="container">
+      <h2>Fluxo por paciente</h2>
+      <p class="intro">O ponto percorre os quatro estágios — mesmo ciclo do HUD.</p>
+      <div class="flow-diagram">
+        <div class="flow-track">
+          <span class="dot"></span>
+        </div>
+        <div class="flow-node" data-step="1">
+          <div class="flow-node-bullet">01</div>
+          <h4>Fala</h4>
+          <p>Whisper · ~6s</p>
+        </div>
+        <div class="flow-node" data-step="2">
+          <div class="flow-node-bullet">02</div>
+          <h4>SOAP + CID</h4>
+          <p>GPT-4o-mini · ~2s</p>
+        </div>
+        <div class="flow-node" data-step="3">
+          <div class="flow-node-bullet">03</div>
+          <h4>Receita</h4>
+          <p>Modelo editável</p>
+        </div>
+        <div class="flow-node" data-step="4">
+          <div class="flow-node-bullet">04</div>
+          <h4>Alta</h4>
+          <p>Um clique · próximo</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="pricing">
+    <div class="container">
+      <div class="head">
+        <h3>Preços</h3>
+        <p>Experimente no próximo plantão. Se não economizar 20 min, cancele.</p>
+      </div>
+      <div class="plans-f">
+        <div class="plan-f">
+          <div class="n">Free</div>
+          <div class="p"><span class="cur">R$</span><span class="num">0</span><span class="per">/ sempre</span></div>
+          <div class="hint">Sem cartão de crédito</div>
+          <ul>
+            <li>5 atendimentos por dia</li>
+            <li>Sua chave OpenAI</li>
+            <li>Backend local (Flask)</li>
+            <li>Todos os recursos</li>
+          </ul>
+          <a href="#" class="btn btn-line">Começar grátis</a>
+        </div>
+        <div class="plan-f featured">
+          <div class="n">Pro</div>
+          <div class="p"><span class="cur">R$</span><span class="num">49</span><span class="per">/ mês</span></div>
+          <div class="hint">14 dias grátis · sem cartão</div>
+          <ul>
+            <li>Atendimentos ilimitados</li>
+            <li>Backend na nuvem</li>
+            <li>Atualizações automáticas</li>
+            <li>Suporte WhatsApp</li>
+          </ul>
+          <a href="#" class="btn btn-primary">Começar teste grátis →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="foot">
+    <div class="container foot-inner">
+      <span>© 2026 Toca Ficha Dr. · Porto Alegre/RS</span>
+      <span><a href="#" style="color:inherit;text-decoration:none">Privacidade</a> · <a href="#" style="color:inherit;text-decoration:none">Termos</a> · <a href="#" style="color:inherit;text-decoration:none">Status</a></span>
+    </div>
+  </footer>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     VARIANT F+ — CLINICAL TRUST (F refined to Option A of business report)
+     ═══════════════════════════════════════════════════════════════════════ -->
+<div class="variant v-fp" id="v-fp">
+  <a class="skip" href="#main-fp">Pular para o conteúdo</a>
+
+  <header class="nav" role="banner">
+    <a class="logo" href="#"><span class="logo-wave" aria-hidden="true">TD</span> <span>Toca Ficha Dr.</span></a>
+    <span class="status-pill" aria-label="Sistema em operação normal">Sistema ativo · LGPD</span>
+    <nav class="nav-menu" aria-label="Navegação principal">
+      <a href="#fluxo-fp">Como funciona</a>
+      <a href="#preco-fp">Preços</a>
+      <a href="#seg-fp">Segurança</a>
+    </nav>
+    <a href="#" class="btn btn-line">Entrar</a>
+    <a href="#" class="btn btn-primary" aria-label="Instalar a extensão grátis no Chrome">Instalar grátis →</a>
+  </header>
+
+  <main id="main-fp">
+  <section class="hero" aria-labelledby="hero-h-fp">
+    <div class="container hero-grid">
+      <div>
+        <div class="hero-eyebrow">Documentação automatizada · G-Hosp</div>
+        <h1 id="hero-h-fp">O prontuário pediátrico <em>que se documenta sozinho.</em></h1>
+        <p class="hero-sub">Ditado por voz, SOAP estruturado, CID-10 sugerido e receita pronta — sem sair do G-Hosp. Você aprova cada passo antes de salvar.</p>
+        <div class="hero-ctas">
+          <a href="#" class="btn btn-cta">Instalar no Chrome</a>
+          <a href="#" class="btn btn-line">Ver demo · 45s</a>
+        </div>
+        <div class="hero-trust">
+          <div><b>100%</b>LGPD · dados locais</div>
+          <div><b>CFM 2.454</b>/ 2026 conforme</div>
+          <div><b>14 dias</b>Pro grátis, sem cartão</div>
+        </div>
+      </div>
+
+      <div class="live-hud" id="liveHud-fp" aria-label="Demonstração do fluxo do Toca Ficha Dr. em loop">
+        <div class="live-bar">
+          <span class="dots" aria-hidden="true"><i></i><i></i><i></i></span>
+          <span class="title">tocafichadr · paciente_847</span>
+          <span class="timer" id="liveTimer-fp">+00:00.0</span>
+        </div>
+        <div class="live-section" id="s-rec-fp">
+          <div class="live-label">01 · Gravando <span class="live-check"></span></div>
+          <div class="live-rec">
+            <span class="live-rec-led" aria-hidden="true"></span>
+            <span class="live-rec-tag">REC</span>
+            <span class="live-rec-t" id="recTimer-fp">00:00</span>
+          </div>
+          <div class="live-wave" aria-hidden="true">
+            <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+          </div>
+        </div>
+        <div class="live-section" id="s-soap-fp">
+          <div class="live-label">02 · SOAP estruturado <span class="live-check"></span></div>
+          <div class="live-soap"><span id="soapText-fp"></span><span class="live-caret" id="soapCaret-fp" aria-hidden="true"></span></div>
+        </div>
+        <div class="live-section" id="s-cid-fp">
+          <div class="live-label">03 · CID-10 sugerido <span class="live-check"></span></div>
+          <div class="live-cid-row">
+            <span class="live-cid-code">J06.9</span>
+            <span class="live-cid-nm">Infecção aguda das VAS, não especificada</span>
+            <span class="live-cid-status" aria-hidden="true">✓</span>
+          </div>
+        </div>
+        <div class="live-section" id="s-fin-fp">
+          <div class="live-label">04 · Ação segura <span class="live-check"></span></div>
+          <a href="#" class="live-fin">Finalizar paciente →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="stats" aria-label="Resultados medidos em plantão real">
+    <div class="container stats-grid">
+      <div class="stat-cell">
+        <div class="tag">// AÇÕES</div>
+        <div class="n">35<em>→</em>4</div>
+        <div class="lbl">Por paciente</div>
+        <div class="note">Medido no fluxo real do G-Hosp.</div>
+      </div>
+      <div class="stat-cell">
+        <div class="tag">// TEMPO</div>
+        <div class="n">40<span class="small">min</span></div>
+        <div class="lbl">Devolvidos ao plantão</div>
+        <div class="note">30 pacientes em 12h.</div>
+      </div>
+      <div class="stat-cell">
+        <div class="tag">// DADOS</div>
+        <div class="n">100<span class="small">%</span></div>
+        <div class="lbl">Locais · LGPD</div>
+        <div class="note">CFM 2.454/2026 conforme.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="workflow" id="fluxo-fp" aria-labelledby="fluxo-h-fp">
+    <div class="container">
+      <h2 id="fluxo-h-fp">Fluxo por paciente</h2>
+      <p class="intro">Cada etapa é confirmada por você. Nada é salvo no prontuário sem o seu clique.</p>
+      <div class="flow-diagram">
+        <div class="flow-track" aria-hidden="true"><span class="dot"></span></div>
+        <div class="flow-node" data-step="1">
+          <div class="flow-node-bullet">01</div>
+          <h4>Fala</h4>
+          <p>Whisper · ~6s</p>
+        </div>
+        <div class="flow-node" data-step="2">
+          <div class="flow-node-bullet">02</div>
+          <h4>SOAP + CID</h4>
+          <p>GPT-4o-mini · ~2s</p>
+        </div>
+        <div class="flow-node" data-step="3">
+          <div class="flow-node-bullet">03</div>
+          <h4>Receita</h4>
+          <p>Modelo editável</p>
+        </div>
+        <div class="flow-node" data-step="4">
+          <div class="flow-node-bullet">04</div>
+          <h4>Alta</h4>
+          <p>Assinada · próximo</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="pricing" id="preco-fp" aria-labelledby="preco-h-fp">
+    <div class="container">
+      <div class="head">
+        <h3 id="preco-h-fp">Preço feito para plantão.</h3>
+        <p>Teste no próximo plantão. Se não te devolver 20 minutos, cancele. Sem pergunta.</p>
+      </div>
+      <div class="plans-fp">
+        <div class="plan-fp">
+          <div class="n">Free</div>
+          <div class="p"><span class="cur">R$</span><span class="num">0</span><span class="per">/ sempre</span></div>
+          <div class="hint">Sem cartão · para sempre</div>
+          <ul>
+            <li>5 atendimentos por dia</li>
+            <li>Use sua chave OpenAI</li>
+            <li>Backend local (Flask)</li>
+            <li>Todos os recursos desbloqueados</li>
+          </ul>
+          <a href="#" class="btn btn-line">Começar grátis</a>
+        </div>
+        <div class="plan-fp featured">
+          <div class="n">Pro</div>
+          <div class="p"><span class="cur">R$</span><span class="num">49</span><span class="per">/ mês</span></div>
+          <div class="hint">14 dias grátis · sem cartão</div>
+          <ul>
+            <li>Atendimentos ilimitados</li>
+            <li>Backend na nuvem (sem setup)</li>
+            <li>Atualizações automáticas</li>
+            <li>Suporte prioritário WhatsApp</li>
+          </ul>
+          <a href="#" class="btn btn-cta">Começar teste grátis →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+  </main>
+
+  <footer class="foot" id="seg-fp">
+    <div class="container foot-inner">
+      <span>© 2026 Toca Ficha Dr. · Porto Alegre/RS · CNPJ pendente</span>
+      <span><a href="#">Privacidade</a> · <a href="#">Termos</a> · <a href="#">Segurança &amp; LGPD</a> · <a href="#">Status</a></span>
+    </div>
+  </footer>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     VARIANT G — F + PERSUASION (inherits .v-f styles via dual class)
+     ═══════════════════════════════════════════════════════════════════════ -->
+<div class="variant v-f v-g" id="v-g">
+
+  <header class="nav">
+    <a class="logo" href="#"><span class="logo-wave">TD</span> Toca Ficha Dr.</a>
+    <span class="status-pill">15 de abril · 23 pacientes · 0 erros</span>
+    <nav class="nav-menu">
+      <a href="#">Como funciona</a>
+      <a href="#">Preços</a>
+      <a href="#">Segurança</a>
+    </nav>
+    <a href="#" class="btn btn-line">Entrar</a>
+    <a href="#" class="btn btn-primary">Instalar grátis →</a>
+  </header>
+
+  <section class="hero" style="padding-bottom:24px">
+    <div class="container hero-top reveal">
+      <h1>Seu plantão, <em>antes e depois</em> do Toca Ficha Dr.</h1>
+      <p>Não é só "mais rápido". É uma reorganização de como 12 horas de plantão ficam no fim do turno.</p>
+      <div class="hero-ctas-center">
+        <a href="#" class="btn btn-primary">Instalar no Chrome</a>
+        <a href="#" class="btn btn-line">Ver demo · 45s</a>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="hero-compare-inner reveal">
+        <div class="before">
+          <div class="compare-h">Seu plantão hoje</div>
+          <div class="compare-sub">35 cliques por paciente × 30 pacientes = 1050 ações manuais em 12h.</div>
+          <ul class="action-list">
+            <li>Abrir prontuário</li>
+            <li>Limpar campos SOAP</li>
+            <li>Digitar anamnese</li>
+            <li>Digitar exame físico</li>
+            <li>Buscar CID-10</li>
+            <li class="faded">Confirmar CID</li>
+            <li class="faded">Abrir diálogo de receita</li>
+            <li class="faded">Utilizar Padrões</li>
+            <li class="faded">Escolher modelo · Inserir</li>
+            <li class="faded">Imprimir · Abrir alta</li>
+            <li class="faded">Preencher encaminhamento</li>
+            <li class="faded">… mais 23 cliques</li>
+          </ul>
+          <div class="before-count">
+            <div class="n">35</div>
+            <div class="lbl">ações por paciente<br>1050 no plantão inteiro</div>
+          </div>
+        </div>
+
+        <div class="after">
+          <div class="compare-h">Com Toca Ficha Dr.</div>
+          <div class="compare-sub">4 cliques por paciente. A IA estrutura — você aprova e assina.</div>
+          <ul class="action-list">
+            <li>F2 · Ditar a consulta (voz)</li>
+            <li>Revisar SOAP + CID gerado</li>
+            <li>Clicar modelo de receita</li>
+            <li>Finalizar paciente</li>
+          </ul>
+          <div class="after-count">
+            <div class="n">4</div>
+            <div class="lbl">ações por paciente<br>120 no plantão inteiro</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding:24px 0 72px">
+    <div class="container">
+      <div class="reveal" style="max-width:820px;margin:0 auto">
+        <div class="hud-caption">Veja rodando ao vivo ↓</div>
+        <div class="live-hud" id="liveHud-g">
+          <div class="live-bar">
+            <span class="dots"><i></i><i></i><i></i></span>
+            <span class="title">tocafichadr · paciente_847</span>
+            <span class="timer" id="liveTimer-g">+00:00.0</span>
+          </div>
+          <div class="live-section" id="s-rec-g">
+            <div class="live-label">01 · Gravando <span class="live-check"></span></div>
+            <div class="live-rec">
+              <span class="live-rec-led"></span>
+              <span class="live-rec-tag">REC</span>
+              <span class="live-rec-t" id="recTimer-g">00:00</span>
+            </div>
+            <div class="live-wave"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+          </div>
+          <div class="live-section" id="s-soap-g">
+            <div class="live-label">02 · SOAP gerado <span class="live-check"></span></div>
+            <div class="live-soap"><span id="soapText-g"></span><span class="live-caret" id="soapCaret-g"></span></div>
+          </div>
+          <div class="live-section" id="s-cid-g">
+            <div class="live-label">03 · CID-10 sugerido <span class="live-check"></span></div>
+            <div class="live-cid-row">
+              <span class="live-cid-code">J06.9</span>
+              <span class="live-cid-nm">Infecção aguda das VAS, não especificada</span>
+              <span class="live-cid-status">✓</span>
+            </div>
+          </div>
+          <div class="live-section" id="s-fin-g">
+            <div class="live-label">04 · Finalizar <span class="live-check"></span></div>
+            <a href="#" class="live-fin">Finalizar paciente →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="stats reveal">
+    <div class="container stats-grid">
+      <div class="stat-cell">
+        <div class="tag">// AÇÕES</div>
+        <div class="n"><span>35</span><em>→</em><span>4</span></div>
+        <div class="lbl">Por paciente</div>
+        <div class="note">Medido no fluxo real do G-Hosp.</div>
+      </div>
+      <div class="stat-cell">
+        <div class="tag">// TEMPO</div>
+        <div class="n"><span>40</span><span class="small">min</span></div>
+        <div class="lbl">Devolvidos ao plantão</div>
+        <div class="note">30 pacientes em 12h.</div>
+      </div>
+      <div class="stat-cell">
+        <div class="tag">// DADOS</div>
+        <div class="n"><span>100</span><span class="small">%</span></div>
+        <div class="lbl">Locais</div>
+        <div class="note">LGPD · CFM 2.454/2026.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="objection reveal">
+    <div class="container obj-inner">
+      <div class="obj-head">
+        <div class="tag">// A pergunta que todo médico faz</div>
+        <h2>E se a IA errar?</h2>
+        <p class="lede">Você revisa tudo antes de salvar. A IA nunca escreve no prontuário sem o seu clique. SOAP em temperatura 0.1 — instruída explicitamente a não inventar sintomas, durações, localizações ou quantidades.</p>
+
+        <div class="obj-guards">
+          <div class="guard">
+            <div class="mark">1</div>
+            <div>
+              <h5>Revisão obrigatória antes de salvar</h5>
+              <p>O SOAP aparece em um editor editável. Você muda livremente, recusa, ou aprova. Nada sai dali sem o seu aval.</p>
+            </div>
+          </div>
+          <div class="guard">
+            <div class="mark">2</div>
+            <div>
+              <h5>Prompt com "proibido inventar"</h5>
+              <p>A instrução ao GPT-4o-mini inclui literalmente: <em>"PROIBIDO inventar sintomas, durações, localizações, quantidades"</em>. Máx. 4 frases objetivas.</p>
+            </div>
+          </div>
+          <div class="guard">
+            <div class="mark">3</div>
+            <div>
+              <h5>Temperature 0.1</h5>
+              <p>Configuração quase determinística. A IA não "improvisa" — só estrutura o que você falou.</p>
+            </div>
+          </div>
+          <div class="guard">
+            <div class="mark">4</div>
+            <div>
+              <h5>Você assina — seu CRM, sua responsabilidade</h5>
+              <p>CFM 2.454/2026 é claro: IA é ferramenta, o médico é o autor. A extensão preserva esse princípio em cada passo do fluxo.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="review-card">
+          <div class="review-bar">
+            <i></i>
+            <span class="lbl">Revisar SOAP antes de salvar</span>
+          </div>
+          <div class="review-body">
+            <p><strong>S:</strong> Lactente de 14 meses, febre há 48h (38.5°C), tosse seca, coriza hialina.</p>
+            <p><strong>O:</strong> Sem sinais de desconforto respiratório. AR: MVP + RA, sem ruídos adventícios. <span class="edit">Abdome flácido, RHA+</span>.</p>
+            <p><strong>A:</strong> IVAS · J06.9</p>
+            <p><strong>P:</strong> Dipirona 15mg/kg/dose 6/6h febre · retorno se piora.</p>
+            <div class="review-ann">Qualquer palavra é editável antes de salvar</div>
+          </div>
+          <div class="review-actions">
+            <a href="#" class="act act-discard">Descartar</a>
+            <a href="#" class="act act-save">Aprovar e salvar</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="shift reveal">
+    <div class="container">
+      <div class="shift-head">
+        <div>
+          <div class="tag">// Um plantão real</div>
+          <h2>15 de abril — Hospital prbento · 23 pacientes em 5h23.</h2>
+        </div>
+        <div class="shift-meta">
+          <div>Início<br><b>17:43</b></div>
+          <div>Fim<br><b>23:06</b></div>
+          <div>Local<br><b>Bento Gonçalves/RS</b></div>
+        </div>
+      </div>
+
+      <div class="timeline">
+        <div class="tl-caption">Cada marca = um paciente finalizado</div>
+        <div class="timeline-bar" id="timelineBarG"></div>
+        <div class="timeline-hours">
+          <span>17:43</span><span>19:00</span><span>20:30</span><span>22:00</span><span>23:06</span>
+        </div>
+        <div class="timeline-stats">
+          <div class="cell"><div class="n">23</div><div class="lbl">Pacientes</div></div>
+          <div class="cell"><div class="n">5h23</div><div class="lbl">Turno</div></div>
+          <div class="cell"><div class="n"><em>100%</em></div><div class="lbl">HTTP 200</div></div>
+          <div class="cell"><div class="n"><em>0</em></div><div class="lbl">Erros em prod.</div></div>
+          <div class="cell"><div class="n">~7s</div><div class="lbl">SOAP médio</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="workflow reveal">
+    <div class="container">
+      <h2>Fluxo por paciente</h2>
+      <p class="intro">O ponto percorre os quatro estágios — mesmo ciclo do HUD.</p>
+      <div class="flow-diagram">
+        <div class="flow-track"><span class="dot"></span></div>
+        <div class="flow-node" data-step="1"><div class="flow-node-bullet">01</div><h4>Fala</h4><p>Whisper · ~6s</p></div>
+        <div class="flow-node" data-step="2"><div class="flow-node-bullet">02</div><h4>SOAP + CID</h4><p>GPT-4o-mini · ~2s</p></div>
+        <div class="flow-node" data-step="3"><div class="flow-node-bullet">03</div><h4>Receita</h4><p>Modelo editável</p></div>
+        <div class="flow-node" data-step="4"><div class="flow-node-bullet">04</div><h4>Alta</h4><p>Um clique · próximo</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="pricing reveal">
+    <div class="container">
+      <div class="head">
+        <h3>Preços</h3>
+        <p>Experimente no próximo plantão. Se não economizar 20 minutos, cancele. Sem pergunta.</p>
+      </div>
+      <div class="plans-f">
+        <div class="plan-f">
+          <div class="n">Free</div>
+          <div class="p"><span class="cur">R$</span><span class="num">0</span><span class="per">/ sempre</span></div>
+          <div class="hint">Sem cartão · para sempre</div>
+          <ul>
+            <li>5 atendimentos por dia</li>
+            <li>Sua chave OpenAI</li>
+            <li>Backend local (Flask)</li>
+            <li>Todos os recursos</li>
+          </ul>
+          <a href="#" class="btn btn-line">Começar grátis</a>
+        </div>
+        <div class="plan-f featured">
+          <div class="n">Pro</div>
+          <div class="p"><span class="cur">R$</span><span class="num">49</span><span class="per">/ mês</span></div>
+          <div class="hint">14 dias grátis · sem cartão</div>
+          <ul>
+            <li>Atendimentos ilimitados</li>
+            <li>Backend na nuvem (sem setup)</li>
+            <li>Atualizações automáticas</li>
+            <li>Suporte WhatsApp</li>
+          </ul>
+          <a href="#" class="btn btn-primary">Começar teste grátis →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="foot">
+    <div class="container foot-inner">
+      <span>© 2026 Toca Ficha Dr. · Porto Alegre/RS</span>
+      <span><a href="#" style="color:inherit;text-decoration:none">Privacidade</a> · <a href="#" style="color:inherit;text-decoration:none">Termos</a> · <a href="#" style="color:inherit;text-decoration:none">Status</a></span>
+    </div>
+  </footer>
+
+  <div class="sticky-cta" id="stickyCtaG" role="complementary" aria-label="Convite para instalar">
+    <span><b>R$ 0</b> para começar · 14 dias Pro grátis</span>
+    <a href="#" class="cta-btn">Instalar no Chrome</a>
+    <button class="close" id="stickyCloseG" aria-label="Fechar convite">×</button>
+  </div>
+
+</div>
+
+<script>
+  // ─── Tab switching ──────────────────────────────────────────────
+  document.querySelectorAll('#sk-bar .sk-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      const v = tab.dataset.v;
+      document.querySelectorAll('.variant').forEach(el => el.classList.remove('active'));
+      const nextActive = document.getElementById('v-' + v);
+      nextActive.classList.add('active');
+      document.querySelectorAll('#sk-bar .sk-tab').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      window.scrollTo({top: 0, behavior: 'instant'});
+      // Restart CSS intro animations by forcing a reflow on the newly-active variant
+      nextActive.style.display = 'none';
+      void nextActive.offsetHeight;
+      nextActive.style.display = '';
+    });
+  });
+
+  // ─── Live HUD self-playing state machine (shared by F and F+) ──
+  function initLiveHud(idSuffix, variantSelector, startDelay) {
+    const SOAP_TEXT = 'Lactente de 14 meses, febre há 48h (38.5°C), tosse seca, coriza hialina. Sem sinais de desconforto respiratório. AR: MVP + RA, sem ruídos adventícios.';
+    const get = (id) => document.getElementById(id + idSuffix);
+    const sRec = get('s-rec'), sSoap = get('s-soap'), sCid = get('s-cid'), sFin = get('s-fin');
+    const recTimer = get('recTimer'), soapText = get('soapText'), soapCaret = get('soapCaret'), mainTimer = get('liveTimer');
+    const flowNodes = document.querySelectorAll(variantSelector + ' .flow-node');
+    if (!sRec || !soapText) return;
+    const sections = [sRec, sSoap, sCid, sFin];
+
+    function reset() {
+      sections.forEach(s => { s.classList.remove('active'); s.classList.remove('done'); });
+      recTimer.textContent = '00:00';
+      soapText.textContent = '';
+      if (soapCaret) soapCaret.style.display = '';
+      mainTimer.textContent = '+00:00.0';
+      flowNodes.forEach(n => n.classList.remove('lit'));
+    }
+    function markDone(el) { el.classList.remove('active'); el.classList.add('done'); }
+    function setActive(el) {
+      sections.forEach(s => { if (s !== el && s.classList.contains('active')) markDone(s); });
+      el.classList.add('active');
+    }
+    function typeSoap(text, speedMs, onDone) {
+      let i = 0;
+      soapText.textContent = '';
+      if (soapCaret) soapCaret.style.display = '';
+      const tick = () => {
+        if (i <= text.length) {
+          soapText.textContent = text.slice(0, i);
+          i++;
+          setTimeout(tick, speedMs);
+        } else {
+          onDone && onDone();
+        }
+      };
+      tick();
+    }
+    function cycle() {
+      reset();
+      setActive(sRec);
+      flowNodes[0] && flowNodes[0].classList.add('lit');
+      let t0 = 0;
+      const recInt = setInterval(() => {
+        t0 += 100;
+        const sec = Math.floor(t0 / 1000);
+        const cs = Math.floor((t0 % 1000) / 10);
+        recTimer.textContent = String(sec).padStart(2,'0') + ':' + String(cs).padStart(2,'0');
+        mainTimer.textContent = '+00:0' + sec + '.' + Math.floor(cs/10);
+      }, 100);
+
+      setTimeout(() => {
+        clearInterval(recInt);
+        markDone(sRec);
+        flowNodes[0] && flowNodes[0].classList.remove('lit');
+        flowNodes[1] && flowNodes[1].classList.add('lit');
+        setActive(sSoap);
+        typeSoap(SOAP_TEXT, 22, () => {
+          setTimeout(() => {
+            flowNodes[1] && flowNodes[1].classList.remove('lit');
+            flowNodes[2] && flowNodes[2].classList.add('lit');
+            setActive(sCid);
+            setTimeout(() => {
+              flowNodes[2] && flowNodes[2].classList.remove('lit');
+              flowNodes[3] && flowNodes[3].classList.add('lit');
+              setActive(sFin);
+              setTimeout(() => {
+                markDone(sFin);
+                flowNodes[3] && flowNodes[3].classList.remove('lit');
+                mainTimer.textContent = '+00:08.2 ✓';
+                setTimeout(cycle, 2200);
+              }, 2400);
+            }, 1500);
+          }, 500);
+        });
+      }, 3000);
+    }
+    setTimeout(cycle, startDelay || 700);
+  }
+
+  // F: original live demo
+  initLiveHud('', '.v-f', 700);
+  // F+: refined Clinical Trust version — offset so the two cycles don't sync
+  initLiveHud('-fp', '.v-fp', 1400);
+  // G: persuasion variant — offset again so simultaneous HUDs look distinct
+  initLiveHud('-g', '#v-g', 2100);
+
+  // ─── Variant G: scroll-reveal + sticky CTA + timeline ticks ─────
+  (function variantG() {
+    const vg = document.getElementById('v-g');
+    if (!vg) return;
+
+    // Timeline ticks — 23 patients spread across the shift with realistic clustering
+    const tl = document.getElementById('timelineBarG');
+    if (tl) {
+      const positions = [2, 6, 10, 15, 19, 23, 28, 32, 36, 40, 44, 48, 52, 57, 61, 65, 69, 74, 78, 82, 86, 91, 96];
+      positions.forEach(p => {
+        const tick = document.createElement('span');
+        tick.className = 'tick';
+        tick.style.left = p + '%';
+        tl.appendChild(tick);
+      });
+    }
+
+    // Scroll-reveal (only initialized once; inactive variants simply don't intersect)
+    const reveals = vg.querySelectorAll('.reveal');
+    if ('IntersectionObserver' in window) {
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach(e => {
+          if (e.isIntersecting) {
+            e.target.classList.add('in');
+            io.unobserve(e.target);
+          }
+        });
+      }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+      reveals.forEach(el => io.observe(el));
+    } else {
+      reveals.forEach(el => el.classList.add('in'));
+    }
+
+    // Sticky CTA — show after scrolling past 520px, but only while G is the active variant
+    const cta = document.getElementById('stickyCtaG');
+    const closeBtn = document.getElementById('stickyCloseG');
+    let dismissed = false;
+    function onScroll() {
+      if (!cta || dismissed) return;
+      const gActive = vg.classList.contains('active');
+      if (gActive && window.scrollY > 520) {
+        cta.classList.add('show');
+      } else {
+        cta.classList.remove('show');
+      }
+    }
+    window.addEventListener('scroll', onScroll, { passive: true });
+    if (closeBtn) {
+      closeBtn.addEventListener('click', () => {
+        dismissed = true;
+        cta.classList.remove('show');
+      });
+    }
+    // Hide sticky when switching away from G
+    document.querySelectorAll('#sk-bar .sk-tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        if (tab.dataset.v !== 'g' && cta) cta.classList.remove('show');
+      });
+    });
+  })();
+</script>
+
+</body>
+</html>

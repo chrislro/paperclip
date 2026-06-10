@@ -1,0 +1,986 @@
+[
+  {
+    "code": "Abandono",
+    "name": "Abandono"
+  },
+  {
+    "code": "Abdome agudo",
+    "name": "Abdome agudo"
+  },
+  {
+    "code": "Abortamento habitual",
+    "name": "Abortamento habitual"
+  },
+  {
+    "code": "Aborto espontâneo",
+    "name": "Aborto espontâneo"
+  },
+  {
+    "code": "Aborto espontâneo - completo ou não espec., com outras complicações ou com complicações não especif.",
+    "name": "completo ou não espec., com outras complicações ou com complicações não especif."
+  },
+  {
+    "code": "Aborto espontâneo - completo ou não espec., complicado p/ embolia",
+    "name": "completo ou não espec., complicado p/ embolia"
+  },
+  {
+    "code": "Aborto espontâneo - completo ou não espec., complicado p/ hemor. excessiva ou tardia",
+    "name": "completo ou não espec., complicado p/ hemor. excessiva ou tardia"
+  },
+  {
+    "code": "Aborto espontâneo - completo ou não espec., complicado p/ infec. do trato genital ou órg. pélvicos",
+    "name": "completo ou não espec., complicado p/ infec. do trato genital ou órg. pélvicos"
+  },
+  {
+    "code": "Aborto espontâneo - completo ou não espec., sem complicações",
+    "name": "completo ou não espec., sem complicações"
+  },
+  {
+    "code": "Aborto espontâneo - incompleto, com outras complicações ou com complicações não especificadas",
+    "name": "incompleto, com outras complicações ou com complicações não especificadas"
+  },
+  {
+    "code": "Aborto espontâneo - incompleto, complicado por embolia",
+    "name": "incompleto, complicado por embolia"
+  },
+  {
+    "code": "Aborto espontâneo - incompleto, complicado por hemorragia excessiva ou tardia",
+    "name": "incompleto, complicado por hemorragia excessiva ou tardia"
+  },
+  {
+    "code": "Aborto espontâneo - incompleto, complicado por infecção do trato genital ou dos órgãos pélvicos",
+    "name": "incompleto, complicado por infecção do trato genital ou dos órgãos pélvicos"
+  },
+  {
+    "code": "Aborto espontâneo - incompleto, sem complicações",
+    "name": "incompleto, sem complicações"
+  },
+  {
+    "code": "Aborto não especificado",
+    "name": "Aborto não especificado"
+  },
+  {
+    "code": "Aborto não especificado - completo ou não especificado, com out. complic./complic. ñ especificadas",
+    "name": "completo ou não especificado, com out. complic./complic. ñ especificadas"
+  },
+  {
+    "code": "Aborto não especificado - completo ou não especificado, complic. p/infec. do trato genit./órg. pélv",
+    "name": "completo ou não especificado, complic. p/infec. do trato genit./órg. pélv"
+  },
+  {
+    "code": "Aborto não especificado - completo ou não especificado, complic. por hemorragia excessiva ou tardia",
+    "name": "completo ou não especificado, complic. por hemorragia excessiva ou tardia"
+  },
+  {
+    "code": "Aborto não especificado - completo ou não especificado, complicado por embolia",
+    "name": "completo ou não especificado, complicado por embolia"
+  },
+  {
+    "code": "Aborto não especificado - completo ou não especificado, sem complicações",
+    "name": "completo ou não especificado, sem complicações"
+  },
+  {
+    "code": "Aborto não especificado - incompleto, com outras complicações ou com complicações não especificadas",
+    "name": "incompleto, com outras complicações ou com complicações não especificadas"
+  },
+  {
+    "code": "Aborto não especificado - incompleto, complicado por embolia",
+    "name": "incompleto, complicado por embolia"
+  },
+  {
+    "code": "Aborto não especificado - incompleto, complicado por hemorragia excessiva ou tardia",
+    "name": "incompleto, complicado por hemorragia excessiva ou tardia"
+  },
+  {
+    "code": "Aborto não especificado - incompleto, complicado por infec. do trato genital ou dos órgãos pélvicos",
+    "name": "incompleto, complicado por infec. do trato genital ou dos órgãos pélvicos"
+  },
+  {
+    "code": "Aborto não especificado - incompleto, sem complicações",
+    "name": "incompleto, sem complicações"
+  },
+  {
+    "code": "Aborto por razões medicas e legais",
+    "name": "Aborto por razões medicas e legais"
+  },
+  {
+    "code": "Aborto por razões médicas/legais - compl. ou ñ espec., complic. p/infec. do trato genit./órg. pélv.",
+    "name": "compl. ou ñ espec., complic. p/infec. do trato genit./órg. pélv."
+  },
+  {
+    "code": "Aborto por razões médicas/legais - compl. ou não espec., com out. complic./complic. ñ especificadas",
+    "name": "compl. ou não espec., com out. complic./complic. ñ especificadas"
+  },
+  {
+    "code": "Aborto por razões médicas/legais - compl. ou não espec., complic. p/embolia",
+    "name": "compl. ou não espec., complic. p/embolia"
+  },
+  {
+    "code": "Aborto por razões médicas/legais - compl. ou não espec., complic. p/hemorragia excessiva ou tardia",
+    "name": "compl. ou não espec., complic. p/hemorragia excessiva ou tardia"
+  },
+  {
+    "code": "Aborto por razões médicas/legais - compl. ou não espec., sem complicações",
+    "name": "compl. ou não espec., sem complicações"
+  },
+  {
+    "code": "Aborto por razões médicas/legais - incompl., com outras complic. ou com complic. não especificadas",
+    "name": "incompl., com outras complic. ou com complic. não especificadas"
+  },
+  {
+    "code": "Aborto por razões médicas/legais - incompl., complicado p/ infec. do trato genital ou órg. pélvicos",
+    "name": "incompl., complicado p/ infec. do trato genital ou órg. pélvicos"
+  },
+  {
+    "code": "Aborto por razões médicas/legais - incompl., complicado por embolia",
+    "name": "incompl., complicado por embolia"
+  },
+  {
+    "code": "Aborto por razões médicas/legais - incompl., complicado por hemorragia excessiva ou tardia",
+    "name": "incompl., complicado por hemorragia excessiva ou tardia"
+  },
+  {
+    "code": "Aborto por razões médicas/legais - incompl., sem complicações",
+    "name": "incompl., sem complicações"
+  },
+  {
+    "code": "Abscesso amebiano do fígado",
+    "name": "Abscesso amebiano do fígado"
+  },
+  {
+    "code": "Abscesso cutâneo furunculo e antraz",
+    "name": "Abscesso cutâneo furunculo e antraz"
+  },
+  {
+    "code": "Abscesso cutâneo, furúnculo e antraz da face",
+    "name": "Abscesso cutâneo, furúnculo e antraz da face"
+  },
+  {
+    "code": "Abscesso cutâneo, furúnculo e antraz da nádega",
+    "name": "Abscesso cutâneo, furúnculo e antraz da nádega"
+  },
+  {
+    "code": "Abscesso cutâneo, furúnculo e antraz de localização não especificada",
+    "name": "Abscesso cutâneo, furúnculo e antraz de localização não especificada"
+  },
+  {
+    "code": "Abscesso cutâneo, furúnculo e antraz de outras localizações",
+    "name": "Abscesso cutâneo, furúnculo e antraz de outras localizações"
+  },
+  {
+    "code": "Abscesso cutâneo, furúnculo e antraz do pescoço",
+    "name": "Abscesso cutâneo, furúnculo e antraz do pescoço"
+  },
+  {
+    "code": "Abscesso cutâneo, furúnculo e antraz do tronco",
+    "name": "Abscesso cutâneo, furúnculo e antraz do tronco"
+  },
+  {
+    "code": "Abscesso cutâneo, furúnculo e antraz do(s) membro(s)",
+    "name": "Abscesso cutâneo, furúnculo e antraz do(s) membro(s)"
+  },
+  {
+    "code": "Abscesso da bainha tendínea",
+    "name": "Abscesso da bainha tendínea"
+  },
+  {
+    "code": "Abscesso da glândula de bartholin",
+    "name": "Abscesso da glândula de bartholin"
+  },
+  {
+    "code": "Abscesso de bolsa sinovial",
+    "name": "Abscesso de bolsa sinovial"
+  },
+  {
+    "code": "Abscesso de glândula salivar",
+    "name": "Abscesso de glândula salivar"
+  },
+  {
+    "code": "Abscesso do ouvido externo",
+    "name": "Abscesso do ouvido externo"
+  },
+  {
+    "code": "Abscesso e granuloma intra-raquidianos",
+    "name": "raquidianos"
+  },
+  {
+    "code": "Abscesso e granuloma intracranianos e intra-raquidianos",
+    "name": "raquidianos"
+  },
+  {
+    "code": "Abscesso extradural e subdural não especificados",
+    "name": "Abscesso extradural e subdural não especificados"
+  },
+  {
+    "code": "Abscesso hepático",
+    "name": "Abscesso hepático"
+  },
+  {
+    "code": "Abscesso ísquio-retal",
+    "name": "retal"
+  },
+  {
+    "code": "Abscesso vulvar",
+    "name": "Abscesso vulvar"
+  },
+  {
+    "code": "Abscesso, furúnculo e antraz do nariz",
+    "name": "Abscesso, furúnculo e antraz do nariz"
+  },
+  {
+    "code": "Abuso de substâncias que não produzem dependência",
+    "name": "Abuso de substâncias que não produzem dependência"
+  },
+  {
+    "code": "Abuso sexual",
+    "name": "Abuso sexual"
+  },
+  {
+    "code": "Achado anormal de exame imunológico sérico, não especificado",
+    "name": "Achado anormal de exame imunológico sérico, não especificado"
+  },
+  {
+    "code": "Achado anormal de exame químico do sangue, não especificado",
+    "name": "Achado anormal de exame químico do sangue, não especificado"
+  },
+  {
+    "code": "Achados anorm. líquido cefalorraquidiano - achado anormal não especificado",
+    "name": "achado anormal não especificado"
+  },
+  {
+    "code": "Achados anorm. líquido cefalorraquidiano - achados citológicos anormais",
+    "name": "achados citológicos anormais"
+  },
+  {
+    "code": "Achados anorm. líquido cefalorraquidiano - achados histológicos anormais",
+    "name": "achados histológicos anormais"
+  },
+  {
+    "code": "Achados anorm. líquido cefalorraquidiano - achados imunológicos anormais",
+    "name": "achados imunológicos anormais"
+  },
+  {
+    "code": "Achados anorm. líquido cefalorraquidiano - achados microbiológicos anormais",
+    "name": "achados microbiológicos anormais"
+  },
+  {
+    "code": "Achados anorm. líquido cefalorraquidiano - nív. anorm. out. drogas, medic. e subst. biológicas",
+    "name": "nív. anorm. out. drogas, medic. e subst. biológicas"
+  },
+  {
+    "code": "Achados anorm. líquido cefalorraquidiano - nív. anormal de subst. origem essenc. não medicinal",
+    "name": "nív. anormal de subst. origem essenc. não medicinal"
+  },
+  {
+    "code": "Achados anorm. líquido cefalorraquidiano - nível enzimático anormal",
+    "name": "nível enzimático anormal"
+  },
+  {
+    "code": "Achados anorm. líquido cefalorraquidiano - nível hormonal anormal",
+    "name": "nível hormonal anormal"
+  },
+  {
+    "code": "Achados anorm. líquido cefalorraquidiano - outros achados anormais",
+    "name": "outros achados anormais"
+  },
+  {
+    "code": "Achados anormais ao exame citológico e histológico da urina",
+    "name": "Achados anormais ao exame citológico e histológico da urina"
+  },
+  {
+    "code": "Achados anormais ao exame microbiológico da urina",
+    "name": "Achados anormais ao exame microbiológico da urina"
+  },
+  {
+    "code": "Achados anormais de exame para diagnóstico por imagem de outras estruturas do corpo",
+    "name": "Achados anormais de exame para diagnóstico por imagem de outras estruturas do corpo"
+  },
+  {
+    "code": "Achados anormais de exames diagnósticos por imagem de outras estruturas somáticas especificadas",
+    "name": "Achados anormais de exames diagnósticos por imagem de outras estruturas somáticas especificadas"
+  },
+  {
+    "code": "Achados anormais de exames para diagnóstico por imagem de out. reg. do abdome, incl. retroperitônio",
+    "name": "Achados anormais de exames para diagnóstico por imagem de out. reg. do abdome, incl. retroperitônio"
+  },
+  {
+    "code": "Achados anormais de exames para diagnóstico por imagem de outras partes do sistema osteomuscular",
+    "name": "Achados anormais de exames para diagnóstico por imagem de outras partes do sistema osteomuscular"
+  },
+  {
+    "code": "Achados anormais de exames para diagnóstico por imagem de outras partes do tubo digestivo",
+    "name": "Achados anormais de exames para diagnóstico por imagem de outras partes do tubo digestivo"
+  },
+  {
+    "code": "Achados anormais de exames para diagnóstico por imagem do coração e da circulação coronariana",
+    "name": "Achados anormais de exames para diagnóstico por imagem do coração e da circulação coronariana"
+  },
+  {
+    "code": "Achados anormais de exames para diagnóstico por imagem do fígado e das vias biliares",
+    "name": "Achados anormais de exames para diagnóstico por imagem do fígado e das vias biliares"
+  },
+  {
+    "code": "Achados anormais de material proveniente de outros orgãos aparelhos sistemas e tecidos",
+    "name": "Achados anormais de material proveniente de outros orgãos aparelhos sistemas e tecidos"
+  },
+  {
+    "code": "Achados anormais de material proveniente dos orgãos digestivos e da cavidade abdominal",
+    "name": "Achados anormais de material proveniente dos orgãos digestivos e da cavidade abdominal"
+  },
+  {
+    "code": "Achados anormais no líquido cefalorraquidiano",
+    "name": "Achados anormais no líquido cefalorraquidiano"
+  },
+  {
+    "code": "Achados anormais, de exames para diagnóstico por imagem, da mama",
+    "name": "Achados anormais, de exames para diagnóstico por imagem, da mama"
+  },
+  {
+    "code": "Achados bioquímicos anormais do rastreamento [screening] antenatal da mãe",
+    "name": "Achados bioquímicos anormais do rastreamento [screening] antenatal da mãe"
+  },
+  {
+    "code": "Acidente a bordo de embarc., s/acid. da embarc. e ñ caus. afogam./submer. - caiaque ou canoa",
+    "name": "caiaque ou canoa"
+  },
+  {
+    "code": "Acidente a bordo de embarc., s/acid. da embarc. e ñ caus. afogam./submer. - esqui aquático",
+    "name": "esqui aquático"
+  },
+  {
+    "code": "Acidente com embarcação causando afogamento e submersão - caiaque ou canoa",
+    "name": "caiaque ou canoa"
+  },
+  {
+    "code": "Acne escoriada das mulheres jovens",
+    "name": "Acne escoriada das mulheres jovens"
+  },
+  {
+    "code": "Aconselhamento relativo ao comportamento e à orientação sexual do sujeito",
+    "name": "Aconselhamento relativo ao comportamento e à orientação sexual do sujeito"
+  },
+  {
+    "code": "Afasia adquirida com epilepsia [Síndrome de Landau-Kleffner]",
+    "name": "Kleffner]"
+  },
+  {
+    "code": "Afecções localizadas do tecido conjuntivo, não especificadas",
+    "name": "Afecções localizadas do tecido conjuntivo, não especificadas"
+  },
+  {
+    "code": "Agressão por meio de objeto cortante ou penetrante",
+    "name": "Agressão por meio de objeto cortante ou penetrante"
+  },
+  {
+    "code": "Agressão por meio de objeto cortante ou penetrante - área para a prática de esportes e atletismo",
+    "name": "área para a prática de esportes e atletismo"
+  },
+  {
+    "code": "Agressão por meio de objeto cortante ou penetrante - áreas de comércio e de serviços",
+    "name": "áreas de comércio e de serviços"
+  },
+  {
+    "code": "Agressão por meio de objeto cortante ou penetrante - áreas industriais e em construção",
+    "name": "áreas industriais e em construção"
+  },
+  {
+    "code": "Agressão por meio de objeto cortante ou penetrante - escolas, out. inst. e áreas de admin. pública",
+    "name": "escolas, out. inst. e áreas de admin. pública"
+  },
+  {
+    "code": "Agressão por meio de objeto cortante ou penetrante - fazenda",
+    "name": "fazenda"
+  },
+  {
+    "code": "Agressão por meio de objeto cortante ou penetrante - habitação coletiva",
+    "name": "habitação coletiva"
+  },
+  {
+    "code": "Agressão por meio de objeto cortante ou penetrante - local não especificado",
+    "name": "local não especificado"
+  },
+  {
+    "code": "Agressão por meio de objeto cortante ou penetrante - outros locais especificados",
+    "name": "outros locais especificados"
+  },
+  {
+    "code": "Agressão por meio de objeto cortante ou penetrante - residência",
+    "name": "residência"
+  },
+  {
+    "code": "Agressão por meio de objeto cortante ou penetrante - rua e estrada",
+    "name": "rua e estrada"
+  },
+  {
+    "code": "Agressão por meio de proj./coloc. vít. diante obj. movim. - área para prát. de esportes e atletismo",
+    "name": "área para prát. de esportes e atletismo"
+  },
+  {
+    "code": "Agressão por meio de proj./coloc. vít. diante obj. movim. - áreas de comércio e de serviços",
+    "name": "áreas de comércio e de serviços"
+  },
+  {
+    "code": "Agressão por meio de proj./coloc. vít. diante obj. movim. - áreas industriais e em construção",
+    "name": "áreas industriais e em construção"
+  },
+  {
+    "code": "Agressão por meio de proj./coloc. vít. diante obj. movim. - escolas, out. instit. e áreas adm. públ.",
+    "name": "escolas, out. instit. e áreas adm. públ."
+  },
+  {
+    "code": "Agressão por meio de proj./coloc. vít. diante obj. movim. - fazenda",
+    "name": "fazenda"
+  },
+  {
+    "code": "Agressão por meio de proj./coloc. vít. diante obj. movim. - habitação coletiva",
+    "name": "habitação coletiva"
+  },
+  {
+    "code": "Alcoolemia de 100-119 mg/100ml",
+    "name": "119 mg/100ml"
+  },
+  {
+    "code": "Alcoolemia de 120-199 mg/100ml",
+    "name": "199 mg/100ml"
+  },
+  {
+    "code": "Alcoolemia de 20-39 mg/100ml",
+    "name": "39 mg/100ml"
+  },
+  {
+    "code": "Alcoolemia de 200-239 mg/100ml",
+    "name": "239 mg/100ml"
+  },
+  {
+    "code": "Alcoolemia de 40-59 mg/100ml",
+    "name": "59 mg/100ml"
+  },
+  {
+    "code": "Alcoolemia de 60-79 mg/100ml",
+    "name": "79 mg/100ml"
+  },
+  {
+    "code": "Alcoolemia de 80-99 mg/100ml",
+    "name": "99 mg/100ml"
+  },
+  {
+    "code": "Alcoolemia igual ou superior a 240 mg/100ml",
+    "name": "Alcoolemia igual ou superior a 240 mg/100ml"
+  },
+  {
+    "code": "Alcoolemia inferior a 20 mg/100 ml",
+    "name": "Alcoolemia inferior a 20 mg/100 ml"
+  },
+  {
+    "code": "Anemia devida à deficiência de glicose-6-fosfato-desidrogenase [G-6-Pd]",
+    "name": "6-fosfato-desidrogenase [G-6-Pd]"
+  },
+  {
+    "code": "Anemia por deficiência de vitamina B12",
+    "name": "Anemia por deficiência de vitamina B12"
+  },
+  {
+    "code": "Anemia por deficiência de vitamina B12 devida à deficiência de fator intrínseco",
+    "name": "Anemia por deficiência de vitamina B12 devida à deficiência de fator intrínseco"
+  },
+  {
+    "code": "Anemia por deficiência de vitamina B12 devida à má-absorção seletiva de vitamina B12 com proteinúria",
+    "name": "absorção seletiva de vitamina B12 com proteinúria"
+  },
+  {
+    "code": "Anemia por deficiência de vitamina B12 não especificada",
+    "name": "Anemia por deficiência de vitamina B12 não especificada"
+  },
+  {
+    "code": "Anetodermia de Schweninger-Buzzi",
+    "name": "Buzzi"
+  },
+  {
+    "code": "Angrostrongilíase devida a Parastrongylus cantonensis",
+    "name": "Angrostrongilíase devida a Parastrongylus cantonensis"
+  },
+  {
+    "code": "Artrite na doença de Lyme",
+    "name": "Artrite na doença de Lyme"
+  },
+  {
+    "code": "Atresia das fendas de luschka e do forâmen de magendie",
+    "name": "Atresia das fendas de luschka e do forâmen de magendie"
+  },
+  {
+    "code": "Atrofia muscular espinal infantil tipo I [Werdnig-Hoffman]",
+    "name": "Hoffman]"
+  },
+  {
+    "code": "Auto-intox p/ exp intenc droga anticonvulsivante sedat hipnótico antiparkinsoniano psicotropico ncop",
+    "name": "intox p/ exp intenc droga anticonvulsivante sedat hipnótico antiparkinsoniano psicotropico ncop"
+  },
+  {
+    "code": "Auto-intox. intenc., a antiepil, sedat, hipnót, antipark e psicot - área p/prát esporte/atletismo",
+    "name": "intox. intenc., a antiepil, sedat, hipnót, antipark e psicot - área p/prát esporte/atletismo"
+  },
+  {
+    "code": "Auto-intox. intenc., a antiepil, sedat, hipnót, antipark e psicot - áreas de comércio e serviços",
+    "name": "intox. intenc., a antiepil, sedat, hipnót, antipark e psicot - áreas de comércio e serviços"
+  },
+  {
+    "code": "Auto-intox. intenc., a antiepil, sedat, hipnót, antipark e psicot - áreas industriais/construção",
+    "name": "intox. intenc., a antiepil, sedat, hipnót, antipark e psicot - áreas industriais/construção"
+  },
+  {
+    "code": "Auto-intox. intenc., a antiepil, sedat, hipnót, antipark e psicot - esc, out inst e áreas adm púb",
+    "name": "intox. intenc., a antiepil, sedat, hipnót, antipark e psicot - esc, out inst e áreas adm púb"
+  },
+  {
+    "code": "Auto-intox. intenc., a antiepil, sedat, hipnót, antipark e psicot - fazenda",
+    "name": "intox. intenc., a antiepil, sedat, hipnót, antipark e psicot - fazenda"
+  },
+  {
+    "code": "Auto-intox. intenc., a antiepil, sedat, hipnót, antipark e psicot - habitação coletiva",
+    "name": "intox. intenc., a antiepil, sedat, hipnót, antipark e psicot - habitação coletiva"
+  },
+  {
+    "code": "Auto-intox. intenc., a antiepil, sedat, hipnót, antipark e psicot - local não especificado",
+    "name": "intox. intenc., a antiepil, sedat, hipnót, antipark e psicot - local não especificado"
+  },
+  {
+    "code": "Auto-intox. intenc., a antiepil, sedat, hipnót, antipark e psicot - outros locais especificados",
+    "name": "intox. intenc., a antiepil, sedat, hipnót, antipark e psicot - outros locais especificados"
+  },
+  {
+    "code": "Auto-intox. intenc., a antiepil, sedat, hipnót, antipark e psicot - residência",
+    "name": "intox. intenc., a antiepil, sedat, hipnót, antipark e psicot - residência"
+  },
+  {
+    "code": "Auto-intox. intenc., a antiepil, sedat, hipnót, antipark e psicot - rua e estrada",
+    "name": "intox. intenc., a antiepil, sedat, hipnót, antipark e psicot - rua e estrada"
+  },
+  {
+    "code": "Bronquite aguda devida a Mycoplasma Pneumoniae",
+    "name": "Bronquite aguda devida a Mycoplasma Pneumoniae"
+  },
+  {
+    "code": "Bronquite aguda devida a vírus Coxsackie",
+    "name": "Bronquite aguda devida a vírus Coxsackie"
+  },
+  {
+    "code": "Cariótipo 45, X",
+    "name": "Cariótipo 45, X"
+  },
+  {
+    "code": "Cariótipo 46, X com cromossomo sexual anormal, salvo ISO (XQ)",
+    "name": "Cariótipo 46, X com cromossomo sexual anormal, salvo ISO (XQ)"
+  },
+  {
+    "code": "Cariótipo 46, X ISO (XQ)",
+    "name": "Cariótipo 46, X ISO (XQ)"
+  },
+  {
+    "code": "Cariótipo 47, XXX",
+    "name": "Cariótipo 47, XXX"
+  },
+  {
+    "code": "Cariótipo 47, XYY",
+    "name": "Cariótipo 47, XYY"
+  },
+  {
+    "code": "Celulite eosinofílica [Wells]",
+    "name": "Celulite eosinofílica [Wells]"
+  },
+  {
+    "code": "Ceratose folicular e parafolicular penetrante na pele [síndrome de Kyrle]",
+    "name": "Ceratose folicular e parafolicular penetrante na pele [síndrome de Kyrle]"
+  },
+  {
+    "code": "Ciclista traum. em col. com autom., pick-up ou caminh. - cicl. não espec. traum. em acid. não-trâns.",
+    "name": "up ou caminh. - cicl. não espec. traum. em acid. não-trâns."
+  },
+  {
+    "code": "Ciclista traum. em col. com autom., pick-up ou caminh. - cicl. não espec. traumat. em acid. trânsito",
+    "name": "up ou caminh. - cicl. não espec. traumat. em acid. trânsito"
+  },
+  {
+    "code": "Ciclista traum. em col. com autom., pick-up ou caminh. - condutor traum. em acidente ñ-trânsito",
+    "name": "up ou caminh. - condutor traum. em acidente ñ-trânsito"
+  },
+  {
+    "code": "Ciclista traum. em col. com autom., pick-up ou caminh. - condutor traumat. em acidente de trânsito",
+    "name": "up ou caminh. - condutor traumat. em acidente de trânsito"
+  },
+  {
+    "code": "Ciclista traum. em col. com veículo motor de 2/3 rodas - cicl. não espec. traum. em acid. não-trâns.",
+    "name": "cicl. não espec. traum. em acid. não-trâns."
+  },
+  {
+    "code": "Ciclista traum. em col. com veículo motor de 2/3 rodas - cicl. não espec. traumat. em acid. trânsito",
+    "name": "cicl. não espec. traumat. em acid. trânsito"
+  },
+  {
+    "code": "Ciclista traum. em col. com veículo motor de 2/3 rodas - condutor traum. em acidente ñ-trânsito",
+    "name": "condutor traum. em acidente ñ-trânsito"
+  },
+  {
+    "code": "Ciclista traum. em col. com veículo motor de 2/3 rodas - condutor traumat. em acidente de trânsito",
+    "name": "condutor traumat. em acidente de trânsito"
+  },
+  {
+    "code": "Ciclista traum. em col. com veículo motor de 2/3 rodas - passag. traum. em acidente ñ-trânsito",
+    "name": "passag. traum. em acidente ñ-trânsito"
+  },
+  {
+    "code": "Ciclista traum. em col. com veículo motor de 2/3 rodas - passageiro traumat. em acidente de trânsito",
+    "name": "passageiro traumat. em acidente de trânsito"
+  },
+  {
+    "code": "Ciclista traum. em col. com veículo motor de 2/3 rodas - pessoa traumat. ao subir/descer do veículo",
+    "name": "pessoa traumat. ao subir/descer do veículo"
+  },
+  {
+    "code": "Ciclista traumatizado em colisão com um automóvel, pick-up ou caminhonete",
+    "name": "up ou caminhonete"
+  },
+  {
+    "code": "Cólera devida a Vibrio Cholerae 01, biótipo Cholerae",
+    "name": "Cólera devida a Vibrio Cholerae 01, biótipo Cholerae"
+  },
+  {
+    "code": "Cólera devida a Vibrio Cholerae 01, biótipo El Tor",
+    "name": "Cólera devida a Vibrio Cholerae 01, biótipo El Tor"
+  },
+  {
+    "code": "Condição de saúde posterior à covid-19, não especificada",
+    "name": "19, não especificada"
+  },
+  {
+    "code": "Corrosões envolvendo 10 - 19% da superfície corporal",
+    "name": "19% da superfície corporal"
+  },
+  {
+    "code": "Corrosões envolvendo 20 - 29% da superfície corporal",
+    "name": "29% da superfície corporal"
+  },
+  {
+    "code": "Corrosões envolvendo 30 - 39% da superfície corporal",
+    "name": "39% da superfície corporal"
+  },
+  {
+    "code": "Corrosões envolvendo 40 - 49% da superfície corporal",
+    "name": "49% da superfície corporal"
+  },
+  {
+    "code": "Corrosões envolvendo 50 - 59% da superfície corporal",
+    "name": "59% da superfície corporal"
+  },
+  {
+    "code": "Corrosões envolvendo 60 - 69% da superfície corporal",
+    "name": "69% da superfície corporal"
+  },
+  {
+    "code": "Corrosões envolvendo 70 - 79% da superfície corporal",
+    "name": "79% da superfície corporal"
+  },
+  {
+    "code": "Corrosões envolvendo 80 - 89% da superfície corporal",
+    "name": "89% da superfície corporal"
+  },
+  {
+    "code": "Corrosões envolvendo 90% ou mais da superfície corporal",
+    "name": "Corrosões envolvendo 90% ou mais da superfície corporal"
+  },
+  {
+    "code": "Corrosões envolvendo menos de 10% da superfície corporal",
+    "name": "Corrosões envolvendo menos de 10% da superfície corporal"
+  },
+  {
+    "code": "Defeito do antígeno-1 da função de linfócito [LFA-1]",
+    "name": "1 da função de linfócito [LFA-1]"
+  },
+  {
+    "code": "Deleção do braço curto do cromossomo 4",
+    "name": "Deleção do braço curto do cromossomo 4"
+  },
+  {
+    "code": "Deleção do braço curto do cromossomo 5",
+    "name": "Deleção do braço curto do cromossomo 5"
+  },
+  {
+    "code": "Dermatose neutrofílica febril [Sweet]",
+    "name": "Dermatose neutrofílica febril [Sweet]"
+  },
+  {
+    "code": "Disautonomia familiar [Síndrome de Riley-Day]",
+    "name": "Day]"
+  },
+  {
+    "code": "Disidrose [Pompholyx]",
+    "name": "Disidrose [Pompholyx]"
+  },
+  {
+    "code": "Dismorfismo devido ao warfarin",
+    "name": "Dismorfismo devido ao warfarin"
+  },
+  {
+    "code": "Doença da floresta de Kyasanur",
+    "name": "Doença da floresta de Kyasanur"
+  },
+  {
+    "code": "Doença da urina em xarope de ácer (ou bordo) (maple-syrup urine disease)",
+    "name": "syrup urine disease)"
+  },
+  {
+    "code": "Doença de Letterer-Siwe",
+    "name": "Siwe"
+  },
+  {
+    "code": "Doença de Lyme",
+    "name": "Doença de Lyme"
+  },
+  {
+    "code": "Doença de moyamoya",
+    "name": "Doença de moyamoya"
+  },
+  {
+    "code": "Doença de Sézary",
+    "name": "Doença de Sézary"
+  },
+  {
+    "code": "Doença de von Willebrand",
+    "name": "Doença de von Willebrand"
+  },
+  {
+    "code": "Doença pelo HIV resultando em pneumonia por Pneumocystis jirovecii",
+    "name": "Doença pelo HIV resultando em pneumonia por Pneumocystis jirovecii"
+  },
+  {
+    "code": "Doença renal crônica, estádio 2",
+    "name": "Doença renal crônica, estádio 2"
+  },
+  {
+    "code": "Doença renal crônica, estádio 3",
+    "name": "Doença renal crônica, estádio 3"
+  },
+  {
+    "code": "Doença renal crônica, estádio 4",
+    "name": "Doença renal crônica, estádio 4"
+  },
+  {
+    "code": "Doença renal crônica, estádio 5",
+    "name": "Doença renal crônica, estádio 5"
+  },
+  {
+    "code": "Efeitos adversos da vitamina B12, ácido fólico e outras prep. prescritas nas anemias megaloblásticas",
+    "name": "Efeitos adversos da vitamina B12, ácido fólico e outras prep. prescritas nas anemias megaloblásticas"
+  },
+  {
+    "code": "Efeitos adversos de antagonistas dos receptores h2 da histamina",
+    "name": "Efeitos adversos de antagonistas dos receptores h2 da histamina"
+  },
+  {
+    "code": "Efeitos adversos de derivados do 4-aminofenol",
+    "name": "aminofenol"
+  },
+  {
+    "code": "Encefalopatia de wernicke",
+    "name": "Encefalopatia de wernicke"
+  },
+  {
+    "code": "Enterite devida a Yersinia enterocolítica",
+    "name": "Enterite devida a Yersinia enterocolítica"
+  },
+  {
+    "code": "Enterite por Campylobacter",
+    "name": "Enterite por Campylobacter"
+  },
+  {
+    "code": "Falso trabalho de parto antes de se completarem 37 semanas de gestação",
+    "name": "Falso trabalho de parto antes de se completarem 37 semanas de gestação"
+  },
+  {
+    "code": "Falso trabalho de parto na 37ª semana completa ou depois dela",
+    "name": "Falso trabalho de parto na 37ª semana completa ou depois dela"
+  },
+  {
+    "code": "Febre de Chikungunya",
+    "name": "Febre de Chikungunya"
+  },
+  {
+    "code": "Febre de O-Nyong-Nyong",
+    "name": "Nyong-Nyong"
+  },
+  {
+    "code": "Fibromatose de fáscia palmar [Dupuytren]",
+    "name": "Fibromatose de fáscia palmar [Dupuytren]"
+  },
+  {
+    "code": "Filariose por Brugia Malayi",
+    "name": "Filariose por Brugia Malayi"
+  },
+  {
+    "code": "Filariose por Wuchereria Bancrofti",
+    "name": "Filariose por Wuchereria Bancrofti"
+  },
+  {
+    "code": "Gastroenteropatia aguda pelo agente de Norwalk",
+    "name": "Gastroenteropatia aguda pelo agente de Norwalk"
+  },
+  {
+    "code": "Granulomatose de Wegener",
+    "name": "Granulomatose de Wegener"
+  },
+  {
+    "code": "Hemorragia intraventricular (não-traumática) grau 3, do feto e do recém-nascido",
+    "name": "traumática) grau 3, do feto e do recém-nascido"
+  },
+  {
+    "code": "Hermafrodite verdadeiro 46, XX",
+    "name": "Hermafrodite verdadeiro 46, XX"
+  },
+  {
+    "code": "Infecção pelo vírus West Nile",
+    "name": "Infecção pelo vírus West Nile"
+  },
+  {
+    "code": "Infecção por Mycoplasma de localização não especificada",
+    "name": "Infecção por Mycoplasma de localização não especificada"
+  },
+  {
+    "code": "Intoxicação alimentar devida a Clostridium Perfringens [Clostridium Welchii]",
+    "name": "Intoxicação alimentar devida a Clostridium Perfringens [Clostridium Welchii]"
+  },
+  {
+    "code": "Intoxicação por derivados do 4-aminofenol",
+    "name": "aminofenol"
+  },
+  {
+    "code": "Kwashiorkor",
+    "name": "Kwashiorkor"
+  },
+  {
+    "code": "Kwashiorkor marasmático",
+    "name": "Kwashiorkor marasmático"
+  },
+  {
+    "code": "Macroglobulinemia de waldenström",
+    "name": "Macroglobulinemia de waldenström"
+  },
+  {
+    "code": "MORTE POR QUALQUER CAUSA OBSTETRICA QUE OCORRE MAIS DE 42 DIAS MAS MENOS DE 1 ANO APOS O PARTO",
+    "name": "MORTE POR QUALQUER CAUSA OBSTETRICA QUE OCORRE MAIS DE 42 DIAS MAS MENOS DE 1 ANO APOS O PARTO"
+  },
+  {
+    "code": "Morte que ocorre em menos de 24 horas após o início dos sintomas, que não pode ser explicada",
+    "name": "Morte que ocorre em menos de 24 horas após o início dos sintomas, que não pode ser explicada"
+  },
+  {
+    "code": "Mosaicismo cromossômico, 45, X/46, XX ou XY",
+    "name": "Mosaicismo cromossômico, 45, X/46, XX ou XY"
+  },
+  {
+    "code": "Mosaicismo cromossômico, 45, X/outra(s) linhagens celular(es) com cromossomo sexual anormal",
+    "name": "Mosaicismo cromossômico, 45, X/outra(s) linhagens celular(es) com cromossomo sexual anormal"
+  },
+  {
+    "code": "Motociclista traum. em col. c/veíc. a motor de 2/3 rodas - condutor traum. em acid. ñ-trânsito",
+    "name": "condutor traum. em acid. ñ-trânsito"
+  },
+  {
+    "code": "Motociclista traum. em col. c/veíc. a motor de 2/3 rodas - condutor traum. em acidente de trânsito",
+    "name": "condutor traum. em acidente de trânsito"
+  },
+  {
+    "code": "Motociclista traum. em col. c/veíc. a motor de 2/3 rodas - motocicl ñ espec traum acid ñ-trânsito",
+    "name": "motocicl ñ espec traum acid ñ-trânsito"
+  },
+  {
+    "code": "Motociclista traum. em col. c/veíc. a motor de 2/3 rodas - motocicl ñ espec traum em acid trânsito",
+    "name": "motocicl ñ espec traum em acid trânsito"
+  },
+  {
+    "code": "Motociclista traum. em col. c/veíc. a motor de 2/3 rodas - passag. traum. em acidente de trânsito",
+    "name": "passag. traum. em acidente de trânsito"
+  },
+  {
+    "code": "Motociclista traum. em col. c/veíc. a motor de 2/3 rodas - passageiro traum. em acid. ñ-trânsito",
+    "name": "passageiro traum. em acid. ñ-trânsito"
+  },
+  {
+    "code": "Mulher com cariótipo 46, XY",
+    "name": "Mulher com cariótipo 46, XY"
+  },
+  {
+    "code": "Neoplasia maligna do anel de waldeyer",
+    "name": "Neoplasia maligna do anel de waldeyer"
+  },
+  {
+    "code": "Oftalmoplegia supranuclear progressiva [Steele-Richardson-Olszewski]",
+    "name": "Richardson-Olszewski]"
+  },
+  {
+    "code": "Outro homem com cariótipo 46, XX",
+    "name": "Outro homem com cariótipo 46, XX"
+  },
+  {
+    "code": "Paniculite recidivante [Weber-Christian]",
+    "name": "Christian]"
+  },
+  {
+    "code": "Queimaduras envolvendo 90% ou mais da superfície corporal",
+    "name": "Queimaduras envolvendo 90% ou mais da superfície corporal"
+  },
+  {
+    "code": "Queimaduras envolvendo de 10 - 19% da superfície corporal",
+    "name": "19% da superfície corporal"
+  },
+  {
+    "code": "Queimaduras envolvendo de 40 - 49% da superfície corporal",
+    "name": "49% da superfície corporal"
+  },
+  {
+    "code": "Queimaduras envolvendo de 50 - 59% da superfície corporal",
+    "name": "59% da superfície corporal"
+  },
+  {
+    "code": "Queimaduras envolvendo de 60 - 69% da superfície corporal",
+    "name": "69% da superfície corporal"
+  },
+  {
+    "code": "Queimaduras envolvendo de 70 - 79% da superfície corporal",
+    "name": "79% da superfície corporal"
+  },
+  {
+    "code": "Queimaduras envolvendo de 80 - 89% da superfície corporal",
+    "name": "89% da superfície corporal"
+  },
+  {
+    "code": "Quimera 46, XX/46, XY",
+    "name": "Quimera 46, XX/46, XY"
+  },
+  {
+    "code": "Síndrome de Down",
+    "name": "Síndrome de Down"
+  },
+  {
+    "code": "Síndrome de Klinefelter, cariótipo 47, XXY",
+    "name": "Síndrome de Klinefelter, cariótipo 47, XXY"
+  },
+  {
+    "code": "Síndrome de Klinefelter, homem com cariótipo 46, XX",
+    "name": "Síndrome de Klinefelter, homem com cariótipo 46, XX"
+  },
+  {
+    "code": "Síndrome de megavitamina B6",
+    "name": "Síndrome de megavitamina B6"
+  },
+  {
+    "code": "Trissomia 18, mosaicismo cromossômico (não-disjunção mitótica)",
+    "name": "disjunção mitótica)"
+  },
+  {
+    "code": "Trissomia 18, não-disjunção meiótica",
+    "name": "disjunção meiótica"
+  },
+  {
+    "code": "Trissomia 18, translocação",
+    "name": "Trissomia 18, translocação"
+  }
+]

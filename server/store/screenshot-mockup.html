@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { width: 1280px; height: 800px; display: flex; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; overflow: hidden; background: #f0f2f5; }
+
+/* ── EMR background (G-Hosp) ── */
+.emr { flex: 1; display: flex; flex-direction: column; background: #fff; min-width: 0; }
+.emr-topbar { background: #1a3a5c; color: #fff; padding: 0 20px; height: 48px; display: flex; align-items: center; gap: 16px; font-size: 13px; }
+.emr-topbar .logo { font-weight: 700; font-size: 16px; letter-spacing: 1px; color: #7ec8f0; }
+.emr-topbar .nav { color: #aad4f0; font-size: 12px; }
+.emr-nav { background: #1e4976; display: flex; gap: 2px; padding: 0 16px; }
+.emr-nav a { color: #aac8e8; font-size: 11.5px; padding: 8px 14px; text-decoration: none; display: block; }
+.emr-nav a.active { background: #fff; color: #1a3a5c; font-weight: 600; border-radius: 4px 4px 0 0; }
+.emr-body { display: flex; flex: 1; min-height: 0; }
+.emr-sidebar { width: 190px; background: #f7f8fa; border-right: 1px solid #dde1e7; padding: 14px 10px; }
+.emr-sidebar h4 { font-size: 10px; color: #8a94a6; text-transform: uppercase; letter-spacing: .8px; margin-bottom: 10px; }
+.emr-sidebar .patient-card { background: #fff; border: 1px solid #dde1e7; border-radius: 8px; padding: 12px; margin-bottom: 12px; }
+.emr-sidebar .patient-name { font-size: 13px; font-weight: 700; color: #1a2b42; margin-bottom: 4px; }
+.emr-sidebar .patient-meta { font-size: 11px; color: #6b7a8d; line-height: 1.6; }
+.emr-sidebar .badge { display: inline-block; background: #e8f4fd; color: #1a6fa8; font-size: 10px; padding: 2px 7px; border-radius: 20px; margin-top: 6px; font-weight: 600; }
+.emr-content { flex: 1; padding: 18px 22px; overflow-y: auto; }
+.emr-content h3 { font-size: 14px; font-weight: 700; color: #1a2b42; margin-bottom: 14px; border-bottom: 1px solid #eee; padding-bottom: 10px; }
+.soap-section { margin-bottom: 14px; }
+.soap-label { font-size: 11px; font-weight: 700; color: #5a6a7a; text-transform: uppercase; letter-spacing: .7px; margin-bottom: 5px; }
+.soap-box { background: #f8f9fb; border: 1px solid #dde1e7; border-radius: 6px; padding: 10px 12px; font-size: 12px; color: #2d3a4a; line-height: 1.6; min-height: 56px; }
+.soap-box.highlight { border-color: #10b981; background: #f0fdf8; }
+.soap-box.highlight .cursor { display: inline-block; width: 2px; height: 13px; background: #10b981; margin-left: 1px; animation: blink .8s step-end infinite; vertical-align: text-bottom; }
+@keyframes blink { 50% { opacity: 0; } }
+.cid-row { display: flex; align-items: center; gap: 10px; margin-top: 8px; }
+.cid-chip { background: #eff6ff; border: 1px solid #bfdbfe; color: #1d4ed8; font-size: 11px; padding: 4px 10px; border-radius: 20px; font-weight: 600; }
+.cid-chip.suggested { background: #10b981; border-color: #10b981; color: #fff; }
+
+/* ── Extension side panel ── */
+.panel { width: 310px; background: #0a0a0a; color: #ddd; display: flex; flex-direction: column; border-left: 1px solid #1f1f1f; flex-shrink: 0; }
+.pbrand { display: flex; align-items: center; justify-content: space-between; padding: 11px 16px; background: linear-gradient(180deg,#131313,#0f0f0f); border-bottom: 1px solid #1a1a1a; }
+.pbrand-left { display: flex; align-items: center; gap: 9px; }
+.pbrand-mark { width: 24px; height: 24px; border-radius: 6px; background: linear-gradient(135deg,#10b981,#047857); display: flex; align-items: center; justify-content: center; }
+.pbrand-mark svg { width: 14px; height: 14px; fill: #fff; }
+.pbrand-name { font-size: 13px; font-weight: 700; color: #e5e7eb; }
+.pbrand-name span { color: #10b981; }
+.status-dot { width: 7px; height: 7px; border-radius: 50%; background: #10b981; box-shadow: 0 0 6px #10b981; }
+
+.tabs { display: flex; border-bottom: 1px solid #1f1f1f; background: #0a0a0a; }
+.tab { flex: 1; padding: 10px; background: #111; border: none; color: #666; font-size: 11px; font-weight: 600; cursor: pointer; text-align: center; }
+.tab.active { color: #10b981; border-bottom: 2px solid #10b981; background: #0a0a0a; }
+
+.panel-body { flex: 1; padding: 14px 16px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; }
+
+/* Record button */
+.record-section { text-align: center; }
+.record-btn { width: 64px; height: 64px; border-radius: 50%; border: 3px solid #10b981; background: #0d1f17; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 8px; box-shadow: 0 0 18px rgba(16,185,129,.25); }
+.record-btn svg { width: 26px; height: 26px; fill: #10b981; }
+.record-label { font-size: 11px; color: #6b7280; }
+.record-timer { font-size: 20px; font-weight: 700; color: #10b981; font-variant-numeric: tabular-nums; letter-spacing: 1px; }
+.waveform { height: 28px; display: flex; align-items: center; justify-content: center; gap: 2px; margin: 6px 0; }
+.waveform .bar { width: 3px; border-radius: 2px; background: #10b981; opacity: .8; }
+
+/* SOAP output */
+.soap-out { background: #111; border: 1px solid #1f1f1f; border-radius: 8px; padding: 11px 12px; font-size: 11.5px; line-height: 1.65; color: #cbd5e1; }
+.soap-out .section-head { color: #10b981; font-weight: 700; font-size: 10.5px; text-transform: uppercase; letter-spacing: .6px; margin-bottom: 4px; }
+.soap-out .section-body { color: #94a3b8; margin-bottom: 9px; font-size: 11px; }
+
+/* CID */
+.cid-out { background: #0d1f17; border: 1px solid #065f46; border-radius: 7px; padding: 9px 12px; display: flex; align-items: center; gap: 10px; }
+.cid-code { font-size: 15px; font-weight: 800; color: #10b981; }
+.cid-desc { font-size: 11px; color: #6ee7b7; line-height: 1.4; }
+
+/* Action buttons */
+.action-row { display: flex; gap: 8px; }
+.action-btn { flex: 1; padding: 9px; border-radius: 7px; border: none; font-size: 11.5px; font-weight: 600; cursor: pointer; }
+.action-btn.primary { background: #10b981; color: #fff; }
+.action-btn.secondary { background: #1f2937; color: #9ca3af; }
+
+/* Plan chip */
+.plan-row { display: flex; align-items: center; justify-content: space-between; margin-top: auto; padding-top: 10px; border-top: 1px solid #1a1a1a; }
+.plan-chip { font-size: 10px; color: #6b7280; }
+.plan-chip strong { color: #10b981; }
+.user-email { font-size: 10px; color: #374151; }
+</style>
+</head>
+<body>
+
+<!-- EMR left side -->
+<div class="emr">
+  <div class="emr-topbar">
+    <span class="logo">G·HOSP</span>
+    <span class="nav">Ambulatório › Consulta › Prontuário</span>
+  </div>
+  <div class="emr-nav">
+    <a href="#">Início</a>
+    <a href="#">Agenda</a>
+    <a class="active" href="#">Prontuário</a>
+    <a href="#">Prescrição</a>
+    <a href="#">Exames</a>
+    <a href="#">Alta</a>
+  </div>
+  <div class="emr-body">
+    <div class="emr-sidebar">
+      <h4>Paciente</h4>
+      <div class="patient-card">
+        <div class="patient-name">█████ ██████</div>
+        <div class="patient-meta">
+          34 anos · M<br>
+          CPF: ███.███.███-██<br>
+          Convênio: SUS
+        </div>
+        <div class="badge">Consulta ativa</div>
+      </div>
+      <h4>Histórico</h4>
+      <div style="font-size:11px;color:#8a94a6;line-height:1.8;">
+        <div>12/05 — Retorno HAS</div>
+        <div>28/04 — Consulta DM2</div>
+        <div>10/03 — Pré-operatório</div>
+      </div>
+    </div>
+    <div class="emr-content">
+      <h3>Prontuário — Consulta 18/05/2026</h3>
+      <div class="soap-section">
+        <div class="soap-label">Subjetivo</div>
+        <div class="soap-box highlight">Paciente refere cefaleia há 3 dias, intensidade 6/10, sem náuseas ou vômitos. Nega febre. PA aferida em domicílio: 160/100 mmHg.<span class="cursor"></span></div>
+      </div>
+      <div class="soap-section">
+        <div class="soap-label">Objetivo</div>
+        <div class="soap-box">PA: 158/98 mmHg · FC: 78 bpm · SpO2: 98% · Peso: 84 kg<br>Exame físico: BEG, LOTE, eupneico. Ausculta cardíaca: BRNF 2T sem sopros.</div>
+      </div>
+      <div class="soap-section">
+        <div class="soap-label">Avaliação</div>
+        <div class="soap-box">HAS não controlada. Hipertensão arterial sistêmica em crise hipertensiva leve.</div>
+      </div>
+      <div class="soap-section">
+        <div class="soap-label">Plano</div>
+        <div class="soap-box">Ajuste de Losartana 50mg → 100mg/dia. Reforçar dieta hipossódica. Retorno em 30 dias com PA monitorada.</div>
+      </div>
+      <div class="cid-row">
+        <span style="font-size:11px;color:#8a94a6;">CID sugerido:</span>
+        <span class="cid-chip suggested">I10 — Hipertensão essencial</span>
+        <span class="cid-chip">I50.9</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Extension side panel -->
+<div class="panel">
+  <div class="pbrand">
+    <div class="pbrand-left">
+      <div class="pbrand-mark">
+        <svg viewBox="0 0 16 16"><path d="M8 1a7 7 0 100 14A7 7 0 008 1zm0 2a5 5 0 110 10A5 5 0 018 3zm0 2a3 3 0 100 6 3 3 0 000-6z"/></svg>
+      </div>
+      <span class="pbrand-name">Toca Ficha <span>Dr.</span></span>
+    </div>
+    <div class="status-dot"></div>
+  </div>
+
+  <div class="tabs">
+    <div class="tab active">Gravar</div>
+    <div class="tab">Receita</div>
+    <div class="tab">Config</div>
+  </div>
+
+  <div class="panel-body">
+
+    <!-- Record section (done state) -->
+    <div class="record-section">
+      <div class="record-btn">
+        <svg viewBox="0 0 24 24"><path d="M9 5a3 3 0 016 0v7a3 3 0 01-6 0V5zm-2 7a5 5 0 0010 0h2a7 7 0 01-14 0h2z"/></svg>
+      </div>
+      <div class="record-timer">0:42</div>
+      <div class="waveform">
+        <div class="bar" style="height:8px"></div><div class="bar" style="height:18px"></div><div class="bar" style="height:12px"></div><div class="bar" style="height:22px"></div><div class="bar" style="height:10px"></div><div class="bar" style="height:20px"></div><div class="bar" style="height:14px"></div><div class="bar" style="height:24px"></div><div class="bar" style="height:9px"></div><div class="bar" style="height:16px"></div><div class="bar" style="height:20px"></div><div class="bar" style="height:12px"></div><div class="bar" style="height:18px"></div>
+      </div>
+      <div class="record-label">Gravação concluída · Groq Whisper</div>
+    </div>
+
+    <!-- SOAP output -->
+    <div class="soap-out">
+      <div class="section-head">S —</div>
+      <div class="section-body">Cefaleia há 3 dias, intensidade 6/10, sem náuseas. PA domiciliar 160/100 mmHg.</div>
+      <div class="section-head">O —</div>
+      <div class="section-body">PA 158/98 · FC 78 · SpO2 98% · Peso 84kg. Ausculta s/ sopros.</div>
+      <div class="section-head">A —</div>
+      <div class="section-body">HAS não controlada. Crise hipertensiva leve.</div>
+      <div class="section-head">P —</div>
+      <div class="section-body">Losartana 50→100mg/dia. Dieta hipossódica. Retorno 30 dias.</div>
+    </div>
+
+    <!-- CID -->
+    <div class="cid-out">
+      <div class="cid-code">I10</div>
+      <div class="cid-desc">Hipertensão arterial<br>essencial (primária)</div>
+    </div>
+
+    <!-- Actions -->
+    <div class="action-row">
+      <button class="action-btn primary">✓ Aplicar SOAP</button>
+      <button class="action-btn secondary">Finalizar</button>
+    </div>
+
+    <div class="plan-row">
+      <div class="plan-chip">Plano <strong>PRO</strong></div>
+      <div class="user-email" style="color:#4b5563;font-size:10px;">christian@tocafichadr.com.br</div>
+    </div>
+
+  </div>
+</div>
+
+</body>
+</html>

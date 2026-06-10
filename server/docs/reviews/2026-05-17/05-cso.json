@@ -1,0 +1,222 @@
+{
+  "meta": {
+    "skill": "/cso",
+    "mode": "comprehensive",
+    "date": "2026-05-17",
+    "repo": "tocafichadr-extension",
+    "head_sha": "8d6c2ab",
+    "phase": "006-code-quality-sweep-2026-05-17",
+    "generated_by": "paperclip-engineer (claude-sonnet-4-6)",
+    "note": "Manual CSO — /cso skill not available in this runtime; findings are equivalent in scope."
+  },
+  "summary": {
+    "total_findings": 18,
+    "critical": 1,
+    "high": 3,
+    "medium": 6,
+    "low": 5,
+    "info": 3
+  },
+  "findings": [
+    {
+      "id": "CSO-001",
+      "severity": "critical",
+      "category": "secret_exposure",
+      "title": "Git history contains live secrets (BFG scrub pending)",
+      "description": "backend/.env.bak-20260510-094647 was tracked and contains live EMR credentials, Flask SECRET_KEY, and OpenAI API key. File removed from HEAD in commit 8d6c2ab but BFG history scrub has not been run.",
+      "file": "git history",
+      "recommendation": "Run BFG immediately. Rotate all three secrets. Force-push. Re-clone all local copies.",
+      "cwe": "CWE-312",
+      "status": "open"
+    },
+    {
+      "id": "CSO-002",
+      "severity": "high",
+      "category": "data_leakage",
+      "title": "OAuth callback URLs with auth codes shipped to debug log",
+      "description": "clerk-tap.js logs location.href (up to 800 chars) at page load. Clerk OAuth redirects contain code= and state= params. console-shipper.js intercepts and ships to /api/debug-log.",
+      "file": "shared/clerk-tap.js",
+      "line_range": "21-23",
+      "recommendation": "Redact code=, state=, session_token= from URL before logging.",
+      "cwe": "CWE-200",
+      "status": "open"
+    },
+    {
+      "id": "CSO-003",
+      "severity": "high",
+      "category": "data_privacy",
+      "title": "Console shipper can exfiltrate clinical data (LGPD risk)",
+      "description": "console-shipper.js ships console.warn/error payloads (up to 4000 chars) to /api/debug-log. Content scripts log SOAP text, patient URLs, and CID codes at warn level. Patient clinical data may appear in backend logs.",
+      "file": "shared/console-shipper.js",
+      "recommendation": "Add PII scrubber: truncate to 200 chars, redact CID patterns, strip URL query params.",
+      "cwe": "CWE-359",
+      "status": "open"
+    },
+    {
+      "id": "CSO-004",
+      "severity": "high",
+      "category": "auth",
+      "title": "Auth token loaded into content-script memory unnecessarily",
+      "description": "content/api-client.js loads authToken and refreshToken from chrome.storage.local into module-level variables. The SW proxy pattern already handles token attachment — content scripts don't need the token in memory.",
+      "file": "content/api-client.js",
+      "recommendation": "Remove chrome.storage.local.get([authToken, refreshToken]) from api-client.js. All auth-sensitive requests should go through the SW proxy.",
+      "cwe": "CWE-522",
+      "status": "open"
+    },
+    {
+      "id": "CSO-005",
+      "severity": "medium",
+      "category": "permissions",
+      "title": "cookies permission broader than required",
+      "description": "The cookies permission grants full read/write access to cookies on matched hosts including the G-Hosp EMR domain. No extension JS directly calls chrome.cookies.*.",
+      "file": "manifest.json",
+      "recommendation": "Audit if Clerk SDK strictly requires cookies permission. Remove if possible.",
+      "cwe": "CWE-250",
+      "status": "needs-investigation"
+    },
+    {
+      "id": "CSO-006",
+      "severity": "medium",
+      "category": "csp",
+      "title": "style-src unsafe-inline in extension CSP",
+      "description": "Extension pages allow inline styles via unsafe-inline. Widens XSS attack surface if user-supplied content is rendered as inline styles.",
+      "file": "manifest.json",
+      "recommendation": "Document which component requires unsafe-inline. Track a ticket to remove when component refactored to class-based styles.",
+      "cwe": "CWE-1173",
+      "status": "open"
+    },
+    {
+      "id": "CSO-007",
+      "severity": "medium",
+      "category": "host_permissions",
+      "title": "Dev-only host permissions in production manifest",
+      "description": "manifest.json includes http://localhost:5050/*, http://127.0.0.1:5050/*, and http://100.97.14.32:5050/*. These should be absent from the Chrome Web Store build.",
+      "file": "manifest.json",
+      "recommendation": "Verify manifest.prod.json omits these. Add CWS pre-submission checklist item.",
+      "cwe": "CWE-284",
+      "status": "needs-verification"
+    },
+    {
+      "id": "CSO-008",
+      "severity": "medium",
+      "category": "supply_chain",
+      "title": "API discovery URL is a GitHub Gist (single point of failure)",
+      "description": "API_DISCOVERY_URL points to a Gist that controls the production API endpoint. Account compromise or accidental Gist deletion could redirect all traffic.",
+      "file": "background/service-worker.src.js",
+      "line_range": "8",
+      "recommendation": "Mirror at api.tocafichadr.com.br/config/api-url.json. Use Gist only as fallback.",
+      "cwe": "CWE-494",
+      "status": "open"
+    },
+    {
+      "id": "CSO-009",
+      "severity": "medium",
+      "category": "auth",
+      "title": "Auth token expiry not validated on load from chrome.storage.local",
+      "description": "authToken is restored from storage without expiry check. Stale tokens could be sent if Clerk SDK rotation fails silently.",
+      "file": "content/api-client.js",
+      "recommendation": "Store authTokenExpiry alongside authToken. Treat token as absent if within 60s of expiry.",
+      "cwe": "CWE-613",
+      "status": "open"
+    },
+    {
+      "id": "CSO-010",
+      "severity": "medium",
+      "category": "wildcard_permissions",
+      "title": "*.trycloudflare.com wildcard host permission",
+      "description": "Any Cloudflare Tunnel URL matches this host permission. Intended for dev tunnels but is effectively an open wildcard for the Cloudflare tunnel namespace.",
+      "file": "manifest.json",
+      "recommendation": "Restrict to specific known tunnel hostnames for production, or document the accepted risk.",
+      "cwe": "CWE-284",
+      "status": "open"
+    },
+    {
+      "id": "CSO-011",
+      "severity": "low",
+      "category": "message_passing",
+      "title": "No default handler for unknown message types in SW",
+      "description": "SW message handler has no catch-all for unknown message types. Callers waiting for a response to an unrecognized message type will hang indefinitely.",
+      "file": "background/service-worker.src.js",
+      "recommendation": "Add default case: sendResponse({ ok: false, error: 'unknown_message_type' }); return true;",
+      "cwe": "CWE-755",
+      "status": "open"
+    },
+    {
+      "id": "CSO-012",
+      "severity": "low",
+      "category": "lifecycle",
+      "title": "Offscreen document lifecycle not guarded against orphaned contexts",
+      "description": "No check for chrome.offscreen.hasDocument() before sending messages to the offscreen doc. SW restart or Chrome idle can orphan the context.",
+      "file": "offscreen/offscreen.js",
+      "recommendation": "Add chrome.offscreen.hasDocument() guard and recreate document if absent.",
+      "cwe": "CWE-755",
+      "status": "open"
+    },
+    {
+      "id": "CSO-013",
+      "severity": "low",
+      "category": "resource_leak",
+      "title": "VAD setInterval not cleared on content-script unload (navigation)",
+      "description": "The VAD polling interval is cleared by _vadTeardown() on stop, but not on window unload during active recording.",
+      "file": "content/audio-capture.js",
+      "recommendation": "window.addEventListener('beforeunload', _vadTeardown) to ensure cleanup on navigation.",
+      "cwe": "CWE-401",
+      "status": "open"
+    },
+    {
+      "id": "CSO-014",
+      "severity": "low",
+      "category": "config",
+      "title": "user-config-client.js fallback API URL is localhost",
+      "description": "_resolveApiBase() falls back to http://127.0.0.1:5050 if chrome.storage.sync read fails. In production this silently breaks config hydration.",
+      "file": "shared/user-config-client.js",
+      "recommendation": "Change fallback to https://api.tocafichadr.com.br to match DEFAULT_API_BASE_URL in service-worker.src.js.",
+      "cwe": "CWE-1188",
+      "status": "open"
+    },
+    {
+      "id": "CSO-015",
+      "severity": "low",
+      "category": "code_quality",
+      "title": "popup.bundle.js committed to repo (build artifact)",
+      "description": ".gitignore lists popup/popup.bundle.js as ignored but git ls-files shows it tracked. Build artifacts inflate repo size and cause noisy diffs.",
+      "file": "popup/popup.bundle.js",
+      "recommendation": "git rm --cached popup/popup.bundle.js",
+      "cwe": null,
+      "status": "open"
+    },
+    {
+      "id": "CSO-016",
+      "severity": "info",
+      "category": "code_quality",
+      "title": "_normalizeApiError duplicated in SW and api-client",
+      "description": "Identical function defined in both background/service-worker.src.js and content/api-client.js. Drift risk.",
+      "file": "multiple",
+      "recommendation": "Move to shared/error-helpers.js",
+      "cwe": null,
+      "status": "open"
+    },
+    {
+      "id": "CSO-017",
+      "severity": "info",
+      "category": "metadata",
+      "title": "package.json name is stale (pedbot-extension)",
+      "description": "Rebrand to tocafichadr missed package.json. Harmless at runtime.",
+      "file": "package.json",
+      "recommendation": "Update name, repository.url, bugs.url, homepage.",
+      "cwe": null,
+      "status": "open"
+    },
+    {
+      "id": "CSO-018",
+      "severity": "info",
+      "category": "metadata",
+      "title": "vercel.json in extension repo",
+      "description": "Vercel deployment config is present in the Chrome extension repo. Unclear if this is for a companion service or was copied by mistake.",
+      "file": "vercel.json",
+      "recommendation": "Verify and move to the correct repo if applicable.",
+      "cwe": null,
+      "status": "needs-clarification"
+    }
+  ]
+}

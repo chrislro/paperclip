@@ -1,0 +1,7 @@
+{
+  "commit_docs": true,
+  "parallelization": false,
+  "workflow": {
+    "use_worktrees": false
+  }
+}

@@ -1,0 +1,39 @@
+name: CI
+
+on:
+  push:
+    branches: [main, 'chra-*']
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  build-and-test:
+    runs-on: [self-hosted, macOS, ARM64]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build extension
+        run: npm run build
+
+      - name: Run tests
+        run: npm test
+
+      - name: Audit manifest for dev origins
+        run: |
+          # Fail if manifest.prod.json contains localhost, 127.0.0.1, or trycloudflare in actual URLs
+          if grep -E '"https?://(localhost|127\.0\.0\.1|.*\.trycloudflare\.com)' manifest.prod.json; then
+            echo "FAIL: Dev origins found in manifest.prod.json host_permissions or URLs"
+            exit 1
+          fi
+          echo "Manifest audit passed: no dev origins in production manifest"

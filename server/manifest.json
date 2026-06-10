@@ -1,0 +1,76 @@
+{
+  "manifest_version": 3,
+  "name": "Toca Ficha Dr. — EMR Automation",
+  "version": "3.9.0",
+  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAtP1wedTlHYG35CE06X8DR8Eo+PqkAp5SdO9fRZpdaFLMh8/TMVUhEew/5lxrDLH2yMIwbh6WoCa54qaW0ReklCpsIQ1lsMu0cjqu4BVcUnC2kUAqL9Ku/uGN3jQzydBsZi+rKPsMuPVI5i/FKDVw0sStnt7D72IcsNJculBPFeQ1GNlSigJo7rlDjFwciI/gNI/g7e7Bp9A5sUKLU35rGSDVY11SU6YapprXuTJMUySzbTdMrSzEDKwLSBwff9pYnVAfpL41VH8QalL2pNytI44txWV32J1AHON9QDDRwsVOajecPK1kTiGj1AZtst8KUy/p/HetcDEuWQn0sGodRQIDAQAB",
+  "description": "Automatize consultas no G-Hosp: transcrição de voz, SOAP com IA, CID-10 e alta em poucos cliques.",
+  "permissions": [
+    "activeTab",
+    "storage",
+    "cookies",
+    "scripting",
+    "clipboardWrite",
+    "sidePanel",
+    "offscreen",
+    "alarms"
+  ],
+  "side_panel": {
+    "default_path": "sidepanel/sidepanel.html"
+  },
+  "host_permissions": [
+    "https://prbentogoncalves.g-hosp.com.br/*",
+    "https://api.tocafichadr.com.br/*",
+    "https://clerk.tocafichadr.com.br/*",
+    "https://accounts.tocafichadr.com.br/*",
+    "https://*.clerk.com/*"
+  ],
+  "content_security_policy": {
+    "extension_pages": "script-src 'self' 'wasm-unsafe-eval'; object-src 'self'; base-uri 'none'; connect-src 'self' https://clerk.tocafichadr.com.br https://accounts.tocafichadr.com.br wss://clerk.tocafichadr.com.br https://*.clerk.com https://challenges.cloudflare.com https://api.tocafichadr.com.br; frame-src 'self' https://challenges.cloudflare.com https://clerk.tocafichadr.com.br https://accounts.tocafichadr.com.br; img-src 'self' https://img.clerk.com data: blob:; style-src 'self' 'unsafe-inline'"
+  },
+  "background": {
+    "service_worker": "background/service-worker.bundle.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://prbentogoncalves.g-hosp.com.br/*"],
+      "js": [
+        "shared/console-shipper.js",
+        "shared/error-helpers.js",
+        "content/cid.js",
+        "content/api-client.js",
+        "content/vad-helpers.js",
+        "content/audio-capture.js",
+        "content/dom-engine.js",
+        "content/bridge.js"
+      ],
+      "run_at": "document_idle"
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["auth-success.html", "auth-success.js"],
+      "matches": [
+        "https://accounts.tocafichadr.com.br/*",
+        "https://clerk.tocafichadr.com.br/*",
+        "https://*.clerk.accounts.dev/*"
+      ]
+    }
+  ],
+  "externally_connectable": {
+    "matches": ["https://api.tocafichadr.com.br/*"]
+  },
+  "action": {
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "32": "icons/icon32.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "icons": {
+    "16": "icons/icon16.png",
+    "32": "icons/icon32.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  }
+}

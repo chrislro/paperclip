@@ -1,0 +1,62 @@
+SHORT DESCRIPTION (max 132 chars):
+Automatize consultas no G-Hosp: transcrição de voz, SOAP com IA, CID-10 e alta em poucos cliques.
+
+---
+
+FULL DESCRIPTION:
+
+Toca Ficha Dr. — Automação de Prontuário para G-Hosp
+
+Reduza o tempo de preenchimento de prontuário no G-Hosp (G-UPA) com assistência de IA.
+
+O Toca Ficha Dr. é uma extensão para médicos generalistas que trabalham com o sistema de prontuário eletrônico G-Hosp. Substitua dezenas de cliques repetitivos por um fluxo automatizado e guiado por inteligência artificial.
+
+COMO FUNCIONA
+
+1. Abra o painel lateral do Toca Ficha Dr. na página do paciente no G-Hosp
+2. Clique em "Gravar" e dite o atendimento em voz natural (anamnese, exame físico, conduta)
+3. O Toca Ficha Dr. transcreve o áudio, formata a nota SOAP automaticamente e sugere o CID-10 mais adequado
+4. Revise e insira o SOAP no prontuário com um clique
+5. Use os modelos de prescrição por diagnóstico para acelerar a prescrição
+6. Confirme a alta do paciente com "Alta e voltar" — a extensão retorna à fila de atendimento
+
+FUNCIONALIDADES PRINCIPAIS
+
+- Transcrição de voz para texto: converte o relato verbal em texto usando IA (OpenAI Whisper)
+- Formatação SOAP automática: organiza subjetivo, objetivo, avaliação e plano em campos separados
+- Sugestão de CID-10: identifica o diagnóstico provável e sugere o código automaticamente
+- Modelos de prescrição por diagnóstico: abre o modelo correto para o quadro clínico identificado
+- Alta e retorno à lista: preenche a saída do paciente e volta automaticamente para a fila
+- Atestado médico: gera atestado completo com observações e impressão
+- Painel lateral integrado: interface limpa dentro do G-Hosp, sem elementos flutuantes intrusivos
+
+CONTA E AUTENTICAÇÃO (v3.0+)
+
+Cadastro e login pela Clerk (provedor seguro de autenticação) — verificação de e-mail, recuperação de senha e autenticação multifator (2FA) opcional. Conta protegida com criptografia em trânsito (TLS). Login com Google em 1 clique também disponível.
+
+EMR SUPORTADO
+
+G-Hosp / G-UPA (prbentogoncalves.g-hosp.com.br)
+
+PRIVACIDADE E LGPD
+
+O Toca Ficha Dr. não armazena gravações de áudio, transcrições, notas SOAP nem qualquer dado de pacientes. O áudio é processado em memória e descartado imediatamente após a transcrição.
+
+Conformidade com a LGPD (Lei nº 13.709/2018). Sub-processadores divulgados: OpenAI (transcrição/IA, sem retenção) e Clerk Inc. (autenticação, dados de identidade somente).
+
+Política completa em https://tocafichadr.com.br/privacidade
+
+CONFORMIDADE CFM
+
+A IA é ferramenta de apoio. Toda nota gerada é apresentada para revisão antes de ser inserida no prontuário. O médico permanece como autor responsável, identificado pelo CRM.
+
+PLANOS E PREÇOS
+
+GRATUITO — Até 5 atendimentos por dia.
+
+PRO — R$ 49/mês — Atendimentos ilimitados, suporte prioritário e atualizações automáticas de seletores do G-Hosp.
+
+---
+
+Desenvolvido por médicos, para médicos. Feito no Brasil.
+tocafichadr.com.br | contato@tocafichadr.com.br

@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <title>Política de Privacidade — Toca Ficha Dr.</title>
+  <meta name="description" content="Política de privacidade do Toca Ficha Dr. — coleta, uso, armazenamento, compartilhamento de dados e direitos do usuário sob a LGPD." />
+  <meta name="theme-color" content="#10b981" />
+  <meta property="og:title" content="Política de Privacidade — Toca Ficha Dr." />
+  <meta property="og:type" content="article" />
+  <meta property="og:locale" content="pt_BR" />
+  <meta property="og:url" content="https://tocafichadr.com.br/privacidade" />
+  <link rel="canonical" href="https://tocafichadr.com.br/privacidade" />
+  <meta name="robots" content="index, follow" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Public+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Fraunces:ital,opsz,wght@1,144,500&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+    body { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; text-rendering: optimizeLegibility; }
+    a { color: var(--accent); text-decoration: none; border-bottom: 1px solid transparent; transition: border-color 120ms; }
+    a:hover { border-bottom-color: var(--accent); }
+    img, svg { display: block; max-width: 100%; }
+    ul, ol { padding-left: 1.5rem; }
+    ::selection { background: var(--ink); color: var(--bg); }
+
+    :root {
+      --bg: #f6f5f0;
+      --bg-elev: #fbfaf6;
+      --paper: #fdfcf8;
+      --ink: #0e1116;
+      --ink-2: #2a2f37;
+      --ink-3: #5b6068;
+      --muted: #8b8f95;
+      --line: #d9d6cb;
+      --line-soft: #e6e3d7;
+      --accent: #e63946;
+      --accent-deep: #b3202d;
+      --accent-soft: #fbe4e6;
+      --ok: #2f6b3a;
+      --font-display: 'Manrope', ui-sans-serif, system-ui, sans-serif;
+      --font-body: 'Public Sans', ui-sans-serif, system-ui, sans-serif;
+      --font-serif: 'Fraunces', ui-serif, Georgia, serif;
+      --rule: 1px solid var(--line);
+      --rule-soft: 1px solid var(--line-soft);
+    }
+
+    body {
+      font-family: var(--font-body);
+      background: var(--bg);
+      color: var(--ink-2);
+      line-height: 1.65;
+      font-size: 17px;
+    }
+
+    .nav {
+      border-bottom: var(--rule);
+      padding: 18px 24px;
+      position: sticky; top: 0; z-index: 10;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      background: rgba(251, 250, 246, 0.85);
+    }
+    .nav-inner {
+      max-width: 760px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .brand {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 17px;
+      color: var(--ink);
+      letter-spacing: -0.01em;
+      border-bottom: none;
+    }
+    .brand:hover { border-bottom: none; }
+    .brand .dot { color: var(--accent); }
+    .nav a.back {
+      font-size: 14px;
+      color: var(--ink-3);
+      border-bottom: none;
+    }
+    .nav a.back:hover { color: var(--ink); border-bottom: none; }
+
+    main {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 64px 24px 96px;
+    }
+
+    .hero h1 {
+      font-family: var(--font-display);
+      font-size: clamp(32px, 5vw, 44px);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+      color: var(--ink);
+      margin-bottom: 12px;
+    }
+    .hero .updated {
+      font-size: 13px;
+      color: var(--muted);
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+      display: inline-block;
+      padding: 4px 10px;
+      background: var(--paper);
+      border: var(--rule-soft);
+      border-radius: 4px;
+    }
+
+    section { margin-top: 48px; }
+    h2 {
+      font-family: var(--font-display);
+      font-size: 26px;
+      font-weight: 700;
+      color: var(--ink);
+      letter-spacing: -0.015em;
+      margin-bottom: 18px;
+      padding-bottom: 10px;
+      border-bottom: var(--rule);
+    }
+    h3 {
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--ink);
+      margin-top: 24px;
+      margin-bottom: 8px;
+    }
+    p { margin-bottom: 14px; }
+    li { margin-bottom: 6px; }
+    strong { color: var(--ink); font-weight: 600; }
+    code { background: var(--paper); border: var(--rule-soft); padding: 2px 6px; border-radius: 3px; font-size: 0.9em; }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 18px 0 22px;
+      font-size: 15px;
+      background: var(--paper);
+      border: var(--rule);
+      border-radius: 6px;
+      overflow: hidden;
+    }
+    th, td {
+      padding: 12px 16px;
+      text-align: left;
+      border-bottom: var(--rule-soft);
+      vertical-align: top;
+    }
+    th {
+      background: var(--bg-elev);
+      font-family: var(--font-display);
+      font-weight: 700;
+      color: var(--ink);
+      font-size: 14px;
+    }
+    tr:last-child td { border-bottom: none; }
+
+    .third-party-card {
+      background: var(--paper);
+      border: var(--rule);
+      border-left: 4px solid var(--accent);
+      border-radius: 6px;
+      padding: 18px 22px;
+      margin-bottom: 16px;
+    }
+    .third-party-card h3 { margin-top: 0; color: var(--ink); font-size: 17px; }
+    .third-party-card p { font-size: 15px; margin-bottom: 6px; }
+    .third-party-card p:last-child { margin-bottom: 0; }
+
+    .callout {
+      background: var(--accent-soft);
+      border-left: 4px solid var(--accent);
+      padding: 16px 20px;
+      border-radius: 4px;
+      margin: 20px 0;
+      font-size: 15px;
+    }
+    .callout strong { color: var(--accent-deep); }
+
+    .contact-block {
+      background: var(--paper);
+      border: var(--rule);
+      border-radius: 6px;
+      padding: 22px 26px;
+      margin-top: 12px;
+    }
+    .contact-block p { margin-bottom: 6px; }
+
+    footer {
+      border-top: var(--rule);
+      padding: 32px 24px;
+      text-align: center;
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 64px;
+      background: var(--bg-elev);
+    }
+    footer a { color: var(--ink-3); }
+
+    @media (max-width: 600px) {
+      main { padding: 48px 18px 64px; }
+      .hero h1 { font-size: 28px; }
+      h2 { font-size: 22px; }
+      th, td { padding: 10px 12px; font-size: 14px; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="nav">
+    <div class="nav-inner">
+      <a href="/" class="brand">Toca Ficha Dr<span class="dot">.</span></a>
+      <a href="/" class="back">← Voltar ao site</a>
+    </div>
+  </nav>
+
+  <main>
+    <header class="hero">
+      <span class="updated">Última atualização: junho de 2026 · revisão v3.8.1</span>
+      <h1>Política de Privacidade</h1>
+    </header>
+
+    <section>
+      <h2>O que é o Toca Ficha Dr.?</h2>
+      <p>Toca Ficha Dr. é uma extensão para Google Chrome que automatiza fluxos de trabalho em prontuários eletrônicos (EMR) pediátricos no sistema G-Hosp (G-UPA). Ele combina transcrição de voz, formatação de notas SOAP por inteligência artificial e automação de formulários para reduzir o tempo de registro clínico.</p>
+    </section>
+
+    <section>
+      <h2>Dados que coletamos</h2>
+      <p>Para oferecer o serviço e cumprir obrigações regulatórias, o Toca Ficha Dr. coleta os seguintes dados dos usuários cadastrados:</p>
+      <table>
+        <thead><tr><th>Dado</th><th>Finalidade</th><th>Base legal (LGPD)</th></tr></thead>
+        <tbody>
+          <tr><td>Endereço de e-mail</td><td>Identificação e autenticação da conta</td><td>Execução de contrato</td></tr>
+          <tr><td>Nome completo</td><td>Identificação do usuário no sistema</td><td>Execução de contrato</td></tr>
+          <tr><td>Contagem de transcrições por dia</td><td>Controle de cota de plano (gratuito ou Pro)</td><td>Execução de contrato</td></tr>
+          <tr><td>Trilha de auditoria anonimizada</td><td>Segurança, detecção de erros e melhoria do serviço</td><td>Legítimo interesse</td></tr>
+        </tbody>
+      </table>
+      <p><strong>Trilha de auditoria</strong>: registra tipo de ação (ex.: "transcrição", "preenchimento de SOAP"), duração em segundos e resultado (sucesso ou falha). <strong>Nenhum dado clínico de pacientes é incluído.</strong></p>
+    </section>
+
+    <section>
+      <h2>Como usamos os dados (finalidade do tratamento)</h2>
+      <p>Os dados coletados são tratados <strong>exclusivamente</strong> para as finalidades abaixo. Não usamos seus dados para nenhuma outra finalidade sem o seu consentimento.</p>
+      <ul>
+        <li><strong>E-mail e nome</strong> — autenticar o usuário, criar e gerenciar a conta e prestar suporte.</li>
+        <li><strong>Contagem de transcrições por dia</strong> — aplicar os limites do plano (gratuito ou Pro) e o faturamento.</li>
+        <li><strong>Trilha de auditoria anonimizada</strong> — garantir a segurança do serviço, detectar erros e prevenir abuso. Não contém dados clínicos de pacientes.</li>
+        <li><strong>Áudio de voz</strong> — encaminhado aos serviços de transcrição (Groq/OpenAI), convertido em texto em memória e <strong>imediatamente descartado</strong> (ver "Como o áudio é processado").</li>
+      </ul>
+      <h3>Consentimento</h3>
+      <p>O tratamento de dados começa <strong>somente após</strong> o usuário criar uma conta e aceitar esta Política de Privacidade no primeiro acesso. O usuário é informado da coleta antes que ela ocorra e pode retirar o consentimento a qualquer momento (ver "Direitos do titular de dados" e "Exclusão de conta").</p>
+    </section>
+
+    <section>
+      <h2>Dados que NÃO coletamos</h2>
+      <p>O Toca Ficha Dr. foi projetado para não armazenar qualquer informação sensível de pacientes. Especificamente, <strong>nunca</strong> são coletados, transmitidos ou armazenados nos servidores do Toca Ficha Dr.:</p>
+      <ul>
+        <li>Nomes, CPFs ou qualquer identificação de pacientes</li>
+        <li>Gravações de áudio</li>
+        <li>Transcrições de texto (geradas pelo Whisper)</li>
+        <li>Notas SOAP geradas ou editadas</li>
+        <li>Códigos CID-10 associados a pacientes específicos</li>
+        <li>Qualquer dado de saúde (PHI) ou dado pessoal (PII) de pacientes</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Como o áudio é processado</h2>
+      <p>Quando o médico utiliza a função de transcrição por voz:</p>
+      <ol>
+        <li>O áudio gravado é enviado ao servidor do Toca Ficha Dr. para processamento.</li>
+        <li>O servidor encaminha o áudio à API da Groq (Whisper) ou à API da OpenAI (Whisper) para transcrição.</li>
+        <li>A transcrição gerada é enviada ao GPT-4o-mini (OpenAI) para formatação em nota SOAP.</li>
+        <li>O resultado é retornado ao médico e inserido no prontuário.</li>
+        <li><strong>O áudio e a transcrição são descartados imediatamente após o processamento — nunca são armazenados nos servidores do Toca Ficha Dr.</strong></li>
+      </ol>
+      <p>Todo o processamento de áudio ocorre em memória, sem gravação em disco ou banco de dados.</p>
+    </section>
+
+    <section>
+      <h2>Armazenamento local (extensão Chrome)</h2>
+      <p>A extensão utiliza <code>chrome.storage.sync</code> para armazenar:</p>
+      <ul>
+        <li>Configurações de preferências do usuário (ex.: "limpeza automática de SOAP")</li>
+        <li>Modelos de receitas personalizados (texto puro, sem dados de pacientes)</li>
+        <li>Instruções personalizadas para formatação de notas</li>
+      </ul>
+      <p>Esses dados são sincronizados entre os dispositivos Chrome do usuário pelo Google, conforme a política do Google Chrome Sync. Nenhum dado de paciente é salvo neste armazenamento.</p>
+    </section>
+
+    <section>
+      <h2>Compartilhamento de dados com terceiros</h2>
+      <p>O Toca Ficha Dr. compartilha dados com os seguintes prestadores de serviço:</p>
+
+      <div class="third-party-card">
+        <h3>1. Clerk (autenticação)</h3>
+        <p><strong>O que é compartilhado:</strong> endereço de e-mail e dados de sessão do usuário para autenticação.</p>
+        <p><strong>Finalidade:</strong> gerenciamento de contas, login seguro e controle de sessão.</p>
+        <p><strong>Política de privacidade:</strong> <a href="https://clerk.com/privacy" target="_blank" rel="noopener">clerk.com/privacy</a></p>
+      </div>
+
+      <div class="third-party-card">
+        <h3>2. OpenAI (transcrição e formatação de texto)</h3>
+        <p><strong>O que é compartilhado:</strong> áudio de gravações de voz (para transcrição via Whisper) e texto de transcrições (para formatação via GPT-4o-mini).</p>
+        <p><strong>Finalidade:</strong> converter áudio em texto e formatar em nota SOAP.</p>
+        <p><strong>Garantia:</strong> de acordo com o Contrato de Processamento de Dados da OpenAI, os dados enviados via API <strong>não são utilizados para treinar modelos de IA</strong>.</p>
+        <p><strong>Política de privacidade:</strong> <a href="https://openai.com/policies/privacy-policy" target="_blank" rel="noopener">openai.com/policies/privacy-policy</a></p>
+      </div>
+
+      <div class="third-party-card">
+        <h3>3. Groq (transcrição de áudio e codificação CID — quando disponível)</h3>
+        <p><strong>O que é compartilhado:</strong> áudio de gravações de voz para transcrição via Whisper large-v3; texto de transcrições (para sugestão de código CID-10 via llama-3.3-70b-versatile).</p>
+        <p><strong>Finalidade:</strong> transcrição de voz com menor latência e sugestão de código CID-10.</p>
+        <p><strong>Política de privacidade:</strong> <a href="https://groq.com/privacy" target="_blank" rel="noopener">groq.com/privacy</a></p>
+      </div>
+
+      <div class="callout"><strong>Nenhum dado é vendido, alugado ou compartilhado com terceiros para fins publicitários.</strong></div>
+    </section>
+
+    <section>
+      <h2>Uso limitado dos dados (Política do Chrome Web Store)</h2>
+      <p>O uso das informações obtidas pela extensão Toca Ficha Dr. obedece à <strong>Política de Uso Limitado (Limited Use)</strong> do Chrome Web Store:</p>
+      <ul>
+        <li>Os dados são usados apenas para fornecer e melhorar a finalidade única da extensão — automação do registro clínico no G-Hosp.</li>
+        <li>Os dados <strong>não são vendidos</strong> nem transferidos a terceiros, exceto aos sub-processadores estritamente necessários ao funcionamento do serviço, listados acima (Clerk, OpenAI e Groq).</li>
+        <li>Os dados <strong>não são usados</strong> para publicidade, criação de perfis de marketing, revenda ou qualquer finalidade não relacionada.</li>
+        <li>Nenhum ser humano lê os dados do usuário, exceto quando estritamente necessário para segurança, conformidade legal ou mediante consentimento explícito do usuário.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Conformidade com a LGPD</h2>
+      <p>O Toca Ficha Dr. está em conformidade com a <strong>Lei Geral de Proteção de Dados (Lei nº 13.709/2018 — LGPD)</strong>:</p>
+      <ul>
+        <li>Nenhum dado sensível de saúde de pacientes é coletado ou armazenado.</li>
+        <li>Os dados de usuários são utilizados exclusivamente para prestação do serviço contratado.</li>
+        <li>O usuário tem direito de acesso, correção e exclusão de seus dados a qualquer momento.</li>
+        <li>As bases legais para tratamento dos dados são: execução de contrato (prestação do serviço) e legítimo interesse (segurança e auditoria).</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Armazenamento e segurança dos dados</h2>
+      <ul>
+        <li>Os dados de conta e uso dos usuários são armazenados em servidores no <strong>Brasil</strong>, com criptografia em trânsito (TLS 1.2+).</li>
+        <li>Dados de autenticação são gerenciados pela Clerk, com infraestrutura em conformidade com SOC 2.</li>
+        <li>Senhas nunca são armazenadas pelo Toca Ficha Dr. — o acesso é gerenciado exclusivamente via Clerk.</li>
+      </ul>
+
+      <h3>Retenção de dados</h3>
+      <table>
+        <thead><tr><th>Dado</th><th>Período de retenção</th></tr></thead>
+        <tbody>
+          <tr><td>Dados de conta (e-mail, nome)</td><td>Enquanto a conta estiver ativa + 30 dias após exclusão</td></tr>
+          <tr><td>Registros de auditoria</td><td>90 dias</td></tr>
+          <tr><td>Dados de uso (contagem de transcrições)</td><td>12 meses</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>Exclusão de conta</h2>
+      <p>O usuário pode solicitar a exclusão completa de sua conta e de todos os dados associados a qualquer momento, enviando um e-mail para <strong>contato@tocafichadr.com.br</strong> com o assunto <em>"Exclusão de conta"</em>. A exclusão será processada em até 15 dias úteis.</p>
+    </section>
+
+    <section>
+      <h2>Direitos do titular de dados (LGPD, art. 18)</h2>
+      <p>O usuário pode exercer os seguintes direitos entrando em contato pelo e-mail abaixo:</p>
+      <ul>
+        <li><strong>Confirmação</strong> da existência de tratamento de seus dados</li>
+        <li><strong>Acesso</strong> aos dados pessoais armazenados</li>
+        <li><strong>Correção</strong> de dados incompletos, inexatos ou desatualizados</li>
+        <li><strong>Anonimização, bloqueio ou eliminação</strong> de dados desnecessários ou tratados em desconformidade</li>
+        <li><strong>Portabilidade</strong> dos dados a outro fornecedor de serviço</li>
+        <li><strong>Eliminação</strong> dos dados tratados com consentimento</li>
+        <li><strong>Informação</strong> sobre entidades com as quais o Toca Ficha Dr. compartilhou seus dados</li>
+        <li><strong>Revogação do consentimento</strong></li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Contato</h2>
+      <div class="contact-block">
+        <p>Para dúvidas, solicitações relacionadas à LGPD ou questões de privacidade:</p>
+        <p><strong>E-mail:</strong> <a href="mailto:contato@tocafichadr.com.br">contato@tocafichadr.com.br</a></p>
+        <p><strong>Site:</strong> <a href="/">tocafichadr.com.br</a></p>
+      </div>
+    </section>
+
+    <section>
+      <h2>Alterações nesta política</h2>
+      <p>Esta política pode ser atualizada periodicamente. Em caso de mudanças relevantes, os usuários serão notificados por e-mail com pelo menos 7 dias de antecedência. A versão mais recente estará sempre disponível em <strong>tocafichadr.com.br/privacidade</strong>.</p>
+    </section>
+  </main>
+
+  <footer>
+    <p>© 2026 Toca Ficha Dr. — <a href="/">tocafichadr.com.br</a></p>
+  </footer>
+
+</body>
+</html>

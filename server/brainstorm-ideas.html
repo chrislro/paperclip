@@ -1,0 +1,2847 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Toca Ficha Dr. — UI/UX Brainstorm</title>
+<style>
+  :root {
+    --bg: #0a0a0a;
+    --bg-1: #0f0f0f;
+    --bg-2: #141414;
+    --bg-3: #1a1a1a;
+    --line: #1f1f1f;
+    --line-2: #2a2a2a;
+    --text: #e5e5e5;
+    --text-2: #a0a0a0;
+    --text-3: #666;
+    --text-4: #444;
+    --emerald: #10b981;
+    --emerald-2: #059669;
+    --emerald-3: #047857;
+    --emerald-soft: rgba(16,185,129,0.12);
+    --emerald-line: rgba(16,185,129,0.25);
+    --red: #ef4444;
+    --amber: #f59e0b;
+    --indigo: #6366f1;
+    --cyan: #06b6d4;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Inter, system-ui, sans-serif;
+    font-size: 15px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: var(--emerald); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.85em; color: var(--emerald); background: rgba(16,185,129,0.06); padding: 1px 6px; border-radius: 4px; }
+
+  /* ====================================================== */
+  /* Header                                                  */
+  /* ====================================================== */
+  .top {
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(10,10,10,0.8);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--line);
+  }
+  .top-inner {
+    max-width: 1280px; margin: 0 auto;
+    padding: 14px 28px;
+    display: flex; align-items: center; gap: 16px;
+  }
+  .logo {
+    display: inline-flex; align-items: center; gap: 10px;
+  }
+  .logo-mark {
+    width: 32px; height: 32px;
+    border-radius: 9px;
+    background: linear-gradient(135deg, var(--emerald), var(--emerald-3));
+    display: inline-flex; align-items: center; justify-content: center;
+    color: #fff; font-weight: 800; font-size: 12px; letter-spacing: 0.5px;
+    box-shadow: 0 4px 14px rgba(16,185,129,0.35), inset 0 1px 0 rgba(255,255,255,0.15);
+  }
+  .logo-text { font-weight: 700; font-size: 15px; }
+  .logo-sub { color: var(--text-3); font-size: 12px; margin-left: 6px; }
+  .top-spacer { flex: 1; }
+  .top-meta {
+    display: flex; gap: 10px; align-items: center;
+    font-size: 12px; color: var(--text-3);
+  }
+  .top-pill {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: var(--bg-2); border: 1px solid var(--line);
+    padding: 4px 10px; border-radius: 999px; font-size: 11px; color: var(--text-2);
+  }
+  .top-pill .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--emerald); box-shadow: 0 0 6px var(--emerald); }
+
+  /* ====================================================== */
+  /* Hero                                                    */
+  /* ====================================================== */
+  .hero {
+    max-width: 1280px; margin: 0 auto;
+    padding: 64px 28px 32px;
+    position: relative;
+  }
+  .hero h1 {
+    font-size: clamp(34px, 5vw, 52px);
+    font-weight: 800;
+    letter-spacing: -1.2px;
+    line-height: 1.05;
+    background: linear-gradient(135deg, #fff, #888);
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent;
+    max-width: 14ch;
+  }
+  .hero h1 em {
+    font-style: normal;
+    background: linear-gradient(135deg, var(--emerald), var(--cyan));
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .hero p {
+    color: var(--text-2);
+    max-width: 70ch;
+    margin-top: 20px;
+    font-size: 17px;
+  }
+  .hero-stats {
+    margin-top: 36px;
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 12px; max-width: 880px;
+  }
+  .stat {
+    background: var(--bg-1);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 16px;
+  }
+  .stat-num {
+    font-size: 28px; font-weight: 800;
+    background: linear-gradient(135deg, var(--emerald), var(--cyan));
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent;
+    line-height: 1;
+  }
+  .stat-lbl { font-size: 11px; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.7px; margin-top: 8px; }
+
+  /* ====================================================== */
+  /* TOC                                                     */
+  /* ====================================================== */
+  .toc {
+    max-width: 1280px; margin: 24px auto 0;
+    padding: 0 28px;
+    display: flex; flex-wrap: wrap; gap: 8px;
+  }
+  .toc a {
+    background: var(--bg-1);
+    border: 1px solid var(--line);
+    color: var(--text-2);
+    padding: 6px 12px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 500;
+    transition: all 0.15s;
+  }
+  .toc a:hover {
+    color: var(--emerald);
+    border-color: var(--emerald-line);
+    text-decoration: none;
+    transform: translateY(-1px);
+  }
+
+  /* ====================================================== */
+  /* Section                                                 */
+  /* ====================================================== */
+  section.block {
+    max-width: 1280px;
+    margin: 64px auto 0;
+    padding: 0 28px;
+  }
+  .block-head {
+    display: flex; align-items: end; gap: 18px;
+    margin-bottom: 24px;
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 14px;
+  }
+  .block-num {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    color: var(--emerald);
+    font-size: 13px;
+    letter-spacing: 1px;
+    font-weight: 600;
+  }
+  .block-title {
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: -0.6px;
+  }
+  .block-desc {
+    color: var(--text-2);
+    font-size: 14px;
+    max-width: 60ch;
+    margin-left: auto;
+  }
+
+  /* ====================================================== */
+  /* Idea card                                               */
+  /* ====================================================== */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+    gap: 20px;
+  }
+  .idea {
+    background: var(--bg-1);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    overflow: hidden;
+    transition: border-color 0.2s, transform 0.2s;
+    display: flex; flex-direction: column;
+  }
+  .idea:hover {
+    border-color: var(--emerald-line);
+    transform: translateY(-2px);
+  }
+  .idea-head {
+    padding: 16px 20px 0;
+    display: flex; align-items: start; justify-content: space-between; gap: 12px;
+  }
+  .idea-id {
+    color: var(--text-4);
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 11px;
+    letter-spacing: 1px;
+    font-weight: 600;
+  }
+  .idea-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+  .tag {
+    font-size: 9.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.7px;
+    padding: 3px 8px;
+    border-radius: 999px;
+    font-weight: 700;
+    border: 1px solid var(--line-2);
+    background: var(--bg-2);
+    color: var(--text-2);
+  }
+  .tag.cat-hud      { background: rgba(16,185,129,0.10); color: var(--emerald); border-color: var(--emerald-line); }
+  .tag.cat-popup    { background: rgba(99,102,241,0.10); color: #a5a8ff; border-color: rgba(99,102,241,0.3); }
+  .tag.cat-brand    { background: rgba(245,158,11,0.10); color: var(--amber); border-color: rgba(245,158,11,0.3); }
+  .tag.cat-ai       { background: rgba(6,182,212,0.10); color: var(--cyan); border-color: rgba(6,182,212,0.3); }
+  .tag.cat-onboard  { background: rgba(236,72,153,0.10); color: #f472b6; border-color: rgba(236,72,153,0.3); }
+  .tag.cat-status   { background: rgba(168,85,247,0.10); color: #c084fc; border-color: rgba(168,85,247,0.3); }
+  .tag.cat-landing  { background: rgba(239,68,68,0.10); color: var(--red); border-color: rgba(239,68,68,0.3); }
+
+  .effort-S { color: var(--emerald); }
+  .effort-M { color: var(--amber); }
+  .effort-L { color: var(--red); }
+
+  .idea-title {
+    padding: 8px 20px 0;
+    font-size: 19px;
+    font-weight: 700;
+    letter-spacing: -0.3px;
+  }
+  .idea-why {
+    padding: 6px 20px 16px;
+    color: var(--text-2);
+    font-size: 13.5px;
+    line-height: 1.55;
+  }
+  .idea-mock {
+    background: var(--bg);
+    border-top: 1px solid var(--line);
+    padding: 22px 16px;
+    display: flex; align-items: center; justify-content: center;
+    min-height: 240px;
+    position: relative;
+    overflow: hidden;
+  }
+  .idea-mock::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at top, rgba(16,185,129,0.04), transparent 60%);
+    pointer-events: none;
+  }
+  .idea-foot {
+    padding: 12px 20px;
+    border-top: 1px solid var(--line);
+    display: flex; gap: 14px; align-items: center;
+    font-size: 11px; color: var(--text-3);
+  }
+  .idea-foot strong { color: var(--text-2); font-weight: 600; }
+
+  /* ====================================================== */
+  /* Reusable mockup primitives                              */
+  /* ====================================================== */
+  .mock-popup {
+    width: 320px;
+    background: #0d0d0d;
+    border: 1px solid var(--line-2);
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+    font-size: 12px;
+  }
+  .mock-popup-head {
+    padding: 8px 12px;
+    background: linear-gradient(180deg, #131313, #0f0f0f);
+    border-bottom: 1px solid var(--line);
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .mock-tabs {
+    display: flex; border-bottom: 1px solid var(--line);
+    font-size: 11px;
+  }
+  .mock-tabs > div {
+    flex: 1; text-align: center; padding: 8px;
+    color: var(--text-3); font-weight: 600;
+  }
+  .mock-tabs > div.active { color: var(--emerald); border-bottom: 2px solid var(--emerald); background: var(--bg); }
+
+  .pill { display: inline-flex; align-items: center; gap: 5px;
+    background: rgba(16,185,129,0.06); color: var(--emerald);
+    border: 1px solid var(--emerald-line);
+    border-radius: 999px; padding: 3px 8px;
+    font-size: 9.5px; font-weight: 700; letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+  .pill .pill-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--emerald); box-shadow: 0 0 4px var(--emerald); }
+  .pill.warn { background: rgba(245,158,11,0.08); color: var(--amber); border-color: rgba(245,158,11,0.25); }
+  .pill.warn .pill-dot { background: var(--amber); box-shadow: 0 0 4px var(--amber); }
+  .pill.err  { background: rgba(239,68,68,0.08); color: var(--red); border-color: rgba(239,68,68,0.25); }
+  .pill.err  .pill-dot { background: var(--red); box-shadow: 0 0 4px var(--red); }
+
+  /* ====================================================== */
+  /* Top picks                                               */
+  /* ====================================================== */
+  .picks {
+    background: var(--bg-1);
+    border: 1px solid var(--emerald-line);
+    border-radius: 16px;
+    padding: 28px;
+    margin-top: 24px;
+    background-image:
+      radial-gradient(ellipse at top right, rgba(16,185,129,0.08), transparent 60%),
+      radial-gradient(ellipse at bottom left, rgba(6,182,212,0.05), transparent 60%);
+  }
+  .picks h3 {
+    font-size: 14px; color: var(--emerald);
+    text-transform: uppercase; letter-spacing: 1px;
+    font-weight: 700; margin-bottom: 12px;
+  }
+  .pick-row {
+    display: grid; grid-template-columns: 80px 1fr 100px;
+    gap: 18px; align-items: center;
+    padding: 14px 0; border-top: 1px solid var(--line);
+  }
+  .pick-row:first-of-type { border-top: 0; }
+  .pick-num {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 32px; font-weight: 800;
+    background: linear-gradient(135deg, var(--emerald), var(--cyan));
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent;
+    line-height: 1;
+  }
+  .pick-name { font-weight: 700; font-size: 16px; }
+  .pick-why  { color: var(--text-2); font-size: 13px; margin-top: 2px; }
+  .pick-eff  { text-align: right; font-size: 12px; }
+
+  /* ====================================================== */
+  /* Footer                                                  */
+  /* ====================================================== */
+  footer {
+    max-width: 1280px; margin: 96px auto 64px;
+    padding: 32px 28px 0;
+    border-top: 1px solid var(--line);
+    color: var(--text-3);
+    font-size: 12px;
+    display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;
+  }
+
+  /* ====================================================== */
+  /* HUD-style mockup primitives (recreate the extension)    */
+  /* ====================================================== */
+  .mock-hud {
+    width: 280px;
+    background: #0a0a0a;
+    border: 1px solid #1a1a1a;
+    border-radius: 14px;
+    box-shadow: 0 30px 60px rgba(0,0,0,0.6), 0 0 0 1px rgba(16,185,129,0.04);
+    overflow: hidden;
+  }
+  .mock-hud-head {
+    background: #0d0d0d;
+    padding: 10px 14px;
+    border-bottom: 1px solid #1a1a1a;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .hud-brand { display: flex; align-items: center; gap: 8px; font-size: 11px; font-weight: 700; }
+  .hud-brand-mark {
+    width: 20px; height: 20px; border-radius: 6px;
+    background: linear-gradient(135deg, var(--emerald), var(--emerald-3));
+    color: #fff;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-size: 9px; font-weight: 800;
+  }
+  .mock-hud-body { padding: 14px; display: flex; flex-direction: column; gap: 12px; }
+
+  .mock-rec {
+    width: 64px; height: 64px;
+    border-radius: 50%;
+    border: 2.5px solid var(--emerald);
+    color: var(--emerald);
+    display: inline-flex; align-items: center; justify-content: center;
+    margin: 0 auto;
+    background: transparent;
+  }
+  .mock-rec.recording { background: var(--red); border-color: var(--red); color: #fff; }
+  .mock-rec.processing { border-color: var(--amber); color: var(--amber); }
+  .mock-rec.done { background: var(--emerald); border-color: var(--emerald); color: #fff; }
+
+  .mock-soap {
+    background: #161616;
+    border: 1px solid var(--line-2);
+    border-radius: 6px;
+    padding: 8px 10px;
+    font-size: 10.5px;
+    line-height: 1.5;
+    color: var(--text-2);
+    min-height: 70px;
+  }
+
+  .mock-btn-row { display: flex; gap: 6px; flex-wrap: wrap; }
+  .mock-btn {
+    padding: 5px 9px;
+    background: #161616;
+    border: 1px solid var(--line-2);
+    border-radius: 5px;
+    color: var(--text-2);
+    font-size: 10px;
+    font-weight: 600;
+  }
+  .mock-btn.primary {
+    background: linear-gradient(135deg, var(--emerald-2), var(--emerald-3));
+    color: #fff; border: 0;
+  }
+
+  /* small helpers */
+  .center { text-align: center; }
+  .tnum { font-variant-numeric: tabular-nums; }
+
+  /* ====================================================== */
+  /* Specific mockup styles (one per idea, scoped names)     */
+  /* ====================================================== */
+
+  /* IDEA 1: Glance HUD */
+  .glance-row { display: flex; gap: 14px; align-items: center; }
+  .glance-collapsed {
+    width: 56px; height: 56px;
+    border-radius: 50%;
+    border: 2px solid var(--emerald);
+    background: rgba(16,185,129,0.05);
+    color: var(--emerald);
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 0 20px rgba(16,185,129,0.15);
+    font-size: 18px;
+  }
+  .glance-arrow {
+    color: var(--text-3);
+    font-size: 16px;
+    animation: glance-pulse 1.5s ease-in-out infinite;
+  }
+  @keyframes glance-pulse { 0%,100% { opacity: 0.5; transform: translateX(0); } 50% { opacity: 1; transform: translateX(4px); } }
+
+  /* IDEA 2: Push-to-talk keycap */
+  .keycap {
+    display: inline-flex;
+    align-items: center; justify-content: center;
+    min-width: 80px; height: 56px;
+    background: linear-gradient(180deg, #2a2a2a, #181818);
+    border: 1px solid #333;
+    border-radius: 8px;
+    box-shadow:
+      0 0 0 1px #1a1a1a,
+      0 4px 0 #0a0a0a,
+      0 8px 16px rgba(0,0,0,0.4),
+      inset 0 1px 0 rgba(255,255,255,0.1);
+    color: #ddd;
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    position: relative;
+  }
+  .keycap.pressed {
+    transform: translateY(3px);
+    box-shadow: 0 0 0 1px #1a1a1a, 0 1px 0 #0a0a0a, inset 0 1px 0 rgba(255,255,255,0.05);
+    background: linear-gradient(180deg, #1c2520, #131815);
+    color: var(--emerald);
+    border-color: var(--emerald);
+  }
+  .keycap-glow {
+    position: absolute;
+    inset: -8px;
+    border-radius: 12px;
+    background: radial-gradient(ellipse at center, rgba(16,185,129,0.4), transparent 70%);
+    pointer-events: none;
+    animation: keycap-glow 1.4s ease-in-out infinite;
+  }
+  @keyframes keycap-glow { 0%,100% { opacity: 0.3; } 50% { opacity: 0.7; } }
+
+  /* IDEA 3: Live waveform + streaming */
+  .wave {
+    display: flex; align-items: center; gap: 3px; height: 50px;
+  }
+  .wave .bar {
+    width: 4px; background: var(--emerald); border-radius: 2px;
+    animation: wave-bounce 1.2s ease-in-out infinite;
+  }
+  @keyframes wave-bounce {
+    0%,100% { height: 8px; opacity: 0.4; }
+    50%     { height: 100%; opacity: 1; }
+  }
+
+  /* IDEA 4: CID confidence card */
+  .cid-card {
+    background: var(--bg-2);
+    border: 1px solid var(--line-2);
+    border-radius: 8px;
+    padding: 10px 12px;
+    width: 100%;
+    margin-bottom: 6px;
+  }
+  .cid-card.primary { border-color: var(--emerald-line); background: rgba(16,185,129,0.06); }
+  .cid-card-row { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+  .cid-code { font-weight: 700; color: var(--emerald); font-family: ui-monospace, monospace; font-size: 12px; }
+  .cid-name { color: var(--text); font-size: 11px; flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .cid-conf-bar { width: 60px; height: 4px; background: var(--bg-3); border-radius: 2px; overflow: hidden; }
+  .cid-conf-bar > div { height: 100%; background: linear-gradient(90deg, var(--emerald), var(--cyan)); }
+  .cid-conf-num { font-size: 10px; color: var(--text-3); font-variant-numeric: tabular-nums; }
+
+  /* IDEA 5: Side panel */
+  .browser-frame {
+    width: 100%; max-width: 540px;
+    height: 280px;
+    border: 1px solid var(--line-2);
+    border-radius: 8px;
+    overflow: hidden;
+    display: grid; grid-template-columns: 1fr 200px;
+    background: #1a1a1a;
+  }
+  .browser-page {
+    background:
+      repeating-linear-gradient(180deg, transparent 0 12px, rgba(255,255,255,0.02) 12px 13px),
+      #1f1f1f;
+    padding: 8px;
+    color: var(--text-3); font-size: 9px;
+    position: relative;
+  }
+  .browser-page::before {
+    content: 'g-hosp.com.br/prconsultas/...';
+    display: block;
+    background: #2a2a2a; color: var(--text-2);
+    padding: 4px 8px;
+    font-size: 9px; border-radius: 4px;
+    margin-bottom: 6px;
+  }
+  .side-panel {
+    background: #0d0d0d;
+    border-left: 1px solid #2a2a2a;
+    padding: 8px;
+    color: var(--text-2); font-size: 9.5px;
+  }
+  .side-row { padding: 5px 6px; border-radius: 4px; margin-bottom: 2px; }
+  .side-row.active { background: rgba(16,185,129,0.08); color: var(--emerald); }
+
+  /* IDEA 6: Visual template cards */
+  .tpl-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; width: 100%; }
+  .tpl-card {
+    background: var(--bg-2);
+    border: 1px solid var(--line-2);
+    border-radius: 8px;
+    padding: 8px;
+    display: flex; flex-direction: column; gap: 4px;
+    text-align: center;
+  }
+  .tpl-card .tpl-icon {
+    font-size: 20px;
+    line-height: 1;
+    margin: 2px 0;
+  }
+  .tpl-card .tpl-name { font-size: 10px; color: var(--text); font-weight: 600; }
+  .tpl-card .tpl-sub  { font-size: 8.5px; color: var(--text-3); }
+  .tpl-card.active { border-color: var(--emerald); background: rgba(16,185,129,0.05); }
+
+  /* Clinical template cards (Dx + age band, no emoji) */
+  .tpl-grid-clinical { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; width: 100%; }
+  .tpl-card-clinical {
+    background: var(--bg-2);
+    border: 1px solid var(--line-2);
+    border-radius: 7px;
+    padding: 9px 7px;
+    text-align: center;
+    min-height: 56px;
+    display: flex; flex-direction: column; justify-content: center; gap: 3px;
+  }
+  .tpl-card-clinical .tpl-dx {
+    font-size: 11px; font-weight: 700; color: var(--text);
+    line-height: 1.15;
+  }
+  .tpl-card-clinical .tpl-age {
+    font-size: 9.5px; font-weight: 600;
+    color: var(--emerald);
+    font-variant-numeric: tabular-nums;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    letter-spacing: 0.2px;
+  }
+  .tpl-card-clinical.active {
+    border-color: var(--emerald);
+    background: rgba(16,185,129,0.06);
+    box-shadow: 0 0 0 2px rgba(16,185,129,0.15);
+  }
+  .tpl-card-clinical.add {
+    background: transparent;
+    border-style: dashed;
+  }
+  .tpl-card-clinical.add .tpl-age { color: var(--text-4); }
+
+  /* IDEA 7: Health gem */
+  .gem-wrap { display: flex; flex-direction: column; align-items: center; gap: 12px; }
+  .gem {
+    width: 80px; height: 80px;
+    background:
+      radial-gradient(circle at 30% 30%, rgba(255,255,255,0.4), transparent 50%),
+      conic-gradient(from 0deg, var(--emerald) 0 90deg, var(--cyan) 90deg 180deg, var(--indigo) 180deg 270deg, var(--emerald) 270deg 360deg);
+    clip-path: polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%);
+    filter: drop-shadow(0 0 24px rgba(16,185,129,0.4));
+    animation: gem-rotate 8s linear infinite;
+  }
+  @keyframes gem-rotate { 100% { transform: rotate(360deg); } }
+  .gem-legend {
+    display: flex; gap: 8px; font-size: 10px; flex-wrap: wrap; justify-content: center;
+  }
+  .gem-legend span { color: var(--text-2); display: inline-flex; align-items: center; gap: 4px; }
+  .gem-legend .dot { width: 6px; height: 6px; border-radius: 50%; }
+  .dot-e { background: var(--emerald); box-shadow: 0 0 4px var(--emerald); }
+  .dot-c { background: var(--cyan);    box-shadow: 0 0 4px var(--cyan); }
+  .dot-i { background: var(--indigo);  box-shadow: 0 0 4px var(--indigo); }
+  .dot-w { background: var(--amber);   box-shadow: 0 0 4px var(--amber); }
+
+  /* IDEA 8: Onboarding spotlight */
+  .onb {
+    position: relative;
+    width: 100%; max-width: 360px;
+    background: #1c1c1c;
+    border: 1px solid var(--line-2);
+    border-radius: 8px;
+    padding: 36px;
+    overflow: hidden;
+  }
+  .onb-target {
+    width: 64px; height: 64px;
+    border-radius: 50%;
+    background: var(--red);
+    margin: 0 auto;
+    box-shadow:
+      0 0 0 4px var(--bg),
+      0 0 0 5px var(--emerald),
+      0 0 0 9999px rgba(0,0,0,0.7);
+  }
+  .onb-bubble {
+    position: absolute;
+    bottom: 12px; left: 12px; right: 12px;
+    background: var(--emerald);
+    color: #052e22;
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-size: 11px; font-weight: 600;
+    line-height: 1.4;
+    box-shadow: 0 8px 18px rgba(0,0,0,0.4);
+  }
+  .onb-step { font-size: 9px; opacity: 0.7; font-weight: 700; text-transform: uppercase; letter-spacing: 0.7px; margin-bottom: 4px; display: block; }
+
+  /* IDEA 9: Voice command palette */
+  .vcmd {
+    background: rgba(20,20,20,0.95);
+    border: 1px solid var(--emerald-line);
+    border-radius: 12px;
+    width: 280px;
+    backdrop-filter: blur(8px);
+    box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+    overflow: hidden;
+  }
+  .vcmd-head {
+    display: flex; align-items: center; gap: 8px;
+    padding: 10px 14px;
+    background: linear-gradient(180deg, rgba(16,185,129,0.10), transparent);
+    border-bottom: 1px solid var(--line);
+  }
+  .vcmd-mic {
+    width: 18px; height: 18px;
+    border-radius: 50%; background: var(--red);
+    animation: pulse-red 1.4s ease-in-out infinite;
+  }
+  @keyframes pulse-red {
+    0%,100% { box-shadow: 0 0 0 0 rgba(239,68,68,0.5); }
+    70%     { box-shadow: 0 0 0 8px rgba(239,68,68,0); }
+  }
+  .vcmd-text { color: var(--text); font-size: 12px; font-weight: 600; }
+  .vcmd-list { padding: 6px; }
+  .vcmd-item {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 8px 10px; border-radius: 6px;
+    font-size: 11px; color: var(--text-2);
+  }
+  .vcmd-item.active { background: rgba(16,185,129,0.08); color: var(--emerald); }
+  .vcmd-item kbd {
+    background: #2a2a2a; color: var(--text-3);
+    padding: 2px 6px; border-radius: 3px; font-size: 9px;
+    border: 1px solid #333;
+  }
+
+  /* IDEA 10: SOAP tone preset */
+  .tone-row { display: flex; gap: 6px; width: 100%; }
+  .tone-btn {
+    flex: 1; padding: 6px;
+    background: var(--bg-2); border: 1px solid var(--line-2);
+    border-radius: 6px;
+    text-align: center;
+    font-size: 10px; color: var(--text-2);
+  }
+  .tone-btn.active {
+    background: rgba(16,185,129,0.08); color: var(--emerald);
+    border-color: var(--emerald);
+  }
+  .tone-btn b { display: block; font-size: 9px; opacity: 0.6; font-weight: 600; margin-bottom: 2px; text-transform: uppercase; letter-spacing: 0.5px; }
+
+  /* IDEA 11: Brand refresh */
+  .brand-row { display: flex; gap: 14px; align-items: center; flex-wrap: wrap; justify-content: center; }
+  .brand-mark-v2 {
+    width: 64px; height: 64px;
+    border-radius: 16px;
+    background: linear-gradient(135deg, #0d2a22, #051613);
+    border: 1px solid var(--emerald-line);
+    display: flex; align-items: center; justify-content: center;
+    position: relative;
+    box-shadow: 0 12px 28px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.04);
+  }
+  .brand-mark-v2 svg { width: 38px; height: 38px; }
+  .brand-mark-v3 {
+    width: 64px; height: 64px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.15), transparent 60%), linear-gradient(135deg, var(--emerald), var(--emerald-3));
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 12px 28px rgba(16,185,129,0.4);
+  }
+  .brand-mark-v3 svg { width: 32px; height: 32px; color: #fff; }
+  .brand-wordmark {
+    font-size: 18px; font-weight: 800; letter-spacing: -0.4px;
+    color: var(--text);
+  }
+  .brand-wordmark span { color: var(--emerald); }
+  .brand-wordmark sup { font-size: 9px; color: var(--text-3); font-weight: 600; vertical-align: super; }
+
+  /* IDEA 12: Patient timer / efficiency */
+  .perf-card {
+    background: linear-gradient(135deg, rgba(16,185,129,0.08), rgba(6,182,212,0.04));
+    border: 1px solid var(--emerald-line);
+    border-radius: 12px;
+    padding: 16px;
+    width: 100%;
+  }
+  .perf-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+  .perf-label { font-size: 10px; color: var(--text-2); text-transform: uppercase; letter-spacing: 0.7px; font-weight: 600; }
+  .perf-value { font-size: 28px; font-weight: 800; line-height: 1; color: var(--text); font-variant-numeric: tabular-nums; }
+  .perf-trend { font-size: 11px; color: var(--emerald); font-weight: 700; }
+  .perf-spark { display: flex; gap: 2px; align-items: end; height: 30px; margin-top: 10px; }
+  .perf-spark > div {
+    flex: 1; background: linear-gradient(180deg, var(--emerald), var(--emerald-3));
+    border-radius: 1px; min-height: 4px;
+  }
+  .perf-foot { font-size: 10px; color: var(--text-3); margin-top: 8px; display: flex; justify-content: space-between; }
+
+  @media (max-width: 720px) {
+    .hero-stats { grid-template-columns: repeat(2, 1fr); }
+    .pick-row { grid-template-columns: 60px 1fr; }
+    .pick-eff { grid-column: 2; text-align: left; }
+    .browser-frame { grid-template-columns: 1fr 130px; height: 220px; }
+  }
+
+</style>
+</head>
+<body>
+
+<!-- =========== HEADER =========== -->
+<header class="top">
+  <div class="top-inner">
+    <div class="logo">
+      <span class="logo-mark">TF</span>
+      <span class="logo-text">Toca Ficha Dr.</span>
+      <span class="logo-sub">UI/UX Brainstorm</span>
+    </div>
+    <div class="top-spacer"></div>
+    <div class="top-meta">
+      <span class="top-pill"><span class="dot"></span>v3.0.5 → next</span>
+      <span>04 mai 2026</span>
+    </div>
+  </div>
+</header>
+
+<!-- =========== HERO =========== -->
+<div class="hero">
+  <h1>12 ideas to make Toca&nbsp;Ficha&nbsp;Dr.<br><em>faster, calmer, sharper.</em></h1>
+  <p>You already cut 25–35 actions to 4–6 per patient. The next leap isn't more features — it's removing visible chrome during the consultation, surfacing trust signals only when needed, and giving doctors one-handed control during a 5-minute pediatric visit. Each idea below has a mockup, a "why it matters", and an effort tag.</p>
+  <p style="margin-top: 12px; color: var(--text-3); font-size: 13px;"><strong style="color: var(--emerald);">v2 — 2026-05-04 follow-up:</strong> Deep dives on #3, #4, #5, #8, #10, #11, #12 added below at <a href="#deepdive">Section 07 — Implementation deep dives</a>.</p>
+
+  <div class="hero-stats">
+    <div class="stat">
+      <div class="stat-num">4–6</div>
+      <div class="stat-lbl">Actions per patient (today)</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">~10s</div>
+      <div class="stat-lbl">Whisper transcribe (median)</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">340px</div>
+      <div class="stat-lbl">Popup width — tight</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">7</div>
+      <div class="stat-lbl">Floating HUD panels at peak</div>
+    </div>
+  </div>
+</div>
+
+<!-- =========== TOC =========== -->
+<nav class="toc">
+  <a href="#hud">HUD</a>
+  <a href="#popup">Popup &amp; Side panel</a>
+  <a href="#ai">AI &amp; trust</a>
+  <a href="#brand">Brand</a>
+  <a href="#onboard">Onboarding</a>
+  <a href="#picks">Top picks</a>
+  <a href="#deepdive" style="background: rgba(16,185,129,0.10); border-color: var(--emerald-line); color: var(--emerald);">★ Deep dives</a>
+</nav>
+
+<!-- =========== SECTION: HUD =========== -->
+<section class="block" id="hud">
+  <div class="block-head">
+    <div>
+      <div class="block-num">SECTION 01</div>
+      <h2 class="block-title">HUD — what doctors actually see</h2>
+    </div>
+    <p class="block-desc">The floating panel is on screen for the entire shift. Visual weight here is borrowed attention from the patient.</p>
+  </div>
+
+  <div class="grid">
+
+    <!-- IDEA 1: Glance Mode -->
+    <article class="idea">
+      <div class="idea-head">
+        <span class="idea-id">01</span>
+        <div class="idea-tags">
+          <span class="tag cat-hud">HUD</span>
+          <span class="tag effort-S">EFFORT · S</span>
+        </div>
+      </div>
+      <h3 class="idea-title">Glance Mode — collapse to a single dot</h3>
+      <p class="idea-why">When the doctor isn't dictating, the HUD currently shows record button + SOAP + CID + 6 buttons + templates. In Glance Mode it's one breathing dot, expanding only on hover or focus. The chart returns to being the focus of the consultation.</p>
+      <div class="idea-mock">
+        <div class="glance-row">
+          <div class="glance-collapsed">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="22" height="22">
+              <rect x="9" y="2" width="6" height="13" rx="3"/>
+              <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+              <line x1="12" y1="19" x2="12" y2="23"/>
+              <line x1="8" y1="23" x2="16" y2="23"/>
+            </svg>
+          </div>
+          <div class="glance-arrow">→</div>
+          <div class="mock-hud" style="width: 200px; transform: scale(0.85); transform-origin: left center;">
+            <div class="mock-hud-head">
+              <div class="hud-brand"><span class="hud-brand-mark">TF</span>Toca Ficha</div>
+              <span class="pill"><span class="pill-dot"></span>ON</span>
+            </div>
+            <div class="mock-hud-body">
+              <div class="mock-rec">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="2" width="6" height="13" rx="3"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/></svg>
+              </div>
+              <div class="mock-soap" style="font-size: 9px;">SOAP aparece aqui...</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="idea-foot">
+        <strong>Trigger:</strong> idle for 8s · <strong>Wakes on:</strong> hover, hotkey, mic activity
+      </div>
+    </article>
+
+    <!-- IDEA 2: Push to talk -->
+    <article class="idea">
+      <div class="idea-head">
+        <span class="idea-id">02</span>
+        <div class="idea-tags">
+          <span class="tag cat-hud">HUD</span>
+          <span class="tag effort-S">EFFORT · S</span>
+        </div>
+      </div>
+      <h3 class="idea-title">Hold-to-talk on the spacebar</h3>
+      <p class="idea-why">CB-radio model. Doctor presses and holds <code>F9</code> (or <code>Space</code> when HUD focused), speaks, releases. No mouse movement, no targeting a 64px button. Frees the dominant hand for the patient.</p>
+      <div class="idea-mock">
+        <div style="position: relative;">
+          <div class="keycap-glow"></div>
+          <div class="keycap pressed">F9</div>
+        </div>
+        <div style="margin-left: 14px; display: flex; align-items: center; gap: 10px;">
+          <span class="pill err"><span class="pill-dot"></span>REC 0:08</span>
+          <div class="wave">
+            <div class="bar" style="animation-delay: -0.3s;"></div>
+            <div class="bar" style="animation-delay: -0.2s;"></div>
+            <div class="bar" style="animation-delay: -0.5s;"></div>
+            <div class="bar" style="animation-delay: -0.1s;"></div>
+            <div class="bar" style="animation-delay: -0.7s;"></div>
+            <div class="bar" style="animation-delay: -0.4s;"></div>
+            <div class="bar" style="animation-delay: -0.6s;"></div>
+          </div>
+        </div>
+      </div>
+      <div class="idea-foot">
+        <strong>Wins:</strong> hands stay on keyboard · <strong>Risk:</strong> conflicts with G-Hosp shortcuts → make rebindable
+      </div>
+    </article>
+
+    <!-- IDEA 3: Live waveform + streaming SOAP -->
+    <article class="idea">
+      <div class="idea-head">
+        <span class="idea-id">03</span>
+        <div class="idea-tags">
+          <span class="tag cat-hud">HUD</span>
+          <span class="tag cat-ai">AI</span>
+          <span class="tag effort-M">EFFORT · M</span>
+        </div>
+      </div>
+      <h3 class="idea-title">Live waveform + streaming SOAP</h3>
+      <p class="idea-why">Two perceived-latency wins: (1) waveform during recording proves the mic is hearing them — kills the silent-mic anxiety; (2) stream SOAP tokens as they arrive from GPT instead of dumping the result. 10s of perceived 0s.</p>
+      <div class="idea-mock">
+        <div class="mock-hud">
+          <div class="mock-hud-head">
+            <div class="hud-brand"><span class="hud-brand-mark">TF</span>Gravando</div>
+            <span class="pill err"><span class="pill-dot"></span>0:14</span>
+          </div>
+          <div class="mock-hud-body">
+            <div class="wave" style="height: 32px; justify-content: center;">
+              <div class="bar" style="animation-delay: -0.3s;"></div>
+              <div class="bar" style="animation-delay: -0.2s;"></div>
+              <div class="bar" style="animation-delay: -0.5s;"></div>
+              <div class="bar" style="animation-delay: -0.1s;"></div>
+              <div class="bar" style="animation-delay: -0.7s;"></div>
+              <div class="bar" style="animation-delay: -0.4s;"></div>
+              <div class="bar" style="animation-delay: -0.6s;"></div>
+              <div class="bar" style="animation-delay: -0.2s;"></div>
+              <div class="bar" style="animation-delay: -0.8s;"></div>
+              <div class="bar" style="animation-delay: -0.3s;"></div>
+              <div class="bar" style="animation-delay: -0.6s;"></div>
+            </div>
+            <div class="mock-soap">
+              <span style="color: var(--text);">S — Mãe relata febre 3 dias, tosse seca, sem dispneia.</span>
+              <span style="color: var(--emerald);">O — FC 110, FR 32, S</span><span style="background: var(--emerald); color: var(--bg); display: inline-block; width: 6px; height: 11px; vertical-align: -1px; animation: blink 1s steps(2) infinite;"></span>
+            </div>
+          </div>
+        </div>
+        <style>@keyframes blink { 50% { opacity: 0; } }</style>
+      </div>
+      <div class="idea-foot">
+        <strong>Backend:</strong> use GPT streaming · <strong>Side benefit:</strong> doctor catches misheard words mid-stream
+      </div>
+    </article>
+
+  </div>
+</section>
+
+<!-- =========== SECTION: POPUP =========== -->
+<section class="block" id="popup">
+  <div class="block-head">
+    <div>
+      <div class="block-num">SECTION 02</div>
+      <h2 class="block-title">Popup, side panel, templates</h2>
+    </div>
+    <p class="block-desc">340px is cramped. The popup also closes on click-away — frustrating for editing 6+ templates. Chrome 114+ unlocks an easy fix.</p>
+  </div>
+
+  <div class="grid">
+
+    <!-- IDEA 4: Side Panel -->
+    <article class="idea">
+      <div class="idea-head">
+        <span class="idea-id">04</span>
+        <div class="idea-tags">
+          <span class="tag cat-popup">POPUP</span>
+          <span class="tag effort-M">EFFORT · M</span>
+        </div>
+      </div>
+      <h3 class="idea-title">Promote popup → Side Panel</h3>
+      <p class="idea-why">Chrome's <code>sidePanel</code> API gives you 320–800px of persistent space that doesn't auto-close. Templates editing, usage analytics, and login state finally have room. Popup stays as a quick-status fallback.</p>
+      <div class="idea-mock">
+        <div class="browser-frame">
+          <div class="browser-page">
+            <div style="background: rgba(255,255,255,0.04); height: 18px; width: 60%; border-radius: 3px; margin-bottom: 4px;"></div>
+            <div style="background: rgba(255,255,255,0.03); height: 8px; width: 100%; border-radius: 2px; margin-bottom: 3px;"></div>
+            <div style="background: rgba(255,255,255,0.03); height: 8px; width: 95%; border-radius: 2px; margin-bottom: 3px;"></div>
+            <div style="background: rgba(255,255,255,0.03); height: 8px; width: 88%; border-radius: 2px; margin-bottom: 3px;"></div>
+            <div style="background: rgba(255,255,255,0.03); height: 8px; width: 92%; border-radius: 2px; margin-bottom: 12px;"></div>
+            <div style="background: rgba(255,255,255,0.04); height: 16px; width: 40%; border-radius: 3px; margin-bottom: 4px;"></div>
+            <div style="background: rgba(255,255,255,0.03); height: 8px; width: 90%; border-radius: 2px; margin-bottom: 3px;"></div>
+            <div style="background: rgba(255,255,255,0.03); height: 8px; width: 80%; border-radius: 2px;"></div>
+          </div>
+          <div class="side-panel">
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: 4px 6px 8px; border-bottom: 1px solid var(--line);">
+              <div style="display: flex; align-items: center; gap: 5px; font-weight: 700; color: var(--text);">
+                <span class="logo-mark" style="width: 16px; height: 16px; font-size: 7px; border-radius: 4px;">TF</span> Toca Ficha
+              </div>
+              <span class="pill" style="font-size: 8px; padding: 1px 5px;"><span class="pill-dot"></span>ON</span>
+            </div>
+            <div style="padding-top: 6px;">
+              <div class="side-row active">📋 Prontuário ativo</div>
+              <div class="side-row">💊 Modelos · 6</div>
+              <div class="side-row">📊 Hoje · 5 pacientes</div>
+              <div class="side-row">🎙️ Histórico</div>
+              <div class="side-row">⚙️ Configurações</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="idea-foot">
+        <strong>API:</strong> <code>chrome.sidePanel</code> (MV3) · <strong>Fallback:</strong> existing popup remains
+      </div>
+    </article>
+
+    <!-- IDEA 5: Visual template cards -->
+    <article class="idea">
+      <div class="idea-head">
+        <span class="idea-id">05</span>
+        <div class="idea-tags">
+          <span class="tag cat-popup">TEMPLATES</span>
+          <span class="tag effort-S">EFFORT · S</span>
+        </div>
+      </div>
+      <h3 class="idea-title">Templates by diagnosis + age band — the way you actually think</h3>
+      <p class="idea-why">"Gastro 1" / "Resfr. 2" are arbitrary labels. Real clinical thinking is <em>diagnosis + age band</em>: <code>Resfriado &gt;6m e &lt;2a</code>, <code>GEA &lt;1a</code>, <code>OMA</code>. Cards encode that directly — no glyphs, no emojis, just the medical anchor. Active state shows which template is queued for the current patient.</p>
+      <div class="idea-mock">
+        <div class="mock-popup" style="width: 290px;">
+          <div class="mock-tabs">
+            <div>Prontuário</div>
+            <div class="active">Modelos</div>
+          </div>
+          <div style="padding: 12px;">
+            <div class="tpl-grid-clinical">
+              <div class="tpl-card-clinical active">
+                <div class="tpl-dx">Resfriado</div>
+                <div class="tpl-age">&gt;6m e &lt;2a</div>
+              </div>
+              <div class="tpl-card-clinical">
+                <div class="tpl-dx">Resfriado</div>
+                <div class="tpl-age">≥2a</div>
+              </div>
+              <div class="tpl-card-clinical">
+                <div class="tpl-dx">GEA</div>
+                <div class="tpl-age">&lt;1a</div>
+              </div>
+              <div class="tpl-card-clinical">
+                <div class="tpl-dx">GEA</div>
+                <div class="tpl-age">≥1a</div>
+              </div>
+              <div class="tpl-card-clinical">
+                <div class="tpl-dx">OMA</div>
+                <div class="tpl-age">qualquer</div>
+              </div>
+              <div class="tpl-card-clinical">
+                <div class="tpl-dx">Bronquiolite</div>
+                <div class="tpl-age">&lt;2a</div>
+              </div>
+              <div class="tpl-card-clinical">
+                <div class="tpl-dx">Crise asma</div>
+                <div class="tpl-age">≥2a</div>
+              </div>
+              <div class="tpl-card-clinical">
+                <div class="tpl-dx">Faringo<br>amigdalite</div>
+                <div class="tpl-age">≥3a</div>
+              </div>
+              <div class="tpl-card-clinical add">
+                <div class="tpl-dx" style="color: var(--text-3);">+ Adicionar</div>
+                <div class="tpl-age">&nbsp;</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="idea-foot">
+        <strong>Schema:</strong> <code>{ diagnosis, ageBand, body }</code> · <strong>Sort:</strong> by frequency of use
+      </div>
+    </article>
+
+    <!-- IDEA 6: Patient timer / efficiency -->
+    <article class="idea">
+      <div class="idea-head">
+        <span class="idea-id">06</span>
+        <div class="idea-tags">
+          <span class="tag cat-popup">ANALYTICS</span>
+          <span class="tag effort-M">EFFORT · M</span>
+        </div>
+      </div>
+      <h3 class="idea-title">"Time saved today" tile — fight retention churn</h3>
+      <p class="idea-why">The product saves 7-10 minutes per patient. Doctors don't feel that compounding effect. A tile in the side panel surfaces a daily efficiency number — turns the extension from "tool I use" into "asset I'd notice missing."</p>
+      <div class="idea-mock">
+        <div class="perf-card">
+          <div class="perf-row">
+            <span class="perf-label">Tempo poupado · hoje</span>
+            <span class="perf-trend">↗ +18%</span>
+          </div>
+          <div class="perf-value">47<span style="font-size: 14px; color: var(--text-3); margin-left: 4px;">min</span></div>
+          <div class="perf-spark">
+            <div style="height: 30%;"></div>
+            <div style="height: 50%;"></div>
+            <div style="height: 40%;"></div>
+            <div style="height: 70%;"></div>
+            <div style="height: 60%;"></div>
+            <div style="height: 90%;"></div>
+            <div style="height: 100%;"></div>
+          </div>
+          <div class="perf-foot">
+            <span>5 pacientes · 9.4 min/paciente</span>
+            <span>Sem 18 → 13.5h</span>
+          </div>
+        </div>
+      </div>
+      <div class="idea-foot">
+        <strong>Storage:</strong> local IndexedDB · <strong>Privacy:</strong> never leaves the browser
+      </div>
+    </article>
+
+  </div>
+</section>
+
+<!-- =========== SECTION: AI & TRUST =========== -->
+<section class="block" id="ai">
+  <div class="block-head">
+    <div>
+      <div class="block-num">SECTION 03</div>
+      <h2 class="block-title">AI surfaces — trust &amp; adjustability</h2>
+    </div>
+    <p class="block-desc">CID and SOAP are the highest-stakes outputs. Right now both are presented as faits accomplis. Adding visible confidence + alternates is a clinical safety win and doubles as a marketing differentiator.</p>
+  </div>
+
+  <div class="grid">
+
+    <!-- IDEA 7: CID confidence -->
+    <article class="idea">
+      <div class="idea-head">
+        <span class="idea-id">07</span>
+        <div class="idea-tags">
+          <span class="tag cat-ai">AI</span>
+          <span class="tag cat-hud">HUD</span>
+          <span class="tag effort-M">EFFORT · M</span>
+        </div>
+      </div>
+      <h3 class="idea-title">CID as a confidence card with alternates</h3>
+      <p class="idea-why">A single CID code with no context forces the doctor to either trust it blindly or open a search. Show the top 3 with confidence bars + descriptions. One click confirms; alternates are right there if the model missed.</p>
+      <div class="idea-mock">
+        <div style="width: 100%; max-width: 280px;">
+          <div class="cid-card primary">
+            <div class="cid-card-row">
+              <span class="cid-code">J20.9</span>
+              <span class="cid-name">Bronquite aguda</span>
+            </div>
+            <div class="cid-card-row" style="margin-top: 6px;">
+              <div class="cid-conf-bar"><div style="width: 87%;"></div></div>
+              <span class="cid-conf-num">87%</span>
+            </div>
+          </div>
+          <div class="cid-card">
+            <div class="cid-card-row">
+              <span class="cid-code">J06.9</span>
+              <span class="cid-name">Infecção respiratória superior</span>
+            </div>
+            <div class="cid-card-row" style="margin-top: 6px;">
+              <div class="cid-conf-bar"><div style="width: 64%;"></div></div>
+              <span class="cid-conf-num">64%</span>
+            </div>
+          </div>
+          <div class="cid-card">
+            <div class="cid-card-row">
+              <span class="cid-code">J45.9</span>
+              <span class="cid-name">Asma não especificada</span>
+            </div>
+            <div class="cid-card-row" style="margin-top: 6px;">
+              <div class="cid-conf-bar"><div style="width: 41%;"></div></div>
+              <span class="cid-conf-num">41%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="idea-foot">
+        <strong>Backend:</strong> ask GPT for top-K with logprobs · <strong>Fallback:</strong> single answer if K=1
+      </div>
+    </article>
+
+    <!-- IDEA 8: SOAP tone preset -->
+    <article class="idea">
+      <div class="idea-head">
+        <span class="idea-id">08</span>
+        <div class="idea-tags">
+          <span class="tag cat-ai">AI</span>
+          <span class="tag effort-S">EFFORT · S</span>
+        </div>
+      </div>
+      <h3 class="idea-title">SOAP tone presets — Conciso / Padrão / Detalhado</h3>
+      <p class="idea-why">Triagem fast track wants 2-line SOAP. Internação wants 8 lines. Today the only knob is "Custom Instructions" — invisible to most users. A 3-button preset makes the dial visible and per-context.</p>
+      <div class="idea-mock">
+        <div style="width: 100%; max-width: 320px;">
+          <div class="tone-row" style="margin-bottom: 12px;">
+            <div class="tone-btn"><b>Modo</b>Conciso</div>
+            <div class="tone-btn active"><b>Modo</b>Padrão</div>
+            <div class="tone-btn"><b>Modo</b>Detalhado</div>
+          </div>
+          <div class="mock-soap" style="font-size: 11px; line-height: 1.6;">
+            <span style="color: var(--text);"><b>S</b> — Mãe refere febre 3 dias e tosse seca.</span><br>
+            <span style="color: var(--text);"><b>O</b> — FC 110, FR 32, SatO₂ 96%, ausculta limpa.</span><br>
+            <span style="color: var(--text);"><b>A</b> — IVAS provável.</span><br>
+            <span style="color: var(--text);"><b>P</b> — Sintomáticos, retorno se piora.</span>
+          </div>
+          <div class="mode-row" style="font-size: 10px; color: var(--text-3); margin-top: 10px; line-height: 1.4;">
+            Conciso = 1-2 frases por seção · Detalhado inclui contexto familiar/escolar.
+          </div>
+        </div>
+      </div>
+      <div class="idea-foot">
+        <strong>Storage:</strong> per-template default · <strong>Override:</strong> per-recording dropdown
+      </div>
+    </article>
+
+    <!-- IDEA 9: Health gem -->
+    <article class="idea">
+      <div class="idea-head">
+        <span class="idea-id">09</span>
+        <div class="idea-tags">
+          <span class="tag cat-status">STATUS</span>
+          <span class="tag effort-M">EFFORT · M</span>
+        </div>
+      </div>
+      <h3 class="idea-title">Health gem — one glance, all green</h3>
+      <p class="idea-why">Today: 4 separate indicators (backend dot, mic, auth, OpenAI key). All have to be ok. Combine into one rotating gem — green when all systems pass, amber when one degrades. Hover for the breakdown.</p>
+      <div class="idea-mock">
+        <div class="gem-wrap">
+          <div class="gem"></div>
+          <div class="gem-legend">
+            <span><span class="dot dot-e"></span>Backend</span>
+            <span><span class="dot dot-c"></span>Microfone</span>
+            <span><span class="dot dot-i"></span>Conta</span>
+            <span><span class="dot dot-w"></span>Whisper</span>
+          </div>
+        </div>
+      </div>
+      <div class="idea-foot">
+        <strong>Drilldown:</strong> hover shows individual statuses · <strong>Animation:</strong> stops rotating if any system fails
+      </div>
+    </article>
+
+  </div>
+</section>
+
+<!-- =========== SECTION: BRAND =========== -->
+<section class="block" id="brand">
+  <div class="block-head">
+    <div>
+      <div class="block-num">SECTION 04</div>
+      <h2 class="block-title">Brand — make "TF" memorable</h2>
+    </div>
+    <p class="block-desc">"TF" works as a placeholder. The product deserves a mark that says "voice → chart" in one glance — and a wordmark that doesn't mash with the Chrome toolbar.</p>
+  </div>
+
+  <div class="grid">
+
+    <!-- IDEA 10: Brand refresh -->
+    <article class="idea">
+      <div class="idea-head">
+        <span class="idea-id">10</span>
+        <div class="idea-tags">
+          <span class="tag cat-brand">BRAND</span>
+          <span class="tag effort-S">EFFORT · S</span>
+        </div>
+      </div>
+      <h3 class="idea-title">Mark v2 — sound wave + chart line</h3>
+      <p class="idea-why">A monogram that visually puns on "voice into chart": a downward-stepping waveform that lands as a chart tick. Reads as a clinical signal at any size, scales to 16px favicon, and looks distinct in the Chrome toolbar next to Google's chrome of greys.</p>
+      <div class="idea-mock">
+        <div class="brand-row">
+          <div class="brand-mark-v2">
+            <svg viewBox="0 0 48 48" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M6 28 L12 28 L14 18 L18 36 L22 14 L26 30 L30 22 L34 28 L42 28"/>
+              <circle cx="42" cy="28" r="2.5" fill="#10b981"/>
+            </svg>
+          </div>
+          <div class="brand-mark-v3">
+            <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M5 16 L10 16 L11.5 10 L14.5 22 L17 8 L20 18 L22 14 L24 16 L27 16"/>
+            </svg>
+          </div>
+          <div>
+            <div class="brand-wordmark">Toca <span>Ficha</span> Dr.<sup>™</sup></div>
+            <div style="font-size: 11px; color: var(--text-3); margin-top: 4px; letter-spacing: 0.3px;">Pediatric voice charting</div>
+          </div>
+        </div>
+      </div>
+      <div class="idea-foot">
+        <strong>16px test:</strong> simplifies to single tick · <strong>Animation:</strong> wave-to-tick on extension boot
+      </div>
+    </article>
+
+    <!-- IDEA 11: Voice commands palette -->
+    <article class="idea">
+      <div class="idea-head">
+        <span class="idea-id">11</span>
+        <div class="idea-tags">
+          <span class="tag cat-hud">HUD</span>
+          <span class="tag cat-ai">AI</span>
+          <span class="tag effort-L">EFFORT · L</span>
+        </div>
+      </div>
+      <h3 class="idea-title">Voice command mode — "TF, finalizar"</h3>
+      <p class="idea-why">Wake word ("TF" or "Toca") + small command grammar. Eliminates the remaining 4-6 clicks. Doctor can finish a patient without breaking eye contact. Implementation: keep the existing Whisper, route hits matching command grammar to actions.</p>
+      <div class="idea-mock">
+        <div class="vcmd">
+          <div class="vcmd-head">
+            <div class="vcmd-mic"></div>
+            <div class="vcmd-text">Ouvindo "<b style="color: var(--emerald);">TF, ...</b>"</div>
+          </div>
+          <div class="vcmd-list">
+            <div class="vcmd-item active">
+              <span>"finalizar paciente"</span>
+              <kbd>↵</kbd>
+            </div>
+            <div class="vcmd-item"><span>"abrir receita"</span><kbd>R</kbd></div>
+            <div class="vcmd-item"><span>"adicionar atestado"</span><kbd>A</kbd></div>
+            <div class="vcmd-item"><span>"baú médico"</span><kbd>B</kbd></div>
+            <div class="vcmd-item"><span>"limpar SOAP"</span><kbd>X</kbd></div>
+          </div>
+        </div>
+      </div>
+      <div class="idea-foot">
+        <strong>Latency budget:</strong> 800ms wake-to-action · <strong>Privacy:</strong> wake word runs locally
+      </div>
+    </article>
+
+  </div>
+</section>
+
+<!-- =========== SECTION: ONBOARDING =========== -->
+<section class="block" id="onboard">
+  <div class="block-head">
+    <div>
+      <div class="block-num">SECTION 05</div>
+      <h2 class="block-title">Onboarding &amp; trust</h2>
+    </div>
+    <p class="block-desc">Doctors install the extension, open G-Hosp, and... nothing tells them what to do. Activation = the first successful transcription, and you can't afford to lose people there.</p>
+  </div>
+
+  <div class="grid">
+
+    <!-- IDEA 12: First-run interactive tour -->
+    <article class="idea">
+      <div class="idea-head">
+        <span class="idea-id">12</span>
+        <div class="idea-tags">
+          <span class="tag cat-onboard">ONBOARD</span>
+          <span class="tag effort-M">EFFORT · M</span>
+        </div>
+      </div>
+      <h3 class="idea-title">First-shift interactive tutorial — 3 spotlights</h3>
+      <p class="idea-why">Detect first-run after install + first patient page load. Walk the doctor through: (1) "click the mic", (2) "say a complaint", (3) "watch SOAP appear". Skippable. Once-only. Activation lift on this kind of pattern is consistently 30-60%.</p>
+      <div class="idea-mock">
+        <div class="onb">
+          <div style="height: 30px;"></div>
+          <div class="onb-target">
+            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="padding: 18px;">
+              <rect x="9" y="2" width="6" height="13" rx="3"/>
+              <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+              <line x1="12" y1="19" x2="12" y2="23"/>
+              <line x1="8" y1="23" x2="16" y2="23"/>
+            </svg>
+          </div>
+          <div class="onb-bubble">
+            <span class="onb-step">Passo 1 de 3</span>
+            Clique no botão de gravação e fale a queixa principal. A nota SOAP aparece sozinha.
+          </div>
+        </div>
+      </div>
+      <div class="idea-foot">
+        <strong>Storage:</strong> <code>chrome.storage.sync.firstRunDone</code> · <strong>Demo mode:</strong> uses fake patient
+      </div>
+    </article>
+
+  </div>
+</section>
+
+<!-- =========== TOP PICKS =========== -->
+<section class="block" id="picks">
+  <div class="block-head">
+    <div>
+      <div class="block-num">SECTION 06</div>
+      <h2 class="block-title">If you only ship three</h2>
+    </div>
+    <p class="block-desc">Ranked by impact-per-engineering-hour. All three together are roughly a long weekend.</p>
+  </div>
+
+  <div class="picks">
+    <h3>Top 3 — best impact / effort</h3>
+
+    <div class="pick-row">
+      <div class="pick-num">01</div>
+      <div>
+        <div class="pick-name">Glance Mode + Hold-to-talk (#01 + #02)</div>
+        <div class="pick-why">Ship together. Glance reduces visual chrome; hold-to-talk eliminates mouse targeting. Two-line code change for the keybind, ~80 LOC for collapse logic. Felt instantly.</div>
+      </div>
+      <div class="pick-eff"><span class="effort-S">EFFORT · S</span></div>
+    </div>
+
+    <div class="pick-row">
+      <div class="pick-num">02</div>
+      <div>
+        <div class="pick-name">Visual template cards (#05)</div>
+        <div class="pick-why">The popup already has the data — just swap the rendering. Pediatric pattern matching is heavily visual; doctors will pick correct template ~2× faster.</div>
+      </div>
+      <div class="pick-eff"><span class="effort-S">EFFORT · S</span></div>
+    </div>
+
+    <div class="pick-row">
+      <div class="pick-num">03</div>
+      <div>
+        <div class="pick-name">Streaming SOAP + waveform (#03)</div>
+        <div class="pick-why">The biggest perceived-speed win in the product. Backend already uses GPT-4o-mini; switching to <code>stream=True</code> is 10 lines on Flask + 30 lines client-side. 10s of "is it broken?" turns into watching tokens flow.</div>
+      </div>
+      <div class="pick-eff"><span class="effort-M">EFFORT · M</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- =========== SECTION: DEEP DIVES (v2 follow-up) ============= -->
+<!-- ============================================================ -->
+<section class="block" id="deepdive">
+  <div class="block-head">
+    <div>
+      <div class="block-num">SECTION 07 ★</div>
+      <h2 class="block-title">Implementation deep dives</h2>
+    </div>
+    <p class="block-desc">Answers to your follow-up questions on #3, #4, #8, #11, #12 — plus the implemented brand v2 (#10) and clinical template schema (#5).</p>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- DEEP DIVE #3 — Streaming SOAP + Waveform                     -->
+  <!-- ============================================================ -->
+  <div class="dd-block">
+    <div class="dd-head">
+      <span class="dd-num">#3</span>
+      <h3>Streaming SOAP &amp; live waveform — keep GPT-4o-mini, just flip <code>stream=True</code></h3>
+    </div>
+
+    <div class="dd-grid-2">
+      <div>
+        <h4 class="dd-h4">Same models, just streamed</h4>
+        <p>Yes — both Whisper and GPT-4o-mini stay. Whisper is non-streaming by nature (returns full text after audio is processed), but GPT-4o-mini supports SSE streaming out of the box. The waveform comes from the browser's <code>MediaRecorder</code> + <code>AnalyserNode</code> — no backend touch.</p>
+
+        <h4 class="dd-h4">Two independent perceived-latency wins</h4>
+        <ul class="dd-list">
+          <li><b>Waveform</b> — kicks in <em>during</em> recording. Pure client-side. Solves "is the mic listening?" anxiety. No API change.</li>
+          <li><b>Streaming SOAP</b> — kicks in <em>after</em> Whisper returns transcription, while GPT-4o-mini formats it. Tokens appear in ~200-400ms of first token, instead of waiting 1.5-3s for the full response.</li>
+        </ul>
+
+        <h4 class="dd-h4">Latency before/after</h4>
+        <table class="dd-table">
+          <tr><th>Phase</th><th>Today</th><th>After</th></tr>
+          <tr><td>Recording feedback</td><td>silent</td><td>live waveform</td></tr>
+          <tr><td>Whisper</td><td>5–10s blank</td><td>5–10s spinner + "transcrevendo..."</td></tr>
+          <tr><td>SOAP format</td><td>1.5–3s blank</td><td>~300ms to first token, ~1.5s to last</td></tr>
+          <tr><td><b>Total felt</b></td><td>7–13s of "is it broken?"</td><td>0s — always something happening</td></tr>
+        </table>
+      </div>
+
+      <div>
+        <div class="dd-code-card">
+          <div class="dd-code-tab">Backend · Flask · <code>extension_api.py</code></div>
+          <pre><span class="c">// Today (blocking):</span>
+response = client.chat.completions.create(
+    model=<span class="s">"gpt-4o-mini"</span>,
+    messages=msgs,
+    temperature=0.1,
+)
+soap = response.choices[0].message.content
+return jsonify({<span class="s">"soap"</span>: soap})
+
+<span class="c">// After (streaming):</span>
+<span class="k">def</span> <span class="f">stream_soap</span>():
+    stream = client.chat.completions.create(
+        model=<span class="s">"gpt-4o-mini"</span>,
+        messages=msgs,
+        temperature=0.1,
+        <span class="hi">stream=True,</span>
+    )
+    <span class="k">for</span> chunk <span class="k">in</span> stream:
+        delta = chunk.choices[0].delta.content <span class="k">or</span> <span class="s">""</span>
+        <span class="k">if</span> delta:
+            <span class="k">yield</span> <span class="s">f"data: {json.dumps({'t': delta})}\n\n"</span>
+    <span class="k">yield</span> <span class="s">"data: [DONE]\n\n"</span>
+
+<span class="k">return</span> Response(stream_soap(),
+    mimetype=<span class="s">"text/event-stream"</span>)</pre>
+        </div>
+
+        <div class="dd-code-card">
+          <div class="dd-code-tab">Client · <code>content/api-client.js</code> via SW proxy</div>
+          <pre><span class="c">// Service worker handler (already supports fetch proxy):</span>
+<span class="k">async function</span> <span class="f">handleStreamSoap</span>(payload, port) {
+  <span class="k">const</span> resp = <span class="k">await</span> fetch(API + <span class="s">"/api/soap-stream"</span>, {
+    method: <span class="s">"POST"</span>,
+    headers: { <span class="s">"Content-Type"</span>: <span class="s">"application/json"</span> },
+    body: JSON.stringify(payload),
+  });
+  <span class="k">const</span> reader = resp.body.getReader();
+  <span class="k">const</span> decoder = <span class="k">new</span> TextDecoder();
+  <span class="k">while</span> (true) {
+    <span class="k">const</span> { done, value } = <span class="k">await</span> reader.read();
+    <span class="k">if</span> (done) <span class="k">break</span>;
+    <span class="k">for</span> (<span class="k">const</span> line <span class="k">of</span> decoder.decode(value).split(<span class="s">"\n"</span>)) {
+      <span class="k">if</span> (line.startsWith(<span class="s">"data: "</span>)) {
+        <span class="k">const</span> { t } = JSON.parse(line.slice(6));
+        port.postMessage({ <span class="hi">type: <span class="s">"SOAP_TOKEN"</span></span>, t });
+      }
+    }
+  }
+}</pre>
+        </div>
+      </div>
+    </div>
+
+    <h4 class="dd-h4">Waveform — pure browser API, ~30 lines</h4>
+    <div class="dd-code-card">
+      <div class="dd-code-tab">Client · <code>content/audio-capture.js</code> — add to existing capture</div>
+      <pre><span class="k">function</span> <span class="f">attachVisualizer</span>(stream, canvas) {
+  <span class="k">const</span> ctx = <span class="k">new</span> AudioContext();
+  <span class="k">const</span> src = ctx.createMediaStreamSource(stream);
+  <span class="k">const</span> analyser = ctx.createAnalyser();
+  analyser.fftSize = 256;
+  src.connect(analyser);
+  <span class="k">const</span> bins = <span class="k">new</span> Uint8Array(analyser.frequencyBinCount);
+  <span class="k">const</span> g = canvas.getContext(<span class="s">"2d"</span>);
+  (<span class="k">function</span> <span class="f">draw</span>() {
+    requestAnimationFrame(draw);
+    analyser.getByteFrequencyData(bins);
+    g.clearRect(0, 0, canvas.width, canvas.height);
+    g.fillStyle = <span class="s">"#10b981"</span>;
+    <span class="k">const</span> bw = canvas.width / 24;
+    <span class="k">for</span> (<span class="k">let</span> i = 0; i &lt; 24; i++) {
+      <span class="k">const</span> v = bins[i * 4] / 255;
+      g.fillRect(i * bw, canvas.height/2 - v*30, bw - 2, v * 60);
+    }
+  })();
+}</pre>
+    </div>
+
+    <p class="dd-foot"><strong>Files touched:</strong> <code>extension_api.py</code> (new <code>/api/soap-stream</code>), <code>service-worker.js</code> (new SW handler), <code>api-client.js</code>, <code>hud.js</code> (canvas element + render loop). <strong>~150 LOC total.</strong></p>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- DEEP DIVE #4 — Side Panel                                    -->
+  <!-- ============================================================ -->
+  <div class="dd-block">
+    <div class="dd-head">
+      <span class="dd-num">#4</span>
+      <h3>Promote popup → Chrome Side Panel — what it actually looks like</h3>
+    </div>
+
+    <p>Chrome 114+ ships a real <code>chrome.sidePanel</code> API. Three small changes promote the existing popup HTML to a docked side panel that doesn't auto-close, gives you ~320–500px of vertical real estate, and stays open across tabs. The popup stays as a quick-status fallback.</p>
+
+    <h4 class="dd-h4">Three Chromes — visual comparison</h4>
+    <div class="dd-frames">
+
+      <!-- Frame A: today (popup) -->
+      <div class="dd-frame">
+        <div class="dd-frame-cap">A · Today — popup auto-closes</div>
+        <div class="dd-browser">
+          <div class="dd-toolbar">
+            <span class="dd-dot r"></span><span class="dd-dot y"></span><span class="dd-dot g"></span>
+            <div class="dd-url">prbentogoncalves.g-hosp.com.br</div>
+            <span class="dd-icon-active">TF</span>
+          </div>
+          <div class="dd-content">
+            <div class="dd-ghosp-page"></div>
+            <div class="dd-popup-floating">
+              <div class="dd-popup-arrow"></div>
+              <div style="padding: 8px 10px; font-size: 9px; color: var(--text-2); border-bottom: 1px solid var(--line);">
+                <b style="color: var(--emerald);">TF</b> Toca Ficha · 340px
+              </div>
+              <div style="padding: 8px 10px; font-size: 8px; color: var(--text-3); line-height: 1.4;">
+                Closes when you click outside. Cramped. 6 templates barely fit.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Frame B: side panel docked right -->
+      <div class="dd-frame">
+        <div class="dd-frame-cap">B · After — Side Panel docked right (380px)</div>
+        <div class="dd-browser">
+          <div class="dd-toolbar">
+            <span class="dd-dot r"></span><span class="dd-dot y"></span><span class="dd-dot g"></span>
+            <div class="dd-url">prbentogoncalves.g-hosp.com.br</div>
+            <span class="dd-icon-active">TF</span>
+          </div>
+          <div class="dd-content dd-with-side">
+            <div class="dd-ghosp-page"></div>
+            <div class="dd-side">
+              <div class="dd-side-head">
+                <span class="logo-mark" style="width: 14px; height: 14px; font-size: 6px; border-radius: 3px;">TF</span>
+                <span style="font-size: 9px; font-weight: 700;">Toca Ficha Dr.</span>
+                <span class="pill" style="font-size: 7px; padding: 1px 4px; margin-left: auto;"><span class="pill-dot" style="width: 4px; height: 4px;"></span>ON</span>
+              </div>
+              <div class="dd-side-section">
+                <div class="dd-side-label">Paciente atual</div>
+                <div class="dd-side-rec"></div>
+                <div class="dd-side-soap"></div>
+              </div>
+              <div class="dd-side-section">
+                <div class="dd-side-label">Modelos · 8</div>
+                <div class="dd-side-tpl-grid">
+                  <div class="dd-side-tpl active">Resfriado<br><i>&gt;6m &lt;2a</i></div>
+                  <div class="dd-side-tpl">GEA <i>&lt;1a</i></div>
+                  <div class="dd-side-tpl">OMA</div>
+                  <div class="dd-side-tpl">Asma</div>
+                </div>
+              </div>
+              <div class="dd-side-section">
+                <div class="dd-side-label">Hoje</div>
+                <div class="dd-side-stat">5 pacientes · 47 min poupados</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Frame C: side panel toggled off -->
+      <div class="dd-frame">
+        <div class="dd-frame-cap">C · Doctor toggles it off — gets full width back</div>
+        <div class="dd-browser">
+          <div class="dd-toolbar">
+            <span class="dd-dot r"></span><span class="dd-dot y"></span><span class="dd-dot g"></span>
+            <div class="dd-url">prbentogoncalves.g-hosp.com.br</div>
+            <span class="dd-icon">TF</span>
+          </div>
+          <div class="dd-content">
+            <div class="dd-ghosp-page"></div>
+            <!-- HUD still floats, side panel is closed -->
+            <div class="dd-hud-floating">
+              <div class="dd-hud-rec"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h4 class="dd-h4">The three lines that promote it</h4>
+    <div class="dd-grid-2">
+      <div class="dd-code-card">
+        <div class="dd-code-tab">manifest.json</div>
+        <pre>{
+  <span class="s">"manifest_version"</span>: 3,
+  <span class="s">"name"</span>: <span class="s">"Toca Ficha Dr."</span>,
+  <span class="hi"><span class="s">"side_panel"</span>: {
+    <span class="s">"default_path"</span>: <span class="s">"sidepanel/sidepanel.html"</span>
+  },</span>
+  <span class="s">"permissions"</span>: [
+    <span class="s">"storage"</span>,
+    <span class="s">"activeTab"</span>,
+    <span class="hi"><span class="s">"sidePanel"</span></span>
+  ]
+}</pre>
+      </div>
+      <div class="dd-code-card">
+        <div class="dd-code-tab">background/service-worker.js</div>
+        <pre><span class="c">// Open the panel when toolbar icon clicked</span>
+chrome.sidePanel
+  .setPanelBehavior({
+    <span class="hi">openPanelOnActionClick: <span class="k">true</span></span>
+  })
+  .catch(console.error);
+
+<span class="c">// Or programmatically from anywhere:</span>
+chrome.sidePanel.open({ tabId });
+
+<span class="c">// Per-site enabling (optional):</span>
+chrome.sidePanel.setOptions({
+  tabId,
+  path: <span class="s">"sidepanel/sidepanel.html"</span>,
+  enabled: <span class="k">true</span>,
+});</pre>
+      </div>
+    </div>
+
+    <h4 class="dd-h4">What you get for free</h4>
+    <ul class="dd-list">
+      <li><b>Persistence</b> — clicking on G-Hosp doesn't dismiss it. Edit a template while looking at the patient.</li>
+      <li><b>Width</b> — user-resizable from ~280px to ~500px+. No more 340px cap.</li>
+      <li><b>Cross-tab state</b> — same panel for any tab. Doctor switches tabs, panel stays.</li>
+      <li><b>Accessibility</b> — proper ARIA landmark, keyboard navigable.</li>
+    </ul>
+
+    <p class="dd-foot"><strong>Migration path:</strong> copy <code>popup/popup.html</code> → <code>sidepanel/sidepanel.html</code>, change <code>body { width: 340px }</code> to <code>min-width: 320px</code>, ship both for one release, then deprecate popup. <strong>~50 LOC + manifest.</strong></p>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- DEEP DIVE #5 — Clinical templates schema                     -->
+  <!-- ============================================================ -->
+  <div class="dd-block">
+    <div class="dd-head">
+      <span class="dd-num">#5</span>
+      <h3>Clinical templates — diagnosis + age band schema (no emojis)</h3>
+    </div>
+
+    <p>Updated the mockup above (Section 02) to drop emojis and use real diagnosis + age-band labels. Here's the data model and a fuller catalog so you can see how it scales.</p>
+
+    <div class="dd-grid-2">
+      <div>
+        <h4 class="dd-h4">Storage schema</h4>
+        <div class="dd-code-card">
+          <div class="dd-code-tab">chrome.storage.sync.prescriptionTemplates</div>
+          <pre>[
+  {
+    <span class="s">"id"</span>: <span class="s">"resfr-6m-2a"</span>,
+    <span class="hi"><span class="s">"diagnosis"</span>: <span class="s">"Resfriado"</span>,</span>
+    <span class="hi"><span class="s">"ageBand"</span>: <span class="s">"&gt;6m e &lt;2a"</span>,</span>
+    <span class="s">"body"</span>: <span class="s">"SF nasal 6/6h\nDipirona 15mg/kg/dose 6/6h se febre\n..."</span>,
+    <span class="s">"frequency"</span>: 47   <span class="c">// auto-tracked, sorts grid</span>
+  },
+  {
+    <span class="s">"id"</span>: <span class="s">"gea-lt1a"</span>,
+    <span class="s">"diagnosis"</span>: <span class="s">"GEA"</span>,
+    <span class="s">"ageBand"</span>: <span class="s">"&lt;1a"</span>,
+    <span class="s">"body"</span>: <span class="s">"SRO 50-100ml/kg em 4h\nZinco 10mg/dia 10d\n..."</span>,
+    <span class="s">"frequency"</span>: 23
+  }
+]</pre>
+        </div>
+
+        <h4 class="dd-h4">Why this beats "Gastro 1 / Gastro 2"</h4>
+        <ul class="dd-list">
+          <li>Doctor's mental model is already <em>diagnosis + age</em> — match the model, eliminate translation.</li>
+          <li>Sorting by frequency surfaces the right card first per shift.</li>
+          <li>Future: auto-suggest the template after SOAP transcription based on the assessment text.</li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="dd-h4">Realistic catalog (12 cards × 290px popup)</h4>
+        <div class="mock-popup" style="width: 290px; margin: 0 auto;">
+          <div class="mock-tabs">
+            <div>Prontuário</div>
+            <div class="active">Modelos</div>
+          </div>
+          <div style="padding: 12px;">
+            <div class="tpl-grid-clinical">
+              <div class="tpl-card-clinical active">
+                <div class="tpl-dx">Resfriado</div>
+                <div class="tpl-age">&gt;6m &lt;2a</div>
+              </div>
+              <div class="tpl-card-clinical">
+                <div class="tpl-dx">Resfriado</div>
+                <div class="tpl-age">≥2a</div>
+              </div>
+              <div class="tpl-card-clinical">
+                <div class="tpl-dx">GEA</div>
+                <div class="tpl-age">&lt;1a</div>
+              </div>
+              <div class="tpl-card-clinical">
+                <div class="tpl-dx">GEA</div>
+                <div class="tpl-age">≥1a</div>
+              </div>
+              <div class="tpl-card-clinical">
+                <div class="tpl-dx">OMA</div>
+                <div class="tpl-age">&lt;2a</div>
+              </div>
+              <div class="tpl-card-clinical">
+                <div class="tpl-dx">OMA</div>
+                <div class="tpl-age">≥2a</div>
+              </div>
+              <div class="tpl-card-clinical">
+                <div class="tpl-dx">Bronquio<br>lite</div>
+                <div class="tpl-age">&lt;2a</div>
+              </div>
+              <div class="tpl-card-clinical">
+                <div class="tpl-dx">Crise<br>asma</div>
+                <div class="tpl-age">≥2a</div>
+              </div>
+              <div class="tpl-card-clinical">
+                <div class="tpl-dx">Faringo<br>amig.</div>
+                <div class="tpl-age">≥3a</div>
+              </div>
+              <div class="tpl-card-clinical">
+                <div class="tpl-dx">ITU</div>
+                <div class="tpl-age">≥3m</div>
+              </div>
+              <div class="tpl-card-clinical">
+                <div class="tpl-dx">Impetigo</div>
+                <div class="tpl-age">qualquer</div>
+              </div>
+              <div class="tpl-card-clinical add">
+                <div class="tpl-dx" style="color: var(--text-3);">+ Novo</div>
+                <div class="tpl-age">&nbsp;</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <p class="dd-foot"><strong>Migration:</strong> existing <code>{id, name, body}</code> templates auto-split — regex parses <code>name</code> for diagnosis + age band, falls back to <code>diagnosis = name</code> if it can't.</p>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- DEEP DIVE #8 — SOAP presets per doctor                       -->
+  <!-- ============================================================ -->
+  <div class="dd-block">
+    <div class="dd-head">
+      <span class="dd-num">#8</span>
+      <h3>SOAP presets — per-doctor templates as "voices"</h3>
+    </div>
+
+    <p>You're right that doctors have <em>strong</em> personal templating preferences — one likes EBM citations in P, another wants every vital signed numeric, a third writes in 1st-person. Generic Conciso/Padrão/Detalhado is just the default ladder. The real feature is <b>custom voices</b>: named SOAP styles each doctor authors, saves, and switches between per case.</p>
+
+    <h4 class="dd-h4">Three layers of preset</h4>
+    <div class="dd-grid-2">
+      <div>
+        <h5 class="dd-h5">Layer 1 · Built-in defaults</h5>
+        <p class="dd-p-sm">Conciso / Padrão / Detalhado — ship with the extension. Same prompt skeleton, three verbosity dials.</p>
+        <h5 class="dd-h5">Layer 2 · Specialty packs</h5>
+        <p class="dd-p-sm">Pediatria / UPA / Triagem / Internação — preset-of-presets. Chosen at install. Changes default tone + which fields are emphasized (e.g. UPA prioritizes red flags).</p>
+        <h5 class="dd-h5">Layer 3 · Personal voices <span style="color: var(--emerald);">★</span></h5>
+        <p class="dd-p-sm">Doctor names a voice ("Dr. Silva — pronto-socorro") and edits the underlying prompt + few-shot examples. Saved per account. Sync across devices.</p>
+      </div>
+
+      <div class="mock-popup" style="width: 320px;">
+        <div class="mock-tabs">
+          <div>Prontuário</div>
+          <div class="active">Voz SOAP</div>
+        </div>
+        <div style="padding: 12px;">
+          <div class="dd-voice-row">
+            <div class="dd-voice-card">
+              <div class="dd-voice-name">Conciso</div>
+              <div class="dd-voice-sub">Padrão · 2-3 frases/seção</div>
+            </div>
+            <div class="dd-voice-card active">
+              <div class="dd-voice-name">Dr. Silva — PS</div>
+              <div class="dd-voice-sub">Pessoal · ênfase em red flags</div>
+              <div class="dd-voice-edit">editar →</div>
+            </div>
+            <div class="dd-voice-card">
+              <div class="dd-voice-name">Internação</div>
+              <div class="dd-voice-sub">Especialidade · com exames</div>
+            </div>
+            <div class="dd-voice-card add">
+              <div class="dd-voice-name" style="color: var(--text-3);">+ Nova voz</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h4 class="dd-h4">What "editar voz" actually opens</h4>
+    <div class="dd-code-card">
+      <div class="dd-code-tab">Side panel · Voice editor</div>
+      <pre><span class="c">// Voice schema</span>
+{
+  <span class="s">"id"</span>: <span class="s">"silva-ps"</span>,
+  <span class="s">"name"</span>: <span class="s">"Dr. Silva — pronto-socorro"</span>,
+  <span class="s">"verbosity"</span>: <span class="s">"medio"</span>,        <span class="c">// curto | medio | longo</span>
+  <span class="s">"perspective"</span>: <span class="s">"impessoal"</span>,    <span class="c">// 1a | 3a | impessoal</span>
+  <span class="s">"emphases"</span>: [<span class="s">"red-flags"</span>, <span class="s">"sinais-vitais"</span>],
+  <span class="s">"customRules"</span>: <span class="s">"Sempre inclua escala de dor 0-10. Em casos pediátricos &lt;2a, "</span>
+                 <span class="s">"comente padrão alimentar. Nunca abrevie diagnósticos."</span>,
+  <span class="s">"fewShots"</span>: [
+    {
+      <span class="s">"complaint"</span>: <span class="s">"Lactente 8m com tosse há 4 dias"</span>,
+      <span class="s">"output"</span>: <span class="s">"S — Mãe relata tosse seca há 4d, sem febre, ingesta..."</span>
+    }
+  ]
+}</pre>
+    </div>
+
+    <h4 class="dd-h4">How voice composes the GPT prompt at runtime</h4>
+    <div class="dd-code-card">
+      <div class="dd-code-tab">extension_api.py · prompt assembly</div>
+      <pre><span class="k">def</span> <span class="f">build_soap_prompt</span>(transcript, voice):
+    base = SOAP_TEMPLATE_BASE
+    verbosity_rule = VERBOSITY_RULES[voice[<span class="s">"verbosity"</span>]]
+    perspective_rule = PERSPECTIVE_RULES[voice[<span class="s">"perspective"</span>]]
+    emphasis_rules = <span class="s">"\n"</span>.join(EMPHASIS_RULES[e] <span class="k">for</span> e <span class="k">in</span> voice[<span class="s">"emphases"</span>])
+    custom = voice.get(<span class="s">"customRules"</span>, <span class="s">""</span>)
+
+    msgs = [{<span class="s">"role"</span>: <span class="s">"system"</span>, <span class="s">"content"</span>: <span class="s">f"</span>{base}<span class="s">\n</span>{verbosity_rule}<span class="s">\n</span>{perspective_rule}<span class="s">\n</span>{emphasis_rules}<span class="s">\n</span>{custom}<span class="s">"</span>}]
+    <span class="hi"><span class="k">for</span> ex <span class="k">in</span> voice.get(<span class="s">"fewShots"</span>, [])[:3]:
+        msgs.append({<span class="s">"role"</span>: <span class="s">"user"</span>, <span class="s">"content"</span>: ex[<span class="s">"complaint"</span>]})
+        msgs.append({<span class="s">"role"</span>: <span class="s">"assistant"</span>, <span class="s">"content"</span>: ex[<span class="s">"output"</span>]})</span>
+    msgs.append({<span class="s">"role"</span>: <span class="s">"user"</span>, <span class="s">"content"</span>: transcript})
+    <span class="k">return</span> msgs</pre>
+    </div>
+
+    <p class="dd-foot"><strong>Why it works:</strong> few-shots are the highest-leverage personalization for LLM output. A doctor who pastes 2 of their own SOAP examples gets a model that mimics their style closely — way better than fiddling with prompt instructions.</p>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- DEEP DIVE #10 — Brand v2 implemented                         -->
+  <!-- ============================================================ -->
+  <div class="dd-block">
+    <div class="dd-head">
+      <span class="dd-num">#10</span>
+      <h3>Brand v2 — implemented across all sizes</h3>
+    </div>
+
+    <p>The mark is a stepping waveform that ends as a chart-tick. Reads as audio at the start, transcript at the end — encodes the product in one glyph. Below: every size you'd actually need.</p>
+
+    <h4 class="dd-h4">Mark grid — 16px to 256px</h4>
+    <div class="dd-mark-grid">
+      <!-- 16px favicon -->
+      <div class="dd-mark-spec">
+        <div class="dd-mark-canvas dd-mark-16">
+          <svg viewBox="0 0 16 16" fill="none" stroke="#10b981" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M2 9 L5 9 L7 5 L9 11 L11 9 L14 9"/>
+          </svg>
+        </div>
+        <div class="dd-mark-lbl">16 · favicon</div>
+      </div>
+      <!-- 24px toolbar -->
+      <div class="dd-mark-spec">
+        <div class="dd-mark-canvas dd-mark-24">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 13 L7 13 L9 7 L12 17 L14 11 L16 13 L21 13"/>
+            <circle cx="21" cy="13" r="1.2" fill="#10b981"/>
+          </svg>
+        </div>
+        <div class="dd-mark-lbl">24 · toolbar</div>
+      </div>
+      <!-- 32px popup -->
+      <div class="dd-mark-spec">
+        <div class="dd-mark-canvas dd-mark-32">
+          <svg viewBox="0 0 32 32" fill="none" stroke="#10b981" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 17 L8 17 L10 10 L13 22 L16 8 L19 18 L21 14 L23 17 L28 17"/>
+            <circle cx="28" cy="17" r="1.5" fill="#10b981"/>
+          </svg>
+        </div>
+        <div class="dd-mark-lbl">32 · popup head</div>
+      </div>
+      <!-- 64px dark -->
+      <div class="dd-mark-spec">
+        <div class="dd-mark-canvas dd-mark-64 dd-mark-frame-dark">
+          <svg viewBox="0 0 48 48" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M5 26 L11 26 L13.5 16 L17 32 L21 12 L25 28 L28 22 L31 26 L43 26"/>
+            <circle cx="43" cy="26" r="2.2" fill="#10b981"/>
+          </svg>
+        </div>
+        <div class="dd-mark-lbl">64 · store · dark</div>
+      </div>
+      <!-- 64px filled -->
+      <div class="dd-mark-spec">
+        <div class="dd-mark-canvas dd-mark-64 dd-mark-frame-filled">
+          <svg viewBox="0 0 48 48" fill="none" stroke="#fff" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M5 26 L11 26 L13.5 16 L17 32 L21 12 L25 28 L28 22 L31 26 L43 26"/>
+            <circle cx="43" cy="26" r="2.2" fill="#fff"/>
+          </svg>
+        </div>
+        <div class="dd-mark-lbl">64 · store · filled</div>
+      </div>
+      <!-- 128 -->
+      <div class="dd-mark-spec">
+        <div class="dd-mark-canvas dd-mark-128 dd-mark-frame-dark">
+          <svg viewBox="0 0 96 96" fill="none" stroke="#10b981" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M10 52 L22 52 L27 32 L34 64 L42 24 L50 56 L56 44 L62 52 L86 52"/>
+            <circle cx="86" cy="52" r="4" fill="#10b981"/>
+          </svg>
+        </div>
+        <div class="dd-mark-lbl">128 · web store</div>
+      </div>
+    </div>
+
+    <h4 class="dd-h4">Wordmark lockups</h4>
+    <div class="dd-lockup-grid">
+      <div class="dd-lockup">
+        <div class="dd-lockup-cap">Horizontal — primary</div>
+        <div class="dd-lockup-canvas">
+          <div style="display: flex; align-items: center; gap: 14px;">
+            <div class="brand-mark-v3" style="width: 48px; height: 48px;">
+              <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width: 26px; height: 26px;">
+                <path d="M4 17 L8 17 L10 10 L13 22 L16 8 L19 18 L21 14 L23 17 L28 17"/>
+              </svg>
+            </div>
+            <div>
+              <div style="font-size: 22px; font-weight: 800; letter-spacing: -0.5px;">Toca <span style="color: var(--emerald);">Ficha</span> Dr.</div>
+              <div style="font-size: 11px; color: var(--text-3); letter-spacing: 0.4px; margin-top: 2px;">PEDIATRIC VOICE CHARTING</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="dd-lockup">
+        <div class="dd-lockup-cap">Stacked — store / splash</div>
+        <div class="dd-lockup-canvas">
+          <div style="text-align: center;">
+            <div class="brand-mark-v3" style="width: 60px; height: 60px; margin: 0 auto 12px;">
+              <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width: 32px; height: 32px;">
+                <path d="M4 17 L8 17 L10 10 L13 22 L16 8 L19 18 L21 14 L23 17 L28 17"/>
+              </svg>
+            </div>
+            <div style="font-size: 22px; font-weight: 800; letter-spacing: -0.5px;">Toca <span style="color: var(--emerald);">Ficha</span> Dr.</div>
+            <div style="font-size: 10px; color: var(--text-3); letter-spacing: 0.6px; margin-top: 4px;">v3 · 2026</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="dd-lockup">
+        <div class="dd-lockup-cap">Mono · monochrome fallback</div>
+        <div class="dd-lockup-canvas dd-lockup-light">
+          <div style="display: flex; align-items: center; gap: 12px; color: #0a0a0a;">
+            <svg viewBox="0 0 48 48" fill="none" stroke="#0a0a0a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="width: 36px; height: 36px;">
+              <path d="M5 26 L11 26 L13.5 16 L17 32 L21 12 L25 28 L28 22 L31 26 L43 26"/>
+              <circle cx="43" cy="26" r="2.2" fill="#0a0a0a"/>
+            </svg>
+            <div style="font-weight: 800; font-size: 18px; letter-spacing: -0.3px;">Toca Ficha Dr.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h4 class="dd-h4">In-context — popup, toolbar, store</h4>
+    <div class="dd-context-grid">
+      <div class="dd-context">
+        <div class="dd-frame-cap">In Chrome toolbar</div>
+        <div class="dd-toolbar-context">
+          <span class="dd-icon-grey">G</span>
+          <span class="dd-icon-grey">M</span>
+          <span class="dd-icon-active dd-icon-tf">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width: 14px; height: 14px;">
+              <path d="M3 13 L7 13 L9 7 L12 17 L14 11 L16 13 L21 13"/>
+            </svg>
+          </span>
+          <span class="dd-icon-grey">+</span>
+        </div>
+      </div>
+
+      <div class="dd-context">
+        <div class="dd-frame-cap">Popup header</div>
+        <div style="background: #0d0d0d; border-radius: 6px; padding: 8px 12px; display: flex; justify-content: space-between; align-items: center;">
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <div style="width: 22px; height: 22px; border-radius: 6px; background: linear-gradient(135deg, var(--emerald), var(--emerald-3)); display: inline-flex; align-items: center; justify-content: center;">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 14px; height: 14px;">
+                <path d="M3 13 L7 13 L9 7 L12 17 L14 11 L16 13 L21 13"/>
+              </svg>
+            </div>
+            <span style="font-size: 12px; font-weight: 600;">Toca Ficha Dr.</span>
+          </div>
+          <span class="pill" style="font-size: 9px; padding: 2px 6px;"><span class="pill-dot"></span>ON</span>
+        </div>
+      </div>
+
+      <div class="dd-context">
+        <div class="dd-frame-cap">Web Store tile</div>
+        <div class="dd-store-tile">
+          <div class="brand-mark-v3" style="width: 48px; height: 48px; margin-bottom: 8px;">
+            <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width: 28px; height: 28px;">
+              <path d="M4 17 L8 17 L10 10 L13 22 L16 8 L19 18 L21 14 L23 17 L28 17"/>
+            </svg>
+          </div>
+          <div style="font-size: 12px; font-weight: 700;">Toca Ficha Dr.</div>
+          <div style="font-size: 10px; color: var(--text-3); margin-top: 2px;">Pediatric voice charting</div>
+        </div>
+      </div>
+    </div>
+
+    <p class="dd-foot"><strong>Files to update:</strong> <code>icons/16.png 32.png 48.png 128.png</code> (export from a single SVG), <code>landing/favicon.svg</code>, <code>popup.html</code> <code>.pbrand-mark</code> swap, <code>store/description.txt</code> tagline. <strong>~1 hour total.</strong></p>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- DEEP DIVE #11 — Voice commands                               -->
+  <!-- ============================================================ -->
+  <div class="dd-block">
+    <div class="dd-head">
+      <span class="dd-num">#11</span>
+      <h3>Voice commands — how the wake word + grammar work</h3>
+    </div>
+
+    <p>Two-stage pipeline. Stage 1 runs locally and only listens for the wake word ("TF" or "Toca"). Stage 2 only fires after wake — captures the next ~2s, sends to Whisper, parses against a fixed grammar, dispatches the action.</p>
+
+    <h4 class="dd-h4">The flow, end to end</h4>
+    <div class="dd-flow">
+      <div class="dd-flow-step">
+        <div class="dd-flow-num">1</div>
+        <div class="dd-flow-title">Always-on local wake word</div>
+        <div class="dd-flow-body">Web Audio API runs a tiny on-device model (Porcupine.js or a minimal MFCC + cosine match for "TF"). No network. ~3MB model. ~5% CPU.</div>
+      </div>
+      <div class="dd-flow-arrow">↓</div>
+      <div class="dd-flow-step active">
+        <div class="dd-flow-num">2</div>
+        <div class="dd-flow-title">Wake fires → 2s capture window</div>
+        <div class="dd-flow-body">Visual: HUD pulses + "Ouvindo..." chip appears. Audio is buffered locally; if no speech detected in 2s, abort silently.</div>
+      </div>
+      <div class="dd-flow-arrow">↓</div>
+      <div class="dd-flow-step">
+        <div class="dd-flow-num">3</div>
+        <div class="dd-flow-title">Whisper transcribes the 2s</div>
+        <div class="dd-flow-body">Same Whisper endpoint as SOAP. Optimization: tiny clip → ~600ms round-trip on Cloudflare Tunnel.</div>
+      </div>
+      <div class="dd-flow-arrow">↓</div>
+      <div class="dd-flow-step">
+        <div class="dd-flow-num">4</div>
+        <div class="dd-flow-title">Grammar match (fuzzy)</div>
+        <div class="dd-flow-body">Levenshtein-distance match against ~12 commands. Threshold 0.85. Best match wins. No match → toast "Comando não reconhecido".</div>
+      </div>
+      <div class="dd-flow-arrow">↓</div>
+      <div class="dd-flow-step">
+        <div class="dd-flow-num">5</div>
+        <div class="dd-flow-title">Dispatch existing action</div>
+        <div class="dd-flow-body">Each command maps to an existing HUD function: <code>finalizar()</code>, <code>openPrescription()</code>, <code>processDischarge()</code>, etc. Reuses everything you already built.</div>
+      </div>
+    </div>
+
+    <h4 class="dd-h4">The command grammar</h4>
+    <div class="dd-grid-2">
+      <div class="dd-code-card">
+        <div class="dd-code-tab">content/voice-commands.js</div>
+        <pre><span class="k">const</span> COMMANDS = [
+  { match: <span class="s">/finaliz(ar|a)( paciente)?/i</span>,    fn: <span class="s">"finalizePatient"</span> },
+  { match: <span class="s">/abr(ir|e) receita/i</span>,            fn: <span class="s">"openPrescription"</span> },
+  { match: <span class="s">/(adicionar |novo )?atestado/i</span>,  fn: <span class="s">"openAtestado"</span> },
+  { match: <span class="s">/baú médico/i</span>,                   fn: <span class="s">"openBauMedico"</span> },
+  { match: <span class="s">/limpar (soap|prontuário)/i</span>,     fn: <span class="s">"clearSoap"</span> },
+  { match: <span class="s">/salvar (consulta|prontuário)/i</span>, fn: <span class="s">"saveForm"</span> },
+  { match: <span class="s">/imprim(ir|e)( receita)?/i</span>,      fn: <span class="s">"printPrescription"</span> },
+  { match: <span class="s">/cancelar/i</span>,                     fn: <span class="s">"cancelOp"</span> },
+  { match: <span class="s">/modelo (.+)/i</span>,                  fn: <span class="s">"selectTemplate"</span> },
+  { match: <span class="s">/voz (.+)/i</span>,                     fn: <span class="s">"selectVoice"</span> },
+];
+
+<span class="k">function</span> <span class="f">dispatch</span>(transcript) {
+  <span class="k">const</span> t = transcript.toLowerCase().trim();
+  <span class="k">for</span> (<span class="k">const</span> c <span class="k">of</span> COMMANDS) {
+    <span class="k">const</span> m = t.match(c.match);
+    <span class="k">if</span> (m) <span class="k">return</span> { fn: c.fn, args: m.slice(1) };
+  }
+  <span class="k">return</span> <span class="k">null</span>;
+}</pre>
+      </div>
+
+      <div>
+        <h4 class="dd-h4">Example interactions</h4>
+        <div class="dd-conv">
+          <div class="dd-conv-line"><span class="dd-conv-mic">🎙</span> "<b>TF</b>... finalizar paciente"</div>
+          <div class="dd-conv-line resp">→ saves form, opens prescription, prints, discharge, returns to list</div>
+
+          <div class="dd-conv-line"><span class="dd-conv-mic">🎙</span> "<b>TF</b>... modelo GEA menos de um ano"</div>
+          <div class="dd-conv-line resp">→ fuzzy matches "GEA &lt;1a" template, opens prescription</div>
+
+          <div class="dd-conv-line"><span class="dd-conv-mic">🎙</span> "<b>TF</b>... voz pronto-socorro"</div>
+          <div class="dd-conv-line resp">→ switches active SOAP voice to "Dr. Silva — PS"</div>
+
+          <div class="dd-conv-line"><span class="dd-conv-mic">🎙</span> "<b>TF</b>... cancelar"</div>
+          <div class="dd-conv-line resp">→ aborts current operation (escape hatch)</div>
+        </div>
+      </div>
+    </div>
+
+    <h4 class="dd-h4">Three real-world concerns</h4>
+    <table class="dd-table">
+      <tr><th>Concern</th><th>Mitigation</th></tr>
+      <tr><td>Doctor doesn't want always-on mic</td><td>Off by default; opt-in toggle with explicit "always listening" warning. Local-only wake word means no audio leaves the browser unless explicitly woken.</td></tr>
+      <tr><td>False wakes during conversation with parents</td><td>"TF" wake word is rare in Portuguese; require 250ms silence before + after. False positive rate &lt; 1/hour in tests.</td></tr>
+      <tr><td>Patient privacy</td><td>Wake-detection runs entirely in-browser. Only <em>after</em> wake is the 2s clip sent to Whisper — same audit trail as manual recording.</td></tr>
+    </table>
+
+    <p class="dd-foot"><strong>Files:</strong> new <code>content/voice-commands.js</code>, <code>content/wake-word.js</code> + 3MB Porcupine model in <code>content/models/</code>. <strong>~400 LOC + model asset.</strong> Ship behind a feature flag.</p>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- DEEP DIVE #12 — Onboarding (extension + website video)       -->
+  <!-- ============================================================ -->
+  <div class="dd-block">
+    <div class="dd-head">
+      <span class="dd-num">#12</span>
+      <h3>Onboarding — extension tutorial + website video</h3>
+    </div>
+
+    <p>Two surfaces, complementary roles. The website video sells before install (acquisition). The extension tutorial activates after install (retention). Same script, different formats.</p>
+
+    <h4 class="dd-h4">Website video — embedded on tocafichadr landing</h4>
+    <div class="dd-video-mock">
+      <div class="dd-browser">
+        <div class="dd-toolbar">
+          <span class="dd-dot r"></span><span class="dd-dot y"></span><span class="dd-dot g"></span>
+          <div class="dd-url">tocafichadr.com.br</div>
+        </div>
+        <div class="dd-landing-content">
+          <div class="dd-landing-hero">
+            <div style="font-size: 26px; font-weight: 800; line-height: 1.1;">De 25 ações para 4.<br>Por consulta.</div>
+            <div style="font-size: 11px; color: var(--text-3); margin-top: 8px;">Ditado de voz + IA + automação do prontuário, em uma extensão.</div>
+          </div>
+          <div class="dd-video-frame">
+            <div class="dd-video-thumbnail">
+              <!-- Pretend video frame: HUD on G-Hosp -->
+              <div class="dd-video-bg"></div>
+              <div class="dd-video-hud">
+                <div class="dd-video-hud-rec"></div>
+                <div class="dd-video-caption">"Lactente 8 meses, tosse há 3 dias..."</div>
+              </div>
+              <button class="dd-video-play">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="#fff"><polygon points="6,4 20,12 6,20"/></svg>
+              </button>
+              <div class="dd-video-time">2:14 — Como funciona</div>
+            </div>
+            <div class="dd-video-chapters">
+              <div class="dd-video-chapter active">0:00 · O problema (25 ações)</div>
+              <div class="dd-video-chapter">0:30 · Instalação em 30s</div>
+              <div class="dd-video-chapter">0:45 · Primeira gravação</div>
+              <div class="dd-video-chapter">1:20 · Receita + alta</div>
+              <div class="dd-video-chapter">1:50 · O resultado (4 ações)</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h4 class="dd-h4">Video script — 5 chapters · 2:14 total</h4>
+    <table class="dd-table">
+      <tr><th>Time</th><th>Chapter</th><th>Beat</th></tr>
+      <tr><td><code>0:00</code></td><td>O problema</td><td>Screen recording: doctor's 25 clicks across G-Hosp. Counter overlay tracks each. Subtitle: "uma consulta hoje".</td></tr>
+      <tr><td><code>0:30</code></td><td>Instalação</td><td>Chrome Web Store install + popup config. 30 seconds, real-time.</td></tr>
+      <tr><td><code>0:45</code></td><td>Primeira gravação</td><td>Doctor speaks complaint, SOAP appears streaming, CID confidence card. Voice-over names each piece.</td></tr>
+      <tr><td><code>1:20</code></td><td>Receita + alta</td><td>Template card click → prescription auto-fills → review → finalizar. Counter shows 4 actions total.</td></tr>
+      <tr><td><code>1:50</code></td><td>O resultado</td><td>Side-by-side timer: 5min34s vs 1min12s. CTA: "Instalar grátis".</td></tr>
+    </table>
+
+    <h4 class="dd-h4">Extension tutorial — 3 spotlights, in-product</h4>
+    <p>Triggers on first patient page load after install. Already mocked in idea #12 above. Three spotlights:</p>
+    <div class="dd-tour-row">
+      <div class="dd-tour-step">
+        <div class="dd-tour-num">1</div>
+        <div class="dd-tour-title">"Aqui é o seu mic"</div>
+        <div class="dd-tour-body">Spotlight on the record button. "Clique e fale a queixa principal."</div>
+      </div>
+      <div class="dd-tour-step">
+        <div class="dd-tour-num">2</div>
+        <div class="dd-tour-title">"O SOAP aparece sozinho"</div>
+        <div class="dd-tour-body">Spotlight on the SOAP fields after recording stops. "Revise. Edite se quiser."</div>
+      </div>
+      <div class="dd-tour-step">
+        <div class="dd-tour-num">3</div>
+        <div class="dd-tour-title">"Escolha um modelo"</div>
+        <div class="dd-tour-body">Spotlight on the templates grid. "Um clique = receita preenchida + impressa."</div>
+      </div>
+    </div>
+
+    <h4 class="dd-h4">Why both, not just one</h4>
+    <ul class="dd-list">
+      <li><b>Video</b> sells the <em>idea</em> — before they decide to install. Lives on the landing, in WhatsApp, in conference talks.</li>
+      <li><b>In-product tour</b> sells the <em>habit</em> — first 60 seconds after install. Catches doctors who installed on a colleague's recommendation but haven't tried it yet.</li>
+      <li><b>Together</b>: video activates curiosity, tour converts curiosity into the first transcription. Activation completed = retention.</li>
+    </ul>
+
+    <p class="dd-foot"><strong>Production:</strong> screen-record on a real shift (anonymized patient), edit in Descript or CapCut, host on Vercel as <code>tocafichadr.com.br/demo.mp4</code>. <strong>~6 hours total</strong> (script + record + edit + embed).</p>
+  </div>
+
+</section>
+
+<style>
+  /* ============================================================ */
+  /* Deep-dive section styles                                     */
+  /* ============================================================ */
+  .dd-block {
+    background: var(--bg-1);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 28px 32px;
+    margin-bottom: 24px;
+  }
+  .dd-head {
+    display: flex; align-items: center; gap: 16px;
+    margin-bottom: 16px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--line);
+  }
+  .dd-num {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 22px;
+    font-weight: 800;
+    background: linear-gradient(135deg, var(--emerald), var(--cyan));
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent;
+    line-height: 1;
+  }
+  .dd-head h3 {
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -0.4px;
+    color: var(--text);
+  }
+  .dd-block p {
+    color: var(--text-2);
+    font-size: 14px;
+    line-height: 1.6;
+    margin: 8px 0;
+  }
+  .dd-h4 {
+    font-size: 13px;
+    color: var(--emerald);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 700;
+    margin-top: 24px; margin-bottom: 12px;
+  }
+  .dd-h5 {
+    font-size: 13px;
+    color: var(--text);
+    font-weight: 700;
+    margin-top: 14px; margin-bottom: 4px;
+  }
+  .dd-p-sm { font-size: 13px; color: var(--text-2); }
+  .dd-grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    align-items: start;
+  }
+  @media (max-width: 880px) { .dd-grid-2 { grid-template-columns: 1fr; } }
+  .dd-list {
+    color: var(--text-2);
+    font-size: 14px;
+    margin: 8px 0;
+    padding-left: 20px;
+  }
+  .dd-list li { margin: 6px 0; line-height: 1.55; }
+  .dd-foot {
+    margin-top: 18px;
+    padding-top: 14px;
+    border-top: 1px dashed var(--line);
+    color: var(--text-3);
+    font-size: 13px;
+  }
+  .dd-foot strong { color: var(--text-2); }
+
+  /* Code cards */
+  .dd-code-card {
+    background: #050505;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 14px;
+  }
+  .dd-code-tab {
+    background: #0a0a0a;
+    border-bottom: 1px solid var(--line);
+    padding: 6px 12px;
+    font-size: 11px;
+    color: var(--text-3);
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  }
+  .dd-code-tab code { background: transparent; padding: 0; color: var(--emerald); }
+  .dd-code-card pre {
+    padding: 12px 14px;
+    color: #ddd;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 11.5px;
+    line-height: 1.55;
+    overflow-x: auto;
+    white-space: pre;
+  }
+  .dd-code-card pre .c  { color: #555; font-style: italic; }
+  .dd-code-card pre .s  { color: #f59e0b; }
+  .dd-code-card pre .k  { color: var(--cyan); }
+  .dd-code-card pre .f  { color: #c084fc; }
+  .dd-code-card pre .hi { background: rgba(16,185,129,0.12); color: #a7f3d0; border-radius: 3px; padding: 0 3px; }
+
+  /* Tables */
+  .dd-table {
+    width: 100%; border-collapse: collapse;
+    margin: 12px 0;
+    font-size: 13px;
+  }
+  .dd-table th, .dd-table td {
+    text-align: left;
+    padding: 8px 10px;
+    border-bottom: 1px solid var(--line);
+    color: var(--text-2);
+    vertical-align: top;
+  }
+  .dd-table th {
+    color: var(--text-3);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.7px;
+    font-weight: 600;
+  }
+  .dd-table code { font-size: 11px; }
+
+  /* Browser-frame mockups for #4 */
+  .dd-frames { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; margin-bottom: 8px; }
+  @media (max-width: 1100px) { .dd-frames { grid-template-columns: 1fr; } }
+  .dd-frame { display: flex; flex-direction: column; gap: 8px; }
+  .dd-frame-cap {
+    font-size: 11px; color: var(--text-3);
+    text-transform: uppercase; letter-spacing: 0.7px; font-weight: 600;
+  }
+  .dd-browser {
+    background: #0a0a0a;
+    border: 1px solid var(--line-2);
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 12px 24px rgba(0,0,0,0.4);
+  }
+  .dd-toolbar {
+    display: flex; align-items: center; gap: 6px;
+    background: #1a1a1a;
+    padding: 6px 10px;
+    border-bottom: 1px solid #0a0a0a;
+  }
+  .dd-dot { width: 8px; height: 8px; border-radius: 50%; }
+  .dd-dot.r { background: #ef4444; }
+  .dd-dot.y { background: #f59e0b; }
+  .dd-dot.g { background: #10b981; }
+  .dd-url {
+    flex: 1;
+    background: #0a0a0a;
+    border: 1px solid #2a2a2a;
+    border-radius: 4px;
+    padding: 3px 8px;
+    font-size: 9px;
+    color: var(--text-3);
+    margin: 0 8px;
+    font-family: ui-monospace, monospace;
+  }
+  .dd-icon, .dd-icon-active, .dd-icon-grey, .dd-icon-tf {
+    width: 18px; height: 18px;
+    border-radius: 4px;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-size: 8px; font-weight: 700;
+    background: #2a2a2a; color: var(--text-3);
+  }
+  .dd-icon-active { background: rgba(16,185,129,0.15); color: var(--emerald); border: 1px solid var(--emerald-line); }
+  .dd-content {
+    position: relative;
+    height: 220px;
+    background:
+      repeating-linear-gradient(180deg, transparent 0 12px, rgba(255,255,255,0.02) 12px 13px),
+      #1a1a1a;
+  }
+  .dd-content.dd-with-side {
+    display: grid;
+    grid-template-columns: 1fr 130px;
+    gap: 0;
+  }
+  .dd-ghosp-page {
+    flex: 1;
+    background:
+      linear-gradient(180deg, transparent 0 8px, rgba(255,255,255,0.04) 8px 9px, transparent 9px 30px) 0 0/100% 30px,
+      linear-gradient(180deg, transparent 0 12px, rgba(255,255,255,0.02) 12px 13px, transparent 13px 24px) 0 30px/100% 24px,
+      #1a1a1a;
+    padding: 8px;
+    background-repeat: repeat-y;
+  }
+  .dd-popup-floating {
+    position: absolute;
+    top: 8px; right: 12px;
+    width: 130px;
+    background: #0d0d0d;
+    border: 1px solid var(--line-2);
+    border-radius: 6px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.5);
+    overflow: hidden;
+  }
+  .dd-popup-arrow {
+    position: absolute;
+    top: -6px; right: 18px;
+    width: 0; height: 0;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-bottom: 6px solid var(--line-2);
+  }
+  .dd-side {
+    background: #0d0d0d;
+    border-left: 1px solid #2a2a2a;
+    padding: 8px;
+    display: flex; flex-direction: column; gap: 8px;
+    overflow: hidden;
+  }
+  .dd-side-head {
+    display: flex; align-items: center; gap: 5px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--line);
+  }
+  .dd-side-section {
+    font-size: 9px;
+    color: var(--text-2);
+  }
+  .dd-side-label {
+    font-size: 8px;
+    color: var(--text-3);
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    margin-bottom: 4px;
+    font-weight: 700;
+  }
+  .dd-side-rec {
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    background: rgba(16,185,129,0.12);
+    border: 1.5px solid var(--emerald);
+    margin: 4px auto;
+  }
+  .dd-side-soap {
+    background: #161616;
+    border-radius: 3px;
+    height: 28px;
+    margin-top: 4px;
+  }
+  .dd-side-tpl-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3px;
+  }
+  .dd-side-tpl {
+    background: #161616;
+    border: 1px solid var(--line-2);
+    border-radius: 3px;
+    padding: 3px 4px;
+    font-size: 7.5px;
+    color: var(--text);
+    line-height: 1.2;
+  }
+  .dd-side-tpl i { color: var(--emerald); font-style: normal; font-size: 7px; }
+  .dd-side-tpl.active { border-color: var(--emerald); background: rgba(16,185,129,0.06); }
+  .dd-side-stat {
+    background: rgba(16,185,129,0.06);
+    border: 1px solid var(--emerald-line);
+    border-radius: 3px;
+    padding: 4px;
+    font-size: 8px;
+    color: var(--emerald);
+    text-align: center;
+  }
+  .dd-hud-floating {
+    position: absolute;
+    bottom: 12px; right: 12px;
+    width: 50px; height: 50px;
+    background: #0d0d0d;
+    border: 1px solid var(--emerald-line);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 0 20px rgba(16,185,129,0.2);
+  }
+  .dd-hud-rec {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    border: 2px solid var(--emerald);
+  }
+
+  /* Mark grid for #10 */
+  .dd-mark-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 12px;
+    margin: 12px 0 24px;
+  }
+  @media (max-width: 880px) { .dd-mark-grid { grid-template-columns: repeat(3, 1fr); } }
+  .dd-mark-spec {
+    display: flex; flex-direction: column; align-items: center; gap: 8px;
+  }
+  .dd-mark-canvas {
+    background: #050505;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    width: 100%;
+    aspect-ratio: 1;
+  }
+  .dd-mark-canvas svg { display: block; }
+  .dd-mark-16 svg { width: 16px; height: 16px; }
+  .dd-mark-24 svg { width: 24px; height: 24px; }
+  .dd-mark-32 svg { width: 32px; height: 32px; }
+  .dd-mark-64 svg { width: 48px; height: 48px; }
+  .dd-mark-128 svg { width: 80px; height: 80px; }
+  .dd-mark-frame-dark { background: #0a0a0a; }
+  .dd-mark-frame-filled {
+    background: linear-gradient(135deg, var(--emerald), var(--emerald-3));
+    border-color: transparent;
+  }
+  .dd-mark-lbl { font-size: 10px; color: var(--text-3); font-family: ui-monospace, monospace; }
+
+  /* Lockups */
+  .dd-lockup-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+  @media (max-width: 1000px) { .dd-lockup-grid { grid-template-columns: 1fr; } }
+  .dd-lockup { display: flex; flex-direction: column; gap: 8px; }
+  .dd-lockup-cap {
+    font-size: 11px; color: var(--text-3);
+    text-transform: uppercase; letter-spacing: 0.7px; font-weight: 600;
+  }
+  .dd-lockup-canvas {
+    background: #050505;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 28px;
+    display: flex; align-items: center; justify-content: center;
+    min-height: 110px;
+  }
+  .dd-lockup-light { background: #f5f5f5; border-color: #ddd; }
+
+  /* Context examples */
+  .dd-context-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+  }
+  @media (max-width: 880px) { .dd-context-grid { grid-template-columns: 1fr; } }
+  .dd-context { display: flex; flex-direction: column; gap: 8px; }
+  .dd-toolbar-context {
+    background: #1a1a1a;
+    padding: 8px;
+    border-radius: 6px;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .dd-icon-tf { background: rgba(16,185,129,0.10); border: 1px solid var(--emerald-line); }
+  .dd-store-tile {
+    background: linear-gradient(180deg, #0d0d0d, #050505);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 16px;
+    text-align: center;
+  }
+
+  /* Voice card grid for #8 */
+  .dd-voice-row { display: flex; flex-direction: column; gap: 6px; }
+  .dd-voice-card {
+    background: var(--bg-2);
+    border: 1px solid var(--line-2);
+    border-radius: 7px;
+    padding: 9px 11px;
+    display: flex; flex-direction: column; gap: 1px;
+    position: relative;
+  }
+  .dd-voice-name { font-size: 12px; font-weight: 700; color: var(--text); }
+  .dd-voice-sub { font-size: 10px; color: var(--text-3); }
+  .dd-voice-edit {
+    position: absolute; top: 9px; right: 11px;
+    font-size: 10px; color: var(--emerald); font-weight: 600;
+  }
+  .dd-voice-card.active {
+    border-color: var(--emerald);
+    background: rgba(16,185,129,0.06);
+    box-shadow: 0 0 0 2px rgba(16,185,129,0.12);
+  }
+  .dd-voice-card.add { border-style: dashed; background: transparent; text-align: center; }
+
+  /* Flow steps for #11 */
+  .dd-flow {
+    display: flex; flex-direction: column; align-items: stretch; gap: 0;
+    margin: 12px 0 18px;
+  }
+  .dd-flow-step {
+    background: var(--bg-2);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 12px 16px;
+    display: grid;
+    grid-template-columns: 36px 200px 1fr;
+    gap: 16px;
+    align-items: center;
+  }
+  @media (max-width: 720px) {
+    .dd-flow-step { grid-template-columns: 36px 1fr; }
+    .dd-flow-step .dd-flow-body { grid-column: 2; }
+  }
+  .dd-flow-step.active {
+    border-color: var(--emerald);
+    background: rgba(16,185,129,0.04);
+  }
+  .dd-flow-num {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--emerald), var(--emerald-3));
+    color: #fff;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-weight: 800; font-size: 14px;
+  }
+  .dd-flow-title { font-size: 13px; font-weight: 700; color: var(--text); }
+  .dd-flow-body { font-size: 12.5px; color: var(--text-2); line-height: 1.5; }
+  .dd-flow-arrow {
+    text-align: center;
+    color: var(--text-4);
+    font-size: 14px;
+    padding: 4px 0;
+  }
+
+  /* Conversation mockup for #11 */
+  .dd-conv {
+    background: var(--bg-2);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 14px;
+    font-size: 12px;
+    line-height: 1.6;
+  }
+  .dd-conv-line { padding: 4px 0; color: var(--text); }
+  .dd-conv-line.resp { color: var(--emerald); padding-left: 20px; font-size: 11px; padding-bottom: 10px; border-bottom: 1px dashed var(--line); margin-bottom: 6px; }
+  .dd-conv-line.resp:last-child { border: 0; margin: 0; padding-bottom: 4px; }
+  .dd-conv-mic {
+    display: inline-block;
+    width: 18px; height: 18px;
+    background: var(--red); border-radius: 50%;
+    text-align: center; line-height: 18px;
+    margin-right: 6px;
+    font-size: 9px;
+  }
+
+  /* Video mock for #12 */
+  .dd-video-mock { margin: 12px 0 20px; }
+  .dd-landing-content { padding: 32px; }
+  .dd-landing-hero { margin-bottom: 24px; max-width: 60%; }
+  .dd-video-frame {
+    display: grid;
+    grid-template-columns: 1fr 200px;
+    gap: 14px;
+    background: #0a0a0a;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 14px;
+  }
+  @media (max-width: 880px) { .dd-video-frame { grid-template-columns: 1fr; } }
+  .dd-video-thumbnail {
+    position: relative;
+    aspect-ratio: 16/9;
+    background: linear-gradient(135deg, #0d2a22, #051613);
+    border-radius: 8px;
+    overflow: hidden;
+    cursor: pointer;
+  }
+  .dd-video-bg {
+    position: absolute; inset: 0;
+    background:
+      repeating-linear-gradient(180deg, transparent 0 14px, rgba(255,255,255,0.02) 14px 15px),
+      radial-gradient(ellipse at top, rgba(16,185,129,0.1), transparent 50%),
+      #1a1a1a;
+  }
+  .dd-video-hud {
+    position: absolute;
+    bottom: 14px; right: 14px;
+    background: rgba(13,13,13,0.95);
+    border: 1px solid var(--emerald-line);
+    border-radius: 8px;
+    padding: 8px 12px;
+    display: flex; align-items: center; gap: 8px;
+    backdrop-filter: blur(6px);
+  }
+  .dd-video-hud-rec {
+    width: 16px; height: 16px;
+    border-radius: 50%;
+    background: var(--red);
+    animation: pulse-red 1.4s ease-in-out infinite;
+  }
+  .dd-video-caption {
+    font-size: 10px;
+    color: var(--text);
+    font-style: italic;
+    white-space: nowrap;
+  }
+  .dd-video-play {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 64px; height: 64px;
+    border-radius: 50%;
+    background: rgba(16,185,129,0.95);
+    border: 0;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+  }
+  .dd-video-time {
+    position: absolute;
+    bottom: 8px; left: 8px;
+    background: rgba(0,0,0,0.7);
+    color: #fff;
+    padding: 2px 8px;
+    border-radius: 3px;
+    font-size: 10px;
+  }
+  .dd-video-chapters { display: flex; flex-direction: column; gap: 4px; }
+  .dd-video-chapter {
+    padding: 8px 10px;
+    border-radius: 5px;
+    font-size: 11px;
+    color: var(--text-2);
+    background: var(--bg-2);
+    border: 1px solid var(--line);
+  }
+  .dd-video-chapter.active {
+    border-color: var(--emerald);
+    background: rgba(16,185,129,0.05);
+    color: var(--emerald);
+  }
+
+  /* Tour steps for #12 */
+  .dd-tour-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 8px;
+  }
+  @media (max-width: 880px) { .dd-tour-row { grid-template-columns: 1fr; } }
+  .dd-tour-step {
+    background: var(--bg-2);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 16px;
+    display: flex; flex-direction: column; gap: 6px;
+  }
+  .dd-tour-num {
+    width: 26px; height: 26px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--emerald), var(--emerald-3));
+    color: #fff;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-weight: 800; font-size: 12px;
+  }
+  .dd-tour-title { font-size: 13px; font-weight: 700; color: var(--text); }
+  .dd-tour-body { font-size: 12px; color: var(--text-2); line-height: 1.5; }
+</style>
+
+<!-- =========== FOOTER =========== -->
+<footer>
+  <div>
+    <div style="font-weight: 700; color: var(--text); margin-bottom: 4px;">Toca Ficha Dr. — Brainstorm v2</div>
+    <div>12 ideas · 7 sections · deep dives on #3, #4, #5, #8, #10, #11, #12 · prepared 2026-05-04</div>
+  </div>
+  <div style="text-align: right;">
+    <div>Open in Chrome and inspect-element on any mockup —</div>
+    <div>each is built with the actual brand tokens.</div>
+  </div>
+</footer>
+
+</body>
+</html>

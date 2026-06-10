@@ -1,0 +1,884 @@
+[
+  {
+    "extCode": "J06.9",
+    "extName": "Infecção aguda das vias aéreas superiores, não especificada",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "J00",
+    "extName": "Nasofaringite aguda (resfriado comum)",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "J02.9",
+    "extName": "Faringite aguda não especificada",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "J03.9",
+    "extName": "Amigdalite aguda não especificada",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "J20.9",
+    "extName": "Bronquite aguda não especificada",
+    "emrCode": "J20.0",
+    "emrName": "Bronquite aguda devida a Mycoplasma Pneumoniae",
+    "status": "PARTIAL_MATCH",
+    "alternatives": [
+      "J20.0",
+      "J20.3"
+    ]
+  },
+  {
+    "extCode": "J18.9",
+    "extName": "Pneumonia não especificada",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "J45.9",
+    "extName": "Asma não especificada",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "J21.9",
+    "extName": "Bronquiolite aguda não especificada",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "J05.0",
+    "extName": "Laringite obstrutiva aguda (crupe)",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "J04.0",
+    "extName": "Laringite aguda",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "J04.2",
+    "extName": "Laringotraqueíte aguda",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "J22",
+    "extName": "Infecção aguda não especificada das vias aéreas inferiores",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "J32.9",
+    "extName": "Sinusite crônica não especificada",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "J01.9",
+    "extName": "Sinusite aguda não especificada",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "J18.0",
+    "extName": "Broncopneumonia não especificada",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "J12.9",
+    "extName": "Pneumonia viral não especificada",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "J15.9",
+    "extName": "Pneumonia bacteriana não especificada",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "J38.5",
+    "extName": "Espasmo laríngeo",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "J98.1",
+    "extName": "Colapso pulmonar",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "J45.0",
+    "extName": "Asma predominantemente alérgica",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "J21.0",
+    "extName": "Bronquiolite aguda devida a vírus sincicial respiratório",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "J39.9",
+    "extName": "Doença das vias aéreas superiores não especificada",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "A09",
+    "extName": "Diarreia e gastroenterite de origem infecciosa presumível",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "A08.0",
+    "extName": "Enterite por rotavírus",
+    "emrCode": "A08.1",
+    "emrName": "Gastroenteropatia aguda pelo agente de Norwalk",
+    "status": "PARTIAL_MATCH",
+    "alternatives": [
+      "A08.1"
+    ]
+  },
+  {
+    "extCode": "A08.4",
+    "extName": "Infecção intestinal viral não especificada",
+    "emrCode": "A08.1",
+    "emrName": "Gastroenteropatia aguda pelo agente de Norwalk",
+    "status": "PARTIAL_MATCH",
+    "alternatives": [
+      "A08.1"
+    ]
+  },
+  {
+    "extCode": "K52.9",
+    "extName": "Gastroenterite e colite não infecciosas, não especificadas",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "R11",
+    "extName": "Náusea e vômitos",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "K29.7",
+    "extName": "Gastrite não especificada",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "R10.9",
+    "extName": "Dor abdominal não especificada",
+    "emrCode": "R10.0",
+    "emrName": "Abdome agudo",
+    "status": "PARTIAL_MATCH",
+    "alternatives": [
+      "R10.0"
+    ]
+  },
+  {
+    "extCode": "K21.0",
+    "extName": "Doença de refluxo gastroesofágico com esofagite",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "K37",
+    "extName": "Apendicite não especificada",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "K59.0",
+    "extName": "Constipação",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "K59.1",
+    "extName": "Diarreia funcional",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "R10.0",
+    "extName": "Abdome agudo",
+    "emrCode": "R10.0",
+    "emrName": "Abdome agudo",
+    "status": "EXACT_MATCH"
+  },
+  {
+    "extCode": "K40.9",
+    "extName": "Hérnia inguinal sem obstrução ou gangrena",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "K21.9",
+    "extName": "Doença de refluxo gastroesofágico sem esofagite",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "R12",
+    "extName": "Azia",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "K56.7",
+    "extName": "Íleo não especificado",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "A08.1",
+    "extName": "Gastroenteropatia aguda devida a agente de Norwalk",
+    "emrCode": "A08.1",
+    "emrName": "Gastroenteropatia aguda pelo agente de Norwalk",
+    "status": "EXACT_MATCH"
+  },
+  {
+    "extCode": "R50.9",
+    "extName": "Febre não especificada",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "B34.9",
+    "extName": "Infecção viral não especificada",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "A38",
+    "extName": "Escarlatina",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "B27.9",
+    "extName": "Mononucleose infecciosa não especificada",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "B08.4",
+    "extName": "Estomatite vesicular enteroviral com exantema",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "B05.9",
+    "extName": "Sarampo sem complicações",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "B26.9",
+    "extName": "Caxumba sem complicações",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "B01.9",
+    "extName": "Varicela sem complicações",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "B06.9",
+    "extName": "Rubéola sem complicações",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "A90",
+    "extName": "Dengue (dengue clássico)",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "A92.8",
+    "extName": "Outras febres virais transmitidas por mosquito (Zika, Chikungunya)",
+    "emrCode": "A92.0",
+    "emrName": "Febre de Chikungunya",
+    "status": "PARTIAL_MATCH",
+    "alternatives": [
+      "A92.0",
+      "A92.1",
+      "A92.3"
+    ]
+  },
+  {
+    "extCode": "A69.2",
+    "extName": "Doença de Lyme",
+    "emrCode": "A69.2",
+    "emrName": "Doença de Lyme",
+    "status": "EXACT_MATCH"
+  },
+  {
+    "extCode": "B08.2",
+    "extName": "Exantema súbito (roséola)",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "B09",
+    "extName": "Infecção viral não especificada com lesões de pele e mucosas",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "B30.9",
+    "extName": "Conjuntivite viral não especificada",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "A04.7",
+    "extName": "Enterocolite devida a Clostridium difficile",
+    "emrCode": "A04.5",
+    "emrName": "Enterite por Campylobacter",
+    "status": "PARTIAL_MATCH",
+    "alternatives": [
+      "A04.5",
+      "A04.6"
+    ]
+  },
+  {
+    "extCode": "B77.9",
+    "extName": "Ascaridíase não especificada",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "B80",
+    "extName": "Oxiuríase (enterobíase)",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "B68.9",
+    "extName": "Teníase não especificada",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "B79",
+    "extName": "Tricuríase",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "B76.9",
+    "extName": "Ancilostomíase não especificada",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "B82.9",
+    "extName": "Parasitose intestinal não especificada",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "B71.0",
+    "extName": "Himenolepíase",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "B81.4",
+    "extName": "Estrongiloidíase intestinal",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "N39.0",
+    "extName": "Infecção do trato urinário, local não especificado",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "N30.0",
+    "extName": "Cistite aguda",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "N10",
+    "extName": "Nefrite tubulointersticial aguda (pielonefrite aguda)",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "N47",
+    "extName": "Fimose e parafimose",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "N43.3",
+    "extName": "Hidrocele não especificada",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "N45.9",
+    "extName": "Orquite e epididimite não especificada",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "H65.9",
+    "extName": "Otite média não supurativa não especificada",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "H66.9",
+    "extName": "Otite média não especificada",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "H10.9",
+    "extName": "Conjuntivite não especificada",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "H10.0",
+    "extName": "Conjuntivite mucopurulenta",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "H60.9",
+    "extName": "Otite externa não especificada",
+    "emrCode": "H60.0",
+    "emrName": "Abscesso do ouvido externo",
+    "status": "PARTIAL_MATCH",
+    "alternatives": [
+      "H60.0"
+    ]
+  },
+  {
+    "extCode": "H65.0",
+    "extName": "Otite média serosa aguda",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "J35.0",
+    "extName": "Amigdalite crônica",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "J35.1",
+    "extName": "Hipertrofia das amígdalas",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "J35.3",
+    "extName": "Hipertrofia das amígdalas com hipertrofia das adenoides",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "R04.0",
+    "extName": "Epistaxe",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "R51",
+    "extName": "Cefaleia",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "G43.9",
+    "extName": "Enxaqueca não especificada",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "R56.0",
+    "extName": "Convulsões febris",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "G40.9",
+    "extName": "Epilepsia não especificada",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "R55",
+    "extName": "Síncope e colapso",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "R42",
+    "extName": "Tontura e instabilidade",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "G40.3",
+    "extName": "Epilepsia e síndromes epilépticas generalizadas idiopáticas",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "R47.1",
+    "extName": "Disartria e anartria",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "L20.9",
+    "extName": "Dermatite atópica não especificada",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "L50.9",
+    "extName": "Urticária não especificada",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "L22",
+    "extName": "Dermatite das fraldas",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "B35.9",
+    "extName": "Dermatofitose não especificada (tinea)",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "L70.0",
+    "extName": "Acne vulgar",
+    "emrCode": "L70.5",
+    "emrName": "Acne escoriada das mulheres jovens",
+    "status": "PARTIAL_MATCH",
+    "alternatives": [
+      "L70.5"
+    ]
+  },
+  {
+    "extCode": "B07",
+    "extName": "Verrugas virais",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "L01.0",
+    "extName": "Impetigo (qualquer localização)",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "L02.9",
+    "extName": "Abscesso cutâneo, furúnculo e carbúnculo não especificado",
+    "emrCode": "L02.9",
+    "emrName": "Abscesso cutâneo, furúnculo e antraz de localização não especificada",
+    "status": "EXACT_MATCH"
+  },
+  {
+    "extCode": "L03.9",
+    "extName": "Celulite não especificada",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "L08.0",
+    "extName": "Piodermite",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "B86",
+    "extName": "Escabiose (sarna)",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "B85.0",
+    "extName": "Pediculose devida a Pediculus humanus capitis (piolho)",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "L23.9",
+    "extName": "Dermatite alérgica de contato, causa não especificada",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "L25.9",
+    "extName": "Dermatite de contato não especificada",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "L30.9",
+    "extName": "Dermatite não especificada",
+    "emrCode": "L30.1",
+    "emrName": "Disidrose [Pompholyx]",
+    "status": "PARTIAL_MATCH",
+    "alternatives": [
+      "L30.1"
+    ]
+  },
+  {
+    "extCode": "B37.0",
+    "extName": "Estomatite por Candida (sapinho)",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "B37.2",
+    "extName": "Candidíase da pele e das unhas",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "L53.9",
+    "extName": "Eritema não especificado",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "M79.3",
+    "extName": "Paniculite não especificada",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "S00.9",
+    "extName": "Traumatismo superficial da cabeça, não especificado",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "T14.9",
+    "extName": "Traumatismo não especificado",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "S60.9",
+    "extName": "Traumatismo superficial do punho e da mão",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "M25.5",
+    "extName": "Dor articular",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "S42.0",
+    "extName": "Fratura de clavícula",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "S52.5",
+    "extName": "Fratura de rádio distal",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "T30",
+    "extName": "Queimadura não especificada",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "S06.0",
+    "extName": "Concussão cerebral",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "S09.9",
+    "extName": "Traumatismo não especificado da cabeça",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "S82.0",
+    "extName": "Fratura da rótula",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "S93.4",
+    "extName": "Entorse e distensão do tornozelo",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "S63.5",
+    "extName": "Entorse e distensão do punho",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "S50.9",
+    "extName": "Traumatismo superficial do antebraço",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "T14.0",
+    "extName": "Traumatismo superficial de região não especificada do corpo",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "S80.0",
+    "extName": "Contusão do joelho",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "T79.3",
+    "extName": "Infecção pós-traumática de ferimento",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "T01.9",
+    "extName": "Traumatismos superficiais múltiplos não especificados",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "J30.1",
+    "extName": "Rinite alérgica devida a pólen",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "J30.4",
+    "extName": "Rinite alérgica não especificada",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "T78.1",
+    "extName": "Outras reações adversas aos alimentos",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "T78.4",
+    "extName": "Alergia não especificada",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "T78.3",
+    "extName": "Angioedema",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "L27.2",
+    "extName": "Dermatite devida a alimentos ingeridos",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "P59.9",
+    "extName": "Icterícia neonatal não especificada",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "R68.1",
+    "extName": "Cólica do lactente",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "P92.1",
+    "extName": "Regurgitação e ruminação do recém-nascido",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "P92.9",
+    "extName": "Problema de alimentação do recém-nascido não especificado",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "P61.1",
+    "extName": "Policitemia neonatal",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "Q40.0",
+    "extName": "Estenose hipertrófica congênita do piloro",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "D50.9",
+    "extName": "Anemia por deficiência de ferro não especificada",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "E46",
+    "extName": "Desnutrição proteico-calórica não especificada",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "E61.1",
+    "extName": "Deficiência de ferro",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "E55.9",
+    "extName": "Deficiência de vitamina D não especificada",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "D69.9",
+    "extName": "Púrpura e outras afecções hemorrágicas não especificadas",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "D69.3",
+    "extName": "Púrpura trombocitopênica idiopática",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "A41.9",
+    "extName": "Sepse não especificada",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "G03.9",
+    "extName": "Meningite não especificada",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "T78.2",
+    "extName": "Choque anafilático",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "E10.1",
+    "extName": "Cetoacidose diabética",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "T17.9",
+    "extName": "Corpo estranho em via respiratória",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "K56.1",
+    "extName": "Intussuscepção intestinal",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "J46",
+    "extName": "Estado de mal asmático",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "R57.0",
+    "extName": "Choque cardiogênico",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "E86",
+    "extName": "Desidratação",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "R57.1",
+    "extName": "Choque hipovolêmico",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "G41.9",
+    "extName": "Estado de mal epiléptico não especificado",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "T65.9",
+    "extName": "Intoxicação por substância não especificada",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "T58",
+    "extName": "Efeito tóxico do monóxido de carbono",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "W84",
+    "extName": "Obstrução não especificada das vias respiratórias",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "F90.0",
+    "extName": "Distúrbios da atividade e da atenção (TDAH)",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "F84.0",
+    "extName": "Autismo infantil",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "F98.0",
+    "extName": "Enurese não orgânica",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "F98.1",
+    "extName": "Encoprese não orgânica",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "F51.9",
+    "extName": "Distúrbio do sono não especificado",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "Z03.9",
+    "extName": "Observação por suspeita de doença não especificada",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "Z76.9",
+    "extName": "Contato com serviços de saúde, não especificado",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "Z00.1",
+    "extName": "Exame de saúde da criança (puericultura)",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "Z23",
+    "extName": "Necessidade de imunização contra doença infecciosa",
+    "status": "NOT_IN_EMR"
+  },
+  {
+    "extCode": "Z71.9",
+    "extName": "Aconselhamento não especificado",
+    "status": "NOT_IN_EMR"
+  }
+]

@@ -1,0 +1,17 @@
+[EMR]
+base_url = https://prbentogoncalves.g-hosp.com.br
+username = your.email@bentogoncalves.rs.gov.br
+password = your_password
+
+[Browser]
+timeout = 30
+headless = False
+
+[Dosages]
+amoxicillin_strep_dose = 50
+amoxicillin_strep_max = 1000
+amoxicillin_pneumonia_dose = 90
+amoxicillin_pneumonia_max = 4000
+cephalexin_dose = 50
+cephalexin_max = 2000
+concentration = 50 

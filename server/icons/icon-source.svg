@@ -1,0 +1,31 @@
+<!--
+  Toca Ficha Dr. — brand mark v2 (2026-05-04)
+  A stepping waveform that lands as a chart tick.
+  Reads as audio at the start, transcript at the end.
+
+  To export PNGs at the manifest sizes, run:
+    rsvg-convert -w 16  icon-source.svg -o icon16.png
+    rsvg-convert -w 32  icon-source.svg -o icon32.png
+    rsvg-convert -w 48  icon-source.svg -o icon48.png
+    rsvg-convert -w 128 icon-source.svg -o icon128.png
+  (or use https://cloudconvert.com/svg-to-png).
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <rect width="128" height="128" rx="24" fill="#0a0a0a"/>
+  <!-- Wave-to-tick path: 5 voice peaks → final long horizontal "transcript" line ending in a dot. -->
+  <path d="M 16 70
+           L 30 70
+           L 36 44
+           L 46 88
+           L 56 32
+           L 66 76
+           L 74 58
+           L 82 70
+           L 112 70"
+        fill="none"
+        stroke="#10b981"
+        stroke-width="6.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"/>
+  <circle cx="112" cy="70" r="5" fill="#10b981"/>
+</svg>

@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://tocafichadr.com.br/sitemap.xml
