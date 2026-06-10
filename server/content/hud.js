@@ -1299,15 +1299,24 @@ window.TOCAFICHADR_hud = (function () {
 
     // Simplified MVP flow: discharge + return to main list. Assumes SOAP,
     // CID, prescriptions already handled by the doctor before clicking.
-    // Global timeout protects against a hung discharge step.
+    // Global timeout protects against a hung discharge step — if processDischarge
+    // hangs (e.g. Rails UJS never responds), reject so the catch block resets UI.
     var FINALIZE_TIMEOUT_MS = 30000;
-    var finalizeTimer = setTimeout(function () {
-      console.warn('[Toca Ficha Dr.] finalizePatient: global timeout after ' + FINALIZE_TIMEOUT_MS + 'ms');
-    }, FINALIZE_TIMEOUT_MS);
+    var finalizeTimer = null;
+    var finalizeTimedOut = false;
+    var timeoutPromise = new Promise(function (_, reject) {
+      finalizeTimer = setTimeout(function () {
+        finalizeTimedOut = true;
+        reject(new Error('Tempo limite ao registrar alta (' + FINALIZE_TIMEOUT_MS / 1000 + 's). Verifique a conexão.'));
+      }, FINALIZE_TIMEOUT_MS);
+    });
 
     try {
       showStatus('Processando alta...', 'loading');
-      var discharged = await window.TOCAFICHADR_dom.processDischarge(internId);
+      var discharged = await Promise.race([
+        window.TOCAFICHADR_dom.processDischarge(internId),
+        timeoutPromise
+      ]);
       if (!discharged) throw new Error('Falha ao processar alta');
 
       await sleep(1500);
