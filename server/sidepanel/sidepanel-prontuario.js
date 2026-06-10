@@ -1165,8 +1165,9 @@ console.log('[Toca Ficha] sidepanel-prontuario loaded @ ' + new Date().toISOStri
     const d = new Date();
     return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
   }
-  function _bumpUsage(actionType) {
-    chrome.storage.local.get(['usageStats'], (data) => {
+  async function _bumpUsage(actionType) {
+    try {
+      const data = await chrome.storage.local.get(['usageStats']);
       const stats = data.usageStats || {};
       const k = _todayKey();
       if (!stats[k]) stats[k] = {};
@@ -1174,7 +1175,7 @@ console.log('[Toca Ficha] sidepanel-prontuario loaded @ ' + new Date().toISOStri
       const keys = Object.keys(stats).sort();
       while (keys.length > 30) delete stats[keys.shift()];
       await chrome.storage.local.set({ usageStats: stats });
-    });
+    } catch (_) { /* analytics are best-effort */ }
   }
 
   // ─────────────────────────────────────────────────────────────────────────
