@@ -46,7 +46,7 @@ export type MigrationState =
     };
 
 export function createDb(url: string) {
-  const sql = postgres(url);
+  const sql = postgres(url, { idle_timeout: 30, max: 10 });
   return drizzlePg(sql, { schema });
 }
 
